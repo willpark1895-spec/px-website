@@ -721,34 +721,35 @@
           <span>phloemandxylem.com</span>
         </div>
       </div>
-      <div class="contact-form">
+      <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
         <h3 style="margin-bottom: 1.5rem;">Send a Message</h3>
         <div class="form-group">
           <label>Name</label>
-          <input type="text" placeholder="Your name">
+          <input type="text" name="name" placeholder="Your name" required>
         </div>
         <div class="form-group">
           <label>Email</label>
-          <input type="email" placeholder="your@email.com">
+          <input type="email" name="email" placeholder="your@email.com" required>
+          <input type="hidden" name="_replyto" value="">
         </div>
         <div class="form-group">
           <label>I am a...</label>
-          <select>
+          <select name="role">
             <option value="">Select your role</option>
-            <option>Homeowner / Property Owner</option>
-            <option>Developer / Builder</option>
-            <option>Engineer / Consultant</option>
-            <option>Contractor / Landscape Company</option>
-            <option>HOA / Neighborhood Association</option>
-            <option>Other</option>
+            <option value="Homeowner / Property Owner">Homeowner / Property Owner</option>
+            <option value="Developer / Builder">Developer / Builder</option>
+            <option value="Engineer / Consultant">Engineer / Consultant</option>
+            <option value="Contractor / Landscape Company">Contractor / Landscape Company</option>
+            <option value="HOA / Neighborhood Association">HOA / Neighborhood Association</option>
+            <option value="Other">Other</option>
           </select>
         </div>
         <div class="form-group">
           <label>Tell us about your project</label>
-          <textarea placeholder="What are you working on? How can we help?"></textarea>
+          <textarea name="message" placeholder="What are you working on? How can we help?"></textarea>
         </div>
-        <button class="btn btn-green" style="width: 100%; justify-content: center;">Send Message</button>
-      </div>
+        <button type="submit" class="btn btn-green" style="width: 100%; justify-content: center;">Send Message</button>
+      </form>
     </div>
   </div>
 </section>
@@ -786,6 +787,13 @@
   links.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => links.classList.remove('open'));
   });
+
+  // Sync email → _replyto for Formspree reply-to
+  const emailInput = document.querySelector('input[name="email"]');
+  const replyTo = document.querySelector('input[name="_replyto"]');
+  if (emailInput && replyTo) {
+    emailInput.addEventListener('input', () => { replyTo.value = emailInput.value; });
+  }
 </script>
 
 </body>
