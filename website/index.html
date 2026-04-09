@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P&X — Phloem & Xylem | Natural Resource & Urban Forestry Consulting</title>
+  <meta name="description" content="P&X provides expert arboriculture, urban forestry, soil science, and regenerative landscape consulting for engineering firms, developers, contractors, and property owners in the greater Atlanta metro area.">
+  <meta name="author" content="P&X — Phloem & Xylem">
+  <meta property="og:title" content="P&X — Phloem & Xylem">
+  <meta property="og:description" content="Natural Resource & Urban Forestry Consulting. Innovative & sustainable solutions. Sandy Springs, GA.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phloemandxylem.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ═══ RESET & BASE ═══ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Source Sans 3', 'Segoe UI', sans-serif;
+      color: #2c2c2c;
+      background: #faf8f5;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ═══ BRAND TOKENS ═══ */
+    :root {
+      --green-dark: #2d5016;
+      --green-mid: #3d6b22;
+      --green-light: #5a8a3c;
+      --green-pale: #e8f0e2;
+      --cream: #faf8f5;
+      --cream-dark: #f0ece6;
+      --brown-dark: #5c4a2a;
+      --brown-accent: #92400e;
+      --text-primary: #1a1a1a;
+      --text-secondary: #4a4a4a;
+      --text-light: #6b6b6b;
+      --gold: #b8960c;
+      --white: #ffffff;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+      --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+      --radius: 6px;
+      --max-width: 1140px;
+    }
+
+    /* ═══ TYPOGRAPHY ═══ */
+    h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; color: var(--green-dark); line-height: 1.25; }
+    h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; }
+    h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 600; }
+    h3 { font-size: 1.3rem; font-weight: 600; }
+    h4 { font-size: 1.1rem; font-weight: 600; }
+    p { margin-bottom: 1rem; }
+
+    /* ═══ NAV ═══ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(250,248,245,0.97);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(45,80,22,0.1);
+      transition: box-shadow 0.3s;
+    }
+    .nav.scrolled { box-shadow: var(--shadow-md); }
+    .nav-inner {
+      max-width: var(--max-width); margin: 0 auto;
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+    }
+    .nav-brand {
+      display: flex; align-items: baseline; gap: 0.5rem;
+    }
+    .nav-brand-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 700;
+      color: var(--green-dark);
+      letter-spacing: -0.02em;
+    }
+    .nav-brand-sub {
+      font-size: 0.7rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--green-light);
+    }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a {
+      font-size: 0.9rem; font-weight: 500;
+      color: var(--text-secondary);
+      transition: color 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .nav-links a:hover { color: var(--green-dark); }
+    .nav-cta {
+      background: var(--green-dark) !important; color: var(--white) !important;
+      padding: 0.5rem 1.25rem !important; border-radius: var(--radius);
+      font-weight: 600 !important; transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--green-mid) !important; }
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+    .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--green-dark); margin: 5px 0; transition: 0.3s; }
+
+    /* ═══ HERO ═══ */
+    .hero {
+      margin-top: 72px;
+      background: linear-gradient(170deg, var(--green-dark) 0%, #1a3a0e 60%, #0f2508 100%);
+      color: var(--white);
+      padding: 6rem 2rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-inner {
+      max-width: var(--max-width); margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    .hero-eyebrow {
+      font-size: 0.8rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 { color: var(--white); margin-bottom: 1.5rem; max-width: 700px; }
+    .hero-sub {
+      font-size: 1.15rem; line-height: 1.8;
+      color: rgba(255,255,255,0.85);
+      max-width: 600px; margin-bottom: 2.5rem;
+    }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.85rem 1.75rem;
+      font-size: 0.95rem; font-weight: 600;
+      border-radius: var(--radius);
+      transition: all 0.2s;
+      cursor: pointer; border: none;
+      font-family: inherit;
+    }
+    .btn-primary { background: var(--white); color: var(--green-dark); }
+    .btn-primary:hover { background: var(--cream-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .btn-outline { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.4); }
+    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.08); }
+    .btn-green { background: var(--green-dark); color: var(--white); }
+    .btn-green:hover { background: var(--green-mid); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .hero-badges {
+      margin-top: 3.5rem; padding-top: 2.5rem;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      display: flex; gap: 2.5rem; flex-wrap: wrap;
+    }
+    .hero-badge {
+      font-size: 0.8rem; color: rgba(255,255,255,0.55);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .hero-badge strong { color: rgba(255,255,255,0.85); font-weight: 600; }
+
+    /* ═══ SECTIONS ═══ */
+    section { padding: 5rem 2rem; }
+    .section-inner { max-width: var(--max-width); margin: 0 auto; }
+    .section-label {
+      font-size: 0.75rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.2em;
+      color: var(--green-light); margin-bottom: 0.75rem;
+    }
+    .section-head { margin-bottom: 3rem; max-width: 640px; }
+    .section-head p { color: var(--text-secondary); font-size: 1.05rem; margin-top: 0.75rem; }
+
+    /* ═══ PHILOSOPHY ═══ */
+    .philosophy { background: var(--white); }
+    .philosophy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .philosophy-visual {
+      background: linear-gradient(145deg, var(--green-dark), #1a3a0e);
+      border-radius: 12px;
+      padding: 3rem;
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+    .philosophy-visual::after {
+      content: '';
+      position: absolute; bottom: -40px; right: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .philosophy-visual blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-style: italic;
+      line-height: 1.5; position: relative; z-index: 1;
+    }
+    .philosophy-visual cite {
+      display: block; margin-top: 1.5rem;
+      font-family: 'Source Sans 3', sans-serif;
+      font-style: normal; font-size: 0.85rem;
+      opacity: 0.7;
+    }
+    .philosophy-text h2 { margin-bottom: 1.25rem; }
+    .philosophy-text .lead {
+      font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 1.5rem;
+    }
+    .philosophy-points { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+    .philosophy-points li {
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      font-size: 0.95rem; color: var(--text-secondary);
+    }
+    .philosophy-points li::before {
+      content: '';
+      flex-shrink: 0; margin-top: 0.5rem;
+      width: 8px; height: 8px;
+      background: var(--green-light);
+      border-radius: 50%;
+    }
+
+    /* ═══ SERVICES ═══ */
+    .services { background: var(--cream); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem;
+      border: 1px solid rgba(45,80,22,0.08);
+      transition: all 0.25s;
+    }
+    .service-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(45,80,22,0.15);
+    }
+    .service-icon {
+      width: 44px; height: 44px;
+      background: var(--green-pale);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.25rem;
+      color: var(--green-dark);
+    }
+    .service-card h3 { font-size: 1.1rem; margin-bottom: 0.6rem; }
+    .service-card p { font-size: 0.9rem; color: var(--text-light); margin: 0; line-height: 1.6; }
+
+    /* ═══ CLIENTS / WHO WE SERVE ═══ */
+    .clients { background: var(--white); }
+    .clients-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .client-card {
+      padding: 2rem;
+      border-radius: var(--radius);
+      border: 1px solid rgba(45,80,22,0.1);
+      background: var(--cream);
+    }
+    .client-card h3 { margin-bottom: 0.5rem; font-size: 1.15rem; }
+    .client-card p { font-size: 0.92rem; color: var(--text-secondary); margin: 0; }
+    .client-card .engagement {
+      margin-top: 1rem; padding-top: 0.75rem;
+      border-top: 1px solid rgba(45,80,22,0.08);
+      font-size: 0.82rem; font-weight: 600;
+      color: var(--green-light);
+    }
+
+    /* ═══ TERRAVALUE BANNER ═══ */
+    .tv-banner {
+      background: linear-gradient(135deg, #1a3a0e 0%, var(--green-dark) 40%, #3d6b22 100%);
+      color: var(--white);
+      padding: 5rem 2rem;
+      position: relative; overflow: hidden;
+    }
+    .tv-banner::before {
+      content: '';
+      position: absolute; top: -100px; right: -100px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.03);
+    }
+    .tv-banner-inner {
+      max-width: var(--max-width); margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+      align-items: center; position: relative; z-index: 1;
+    }
+    .tv-banner h2 { color: var(--white); margin-bottom: 1rem; }
+    .tv-banner .label {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      margin-bottom: 1.25rem;
+    }
+    .tv-banner p { color: rgba(255,255,255,0.85); font-size: 1.05rem; line-height: 1.7; }
+    .tv-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1rem; margin-top: 2rem;
+    }
+    .tv-stat {
+      text-align: center;
+      padding: 1.25rem;
+      background: rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .tv-stat .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 700;
+      display: block;
+    }
+    .tv-stat .desc { font-size: 0.78rem; color: rgba(255,255,255,0.6); margin-top: 0.25rem; }
+
+    /* ═══ CREDENTIALS ═══ */
+    .credentials { background: var(--cream); }
+    .cred-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+      align-items: start;
+    }
+    .cred-list { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; }
+    .cred-list li {
+      display: flex; gap: 0.75rem; align-items: baseline;
+      font-size: 0.95rem;
+    }
+    .cred-list li .marker {
+      color: var(--green-light); font-weight: 700; flex-shrink: 0;
+    }
+    .cred-list li strong { color: var(--text-primary); }
+    .cred-list li span { color: var(--text-light); }
+    .awards-box {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem;
+      border-left: 4px solid var(--gold);
+    }
+    .awards-box h3 { color: var(--brown-dark); margin-bottom: 1rem; }
+    .award-item { margin-bottom: 1rem; }
+    .award-item:last-child { margin-bottom: 0; }
+    .award-item .title { font-weight: 600; color: var(--text-primary); font-size: 0.95rem; }
+    .award-item .org { font-size: 0.85rem; color: var(--text-light); }
+
+    /* ═══ CONTACT ═══ */
+    .contact { background: var(--white); }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+      align-items: start;
+    }
+    .contact-info h2 { margin-bottom: 1rem; }
+    .contact-info .lead { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 2rem; }
+    .contact-detail {
+      display: flex; gap: 0.75rem; align-items: center;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .contact-detail .icon {
+      width: 40px; height: 40px;
+      background: var(--green-pale);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--green-dark); flex-shrink: 0;
+    }
+    .contact-form {
+      background: var(--cream);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+    }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label {
+      display: block; font-size: 0.85rem; font-weight: 600;
+      color: var(--text-secondary); margin-bottom: 0.4rem;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1px solid rgba(45,80,22,0.15);
+      border-radius: var(--radius);
+      font-family: inherit; font-size: 0.95rem;
+      background: var(--white);
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      outline: none;
+      border-color: var(--green-light);
+      box-shadow: 0 0 0 3px rgba(90,138,60,0.12);
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    /* ═══ FOOTER ═══ */
+    .footer {
+      background: var(--green-dark);
+      color: rgba(255,255,255,0.7);
+      padding: 3rem 2rem 2rem;
+    }
+    .footer-inner {
+      max-width: var(--max-width); margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-brand .name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 700;
+      color: var(--white);
+    }
+    .footer-brand .tagline {
+      font-size: 0.8rem; margin-top: 0.25rem;
+      color: rgba(255,255,255,0.45);
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.85rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-copy {
+      width: 100%; text-align: center;
+      margin-top: 2rem; padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.8rem; color: rgba(255,255,255,0.35);
+    }
+
+    /* ═══ MOBILE ═══ */
+    @media (max-width: 900px) {
+      .philosophy-grid, .cred-grid, .contact-grid, .tv-banner-inner {
+        grid-template-columns: 1fr; gap: 2rem;
+      }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .clients-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      section { padding: 3.5rem 1.25rem; }
+      .nav-inner { padding: 0 1.25rem; }
+      .hero { padding: 4rem 1.25rem 3.5rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .hero-badges { gap: 1.5rem; }
+      .nav-links { display: none; }
+      .nav-toggle { display: block; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: absolute; top: 72px; left: 0; right: 0;
+        background: var(--cream);
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid rgba(45,80,22,0.1);
+        box-shadow: var(--shadow-md);
+      }
+      .tv-stats { grid-template-columns: 1fr; }
+    }
+
+    /* ═══ SVG ICONS INLINE ═══ */
+    .icon-svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <span class="nav-brand-mark">P&X</span>
+      <span class="nav-brand-sub">Phloem &amp; Xylem</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#philosophy">Approach</a>
+      <a href="#services">Services</a>
+      <a href="#clients">Clients</a>
+      <a href="terravalue.html">TerraValue</a>
+      <a href="#credentials">Credentials</a>
+      <a href="#contact" class="nav-cta">Get in Touch</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Natural Resource &amp; Urban Forestry Consulting</p>
+    <h1>Your Project Needs an Arborist. Not Just Any Arborist.</h1>
+    <p class="hero-sub">P&X delivers subject matter expertise in arboriculture, urban forestry, soil science, and regenerative landscape solutions. We integrate into your project team as the specialist you need — diagnostics, design, and oversight so your projects move forward with confidence.</p>
+    <div class="hero-buttons">
+      <a href="#contact" class="btn btn-primary">Let's Talk About Your Project</a>
+      <a href="terravalue.html" class="btn btn-outline">Try TerraValue →</a>
+    </div>
+    <div class="hero-badges">
+      <div class="hero-badge">
+        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span><strong>ISA Certified Arborist</strong></span>
+      </div>
+      <div class="hero-badge">
+        <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+        <span><strong>Urban Forest Specialist</strong></span>
+      </div>
+      <div class="hero-badge">
+        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <span><strong>TRAQ Certified</strong></span>
+      </div>
+      <div class="hero-badge">
+        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span><strong>Sandy Springs, GA</strong></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PHILOSOPHY ═══ -->
+<section class="philosophy" id="philosophy">
+  <div class="section-inner">
+    <div class="philosophy-grid">
+      <div class="philosophy-visual">
+        <blockquote>
+          "Most firms look at the canopy and treat what they see. P&X looks underground first."
+        </blockquote>
+        <cite>— The Soil Principle</cite>
+      </div>
+      <div class="philosophy-text">
+        <p class="section-label">Our Approach</p>
+        <h2>We Don't Treat Symptoms. We Find the Root Cause.</h2>
+        <p class="lead">Soil health is everything — it dictates structure, resilience, longevity, and every visible symptom a client calls about. If the system below is out of balance, no amount of above-ground intervention will hold.</p>
+        <ul class="philosophy-points">
+          <li>Holistic, systems-level diagnostic approach — examining the full ecosystem before prescribing solutions</li>
+          <li>Nature-based, regenerative solutions that work with natural systems rather than against them</li>
+          <li>Public-sector credibility combined with private-sector responsiveness and personal attention</li>
+          <li>Recommendations that last longer, cost less over time, and address actual causes rather than surface symptoms</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section class="services" id="services">
+  <div class="section-inner">
+    <div class="section-head">
+      <p class="section-label">Services</p>
+      <h2>Comprehensive Consulting, Expert Execution</h2>
+      <p>Our principal consultant serves as the diagnostic expert, designer, and project lead on every engagement. Specialized field work is executed through a curated network of trusted subcontractors.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <h3>Landscape Diagnostics</h3>
+        <p>Comprehensive site assessments that start below the surface. Soil testing, root-zone evaluation, hydrology analysis, and ecosystem health mapping to identify true drivers of decline.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5"/><path d="M12 12H3"/><path d="M21 12l-4-4v8l4-4z"/></svg>
+        </div>
+        <h3>Urban Tree Consulting</h3>
+        <p>Risk assessment, preservation planning, inventory and GIS mapping, species selection, planting design, and long-term canopy management strategies for any property type.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3>Regenerative Design</h3>
+        <p>Nature-based design solutions: native plantings, pollinator habitat, rain gardens, bioswales, soil remediation, and integrated stormwater management. Beautiful, functional, self-sustaining.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        </div>
+        <h3>Construction & Development</h3>
+        <p>Tree preservation plans, root protection zones, grading impact assessments, and on-site monitoring. Helping developers meet ordinance requirements while protecting natural assets.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <h3>Soil Health & Remediation</h3>
+        <p>Soil compaction mitigation, biological inoculant programs, organic amendment plans, drainage redesign, and long-term soil restoration strategies. The foundation of every healthy landscape.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+        </div>
+        <h3>Ordinance & Grant Support</h3>
+        <p>Tree ordinance compliance, permit consulting, and grant writing for USDA, EPA, and state-level funding. We speak the same language as the municipal reviewers — because we are one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHO WE SERVE ═══ -->
+<section class="clients" id="clients">
+  <div class="section-inner">
+    <div class="section-head">
+      <p class="section-label">Who We Serve</p>
+      <h2>How We Partner With You</h2>
+      <p>No overhead. No long-term contracts required. Just expert-level support when you need it.</p>
+    </div>
+    <div class="clients-grid">
+      <div class="client-card">
+        <h3>Engineering & Consulting Firms</h3>
+        <p>P&X serves as your arboricultural and ecological subconsultant. Tree surveys, environmental assessments, preservation plans, and expert testimony that integrate seamlessly into your project deliverables.</p>
+        <div class="engagement">$3,000–$15,000 per project</div>
+      </div>
+      <div class="client-card">
+        <h3>Developers & Builders</h3>
+        <p>Tree ordinance compliance, preservation planning, and landscape design so your projects clear review faster. We speak the same language as the municipal reviewers — because we are one.</p>
+        <div class="engagement">$5,000–$25,000 per project</div>
+      </div>
+      <div class="client-card">
+        <h3>Contractors & Landscape Companies</h3>
+        <p>The diagnostic and design brain your clients need before the work begins. We assess, design, and specify — then refer installation and execution to you. A true partnership.</p>
+        <div class="engagement">$2,000–$8,000 per engagement</div>
+      </div>
+      <div class="client-card">
+        <h3>Property Owners & HOAs</h3>
+        <p>Expert diagnosis of landscape problems, regenerative design solutions, contractor selection and oversight, and long-term management planning. One trusted advisor who handles everything.</p>
+        <div class="engagement">$2,000–$12,000 per engagement</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TERRAVALUE BANNER ═══ -->
+<section class="tv-banner" id="terravalue">
+  <div class="tv-banner-inner">
+    <div>
+      <span class="label">P&X Technology</span>
+      <h2>TerraValue — Know What Your Land Is Worth</h2>
+      <p>The first parcel-level ecosystem services calculator for property owners. Enter any address and get a peer-reviewed, dollar-value breakdown of what your trees and green infrastructure provide annually — carbon sequestration, stormwater management, air quality improvement, energy savings, and more.</p>
+      <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="terravalue.html" class="btn btn-primary">Learn More →</a>
+      </div>
+    </div>
+    <div>
+      <div class="tv-stats">
+        <div class="tv-stat">
+          <span class="num">6</span>
+          <span class="desc">Ecosystem Services Valued</span>
+        </div>
+        <div class="tv-stat">
+          <span class="num">10</span>
+          <span class="desc">GA Jurisdictions Connected</span>
+        </div>
+        <div class="tv-stat">
+          <span class="num">$255</span>
+          <span class="desc">Social Cost per Tonne CO₂</span>
+        </div>
+        <div class="tv-stat">
+          <span class="num">7</span>
+          <span class="desc">US Ecoregions Covered</span>
+        </div>
+        <div class="tv-stat">
+          <span class="num">14</span>
+          <span class="desc">Piedmont Tree Species</span>
+        </div>
+        <div class="tv-stat">
+          <span class="num">PDF</span>
+          <span class="desc">Branded Reports Export</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CREDENTIALS ═══ -->
+<section class="credentials" id="credentials">
+  <div class="section-inner">
+    <div class="section-head">
+      <p class="section-label">Credentials</p>
+      <h2>About the Founder</h2>
+      <p>6+ years in ecological management and urban forestry. Field-trained ecologist who speaks the language of policy, data, and business.</p>
+    </div>
+    <div class="cred-grid">
+      <ul class="cred-list">
+        <li><span class="marker">◆</span> <span><strong>ISA Certified Arborist</strong> — International Society of Arboriculture</span></li>
+        <li><span class="marker">◆</span> <span><strong>ISA Certified Urban Forest Specialist</strong> — one of a select group nationally</span></li>
+        <li><span class="marker">◆</span> <span><strong>ISA Tree Risk Assessment Qualified</strong> (TRAQ)</span></li>
+        <li><span class="marker">◆</span> <span><strong>ISA Credentialing Council Member</strong> — sets standards for the profession</span></li>
+        <li><span class="marker">◆</span> <span><strong>Board of Directors</strong> — Georgia Arborist Association</span></li>
+        <li><span class="marker">◆</span> <span><strong>B.Sc. Environmental Science</strong> — Emory University</span></li>
+        <li><span class="marker">◆</span> <span><strong>Urban Forester & Sustainability Coordinator</strong> — City of Sandy Springs (current)</span></li>
+        <li><span class="marker">◆</span> <span>State Parks experience: prescribed fire, habitat restoration, conservation</span></li>
+      </ul>
+      <div class="awards-box">
+        <h3>Recognition</h3>
+        <div class="award-item">
+          <div class="title">Grand Award for Excellence in Urban Arboriculture</div>
+          <div class="org">Georgia Tree Council, 2024</div>
+        </div>
+        <div class="award-item">
+          <div class="title">Young & Upcoming Professional Award</div>
+          <div class="org">Urban & Community Forestry Society, 2025</div>
+        </div>
+        <div class="award-item">
+          <div class="title">Author — 2023 Sandy Springs Canopy Study</div>
+          <div class="org">43,000 acres analyzed, $80M+ in ecosystem services documented</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section class="contact" id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p class="section-label">Get Started</p>
+        <h2>Let's Talk About Your Next Project</h2>
+        <p class="lead">P&X integrates into your team, solves the hard problems, and makes your projects better. Reach out to start a conversation.</p>
+        <div class="contact-detail">
+          <div class="icon">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <span>hello@pxconsulting.com</span>
+        </div>
+        <div class="contact-detail">
+          <div class="icon">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <span>Sandy Springs, Georgia</span>
+        </div>
+        <div class="contact-detail">
+          <div class="icon">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <span>phloemandxylem.com</span>
+        </div>
+      </div>
+      <div class="contact-form">
+        <h3 style="margin-bottom: 1.5rem;">Send a Message</h3>
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>I am a...</label>
+          <select>
+            <option value="">Select your role</option>
+            <option>Homeowner / Property Owner</option>
+            <option>Developer / Builder</option>
+            <option>Engineer / Consultant</option>
+            <option>Contractor / Landscape Company</option>
+            <option>HOA / Neighborhood Association</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tell us about your project</label>
+          <textarea placeholder="What are you working on? How can we help?"></textarea>
+        </div>
+        <button class="btn btn-green" style="width: 100%; justify-content: center;">Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="name">P&X — Phloem & Xylem</div>
+      <div class="tagline">Innovative & Sustainable Solutions for Natural Resource & Urban Forestry Challenges</div>
+    </div>
+    <div class="footer-links">
+      <a href="#philosophy">Approach</a>
+      <a href="#services">Services</a>
+      <a href="terravalue.html">TerraValue</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-copy">
+      &copy; 2026 P&X LLC — Phloem & Xylem. All rights reserved. Sandy Springs, Georgia.
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll shadow
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+  // Mobile toggle
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+  // Close mobile nav on link click
+  links.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => links.classList.remove('open'));
+  });
+</script>
+
+</body>
+</html>
