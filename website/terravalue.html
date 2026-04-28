@@ -361,7 +361,8 @@
     </a>
     <div class="nav-links" id="navLinks">
       <a href="index.html">Home</a>
-      <a href="#how" class="active">How It Works</a>
+      <a href="#how">How It Works</a>
+      <a href="#valuation" class="active">Land Valuation</a>
       <a href="#services">The Six Services</a>
       <a href="#projector">Value Projector</a>
       <a href="https://terravalue.app" target="_blank" class="nav-cta">Launch App</a>
@@ -385,7 +386,7 @@
       <div class="hero-badges">
         <div class="hero-badge"><span class="bnum">6</span> ecosystem services</div>
         <div class="hero-badge"><span class="bnum">10</span> GA jurisdictions</div>
-        <div class="hero-badge"><span class="bnum">0–100</span> soil score</div>
+        <div class="hero-badge"><span class="bnum" style="color: rgba(255,255,255,0.4);">Soon</span> soil score</div>
         <div class="hero-badge"><span class="bnum">PDF</span> branded reports</div>
       </div>
     </div>
@@ -399,7 +400,7 @@
         <p class="label">How It Works</p>
         <h2>One address. Four steps. Real numbers.</h2>
         <p>TerraValue connects to live public ArcGIS parcel databases across 10 Georgia jurisdictions. It pulls your lot size, assessed value, and canopy data — then runs every number through peer-reviewed USDA and EPA methodologies.</p>
-        <p>The result: a complete picture of what your land's ecosystem is worth in actual dollars, broken down across six services, with a 0–100 stewardship score and a branded PDF report you can take to a meeting.</p>
+        <p>The result: a complete picture of what your land's ecosystem is worth in actual dollars, broken down across six services, with a branded PDF report you can take to a meeting.</p>
       </div>
       <div class="how-steps">
         <div class="how-step">
@@ -420,7 +421,7 @@
           <div class="step-num">3</div>
           <div class="step-text">
             <h4>Calculate everything</h4>
-            <p>Six ecosystem services, dual GI methodology (EPA + GA Blue Book), tree inventory, Soil Score.</p>
+            <p>Six ecosystem services, dual GI methodology (EPA + GA Blue Book), tree inventory, and land valuation.</p>
           </div>
         </div>
         <div class="how-step">
@@ -430,6 +431,126 @@
             <p>Interactive dashboard with satellite map, charts, per-service breakdown, and downloadable PDF.</p>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAND VALUATION TOOL -->
+<section style="background:var(--green-900);color:var(--white);position:relative;overflow:hidden;padding:6rem 0;" id="valuation">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 900px 500px at 50% 0%,rgba(45,143,94,0.12) 0%,transparent 60%);"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div style="text-align:center;margin-bottom:3rem;">
+      <p class="label" style="color:var(--gold-400);">Institutional-Grade Analysis</p>
+      <h2 style="color:var(--white);margin-bottom:0.75rem;">Land Valuation Tool</h2>
+      <p style="color:rgba(255,255,255,0.5);max-width:600px;margin:0 auto;font-size:0.95rem;">Three-approach USPAP-compliant valuation with ecosystem overlay. Drawing from methodologies used by Berkshire Hathaway, JLL, and the Appraisal Institute.</p>
+    </div>
+
+    <div style="max-width:780px;margin:0 auto;">
+      <!-- Input Form -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:2rem;margin-bottom:1.5rem;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
+          <div>
+            <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Lot Size (sqft)</label>
+            <input type="number" id="lv-lot" value="18000" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+          </div>
+          <div>
+            <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Building Size (sqft)</label>
+            <input type="number" id="lv-bldg" value="2400" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+          </div>
+          <div>
+            <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Assessed Value ($)</label>
+            <input type="number" id="lv-assessed" value="180000" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+          </div>
+          <div>
+            <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Year Built</label>
+            <input type="number" id="lv-year" value="1995" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+          </div>
+          <div>
+            <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Canopy Coverage (%)</label>
+            <input type="number" id="lv-canopy" value="32" min="0" max="100" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+          </div>
+          <div>
+            <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Zoning</label>
+            <select id="lv-zoning" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+              <option value="R-1">R-1 (Single Family)</option>
+              <option value="R-2">R-2 (Multi-Family)</option>
+              <option value="C-1">C-1 (Commercial)</option>
+              <option value="MU">MU (Mixed Use)</option>
+              <option value="I-1">I-1 (Industrial)</option>
+            </select>
+          </div>
+        </div>
+        <button id="lv-run" style="width:100%;padding:0.75rem;border-radius:var(--radius);border:none;background:var(--gold-500);color:var(--white);font-family:inherit;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='#d4ac33'" onmouseout="this.style.background='var(--gold-500)'">Run Full Valuation</button>
+      </div>
+
+      <!-- Results -->
+      <div id="lv-results" style="display:none;">
+        <!-- Reconciled Value -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:2rem;margin-bottom:1rem;text-align:center;">
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.5rem;">Reconciled Market Value</div>
+          <div id="lv-value" style="font-size:2.8rem;font-weight:700;color:var(--gold-300);letter-spacing:-0.03em;margin-bottom:0.25rem;">$450,000</div>
+          <div id="lv-range" style="font-size:0.82rem;color:rgba(255,255,255,0.4);">Range: $427,500 – $472,500</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-top:1.5rem;">
+            <div style="background:rgba(255,255,255,0.03);border-radius:var(--radius);padding:0.75rem;border:1px solid rgba(255,255,255,0.06);">
+              <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;">Price / sqft (lot)</div>
+              <div id="lv-psf" style="font-size:1.2rem;font-weight:700;color:var(--green-300);">$25.00</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03);border-radius:var(--radius);padding:0.75rem;border:1px solid rgba(255,255,255,0.06);">
+              <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;">Cap Rate</div>
+              <div id="lv-cap" style="font-size:1.2rem;font-weight:700;color:var(--green-300);">5.5%</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03);border-radius:var(--radius);padding:0.75rem;border:1px solid rgba(255,255,255,0.06);">
+              <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;">Eco Premium</div>
+              <div id="lv-eco" style="font-size:1.2rem;font-weight:700;color:var(--green-300);">+5.4%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Three Approaches -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1rem;">
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:1.25rem;">
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem;">Sales Comparison</div>
+            <div id="lv-sc" style="font-size:1.3rem;font-weight:700;color:var(--white);">$0</div>
+            <div id="lv-sc-w" style="font-size:0.68rem;color:rgba(255,255,255,0.3);margin-top:0.15rem;">Weight: 55%</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:1.25rem;">
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem;">Income (DCF)</div>
+            <div id="lv-ic" style="font-size:1.3rem;font-weight:700;color:var(--white);">$0</div>
+            <div id="lv-ic-w" style="font-size:0.68rem;color:rgba(255,255,255,0.3);margin-top:0.15rem;">Weight: 20%</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:1.25rem;">
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem;">Cost Approach</div>
+            <div id="lv-ca" style="font-size:1.3rem;font-weight:700;color:var(--white);">$0</div>
+            <div id="lv-ca-w" style="font-size:0.68rem;color:rgba(255,255,255,0.3);margin-top:0.15rem;">Weight: 25%</div>
+          </div>
+        </div>
+
+        <!-- HBU + Ecosystem -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:1.25rem;">
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem;">Highest & Best Use</div>
+            <div id="lv-hbu" style="font-size:0.88rem;font-weight:600;color:var(--gold-300);margin-bottom:0.25rem;">—</div>
+            <div id="lv-hbu-note" style="font-size:0.75rem;color:rgba(255,255,255,0.35);line-height:1.4;">—</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:1.25rem;">
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem;">Ecosystem Services Value</div>
+            <div id="lv-ecosvc" style="font-size:1.1rem;font-weight:700;color:var(--green-300);margin-bottom:0.25rem;">$0/yr</div>
+            <div id="lv-ecocap" style="font-size:0.75rem;color:rgba(255,255,255,0.35);">Capitalized: $0</div>
+          </div>
+        </div>
+
+        <!-- Methodology Citations -->
+        <div style="display:flex;gap:0.35rem;flex-wrap:wrap;justify-content:center;">
+          <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">USPAP Standards 1 & 2</span>
+          <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">JLL Cap Rate Survey</span>
+          <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">RS Means 2024</span>
+          <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">FHFA HPI</span>
+          <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">Netusil et al. 2022</span>
+          <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">Kovacs et al. 2022</span>
+          <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">Appraisal Institute 15th Ed.</span>
+        </div>
+        <p style="font-size:0.68rem;color:rgba(255,255,255,0.2);text-align:center;margin-top:1rem;line-height:1.5;max-width:600px;margin-left:auto;margin-right:auto;">This analysis uses institutional methodology but does not constitute a certified appraisal under USPAP. For lending, litigation, or tax purposes, engage a licensed appraiser.</p>
       </div>
     </div>
   </div>
@@ -488,7 +609,7 @@
     <div class="projector-header">
       <p class="label">Value Projector</p>
       <h2>What happens when your score changes?</h2>
-      <p>Plant trees and your value goes up. Cut them down and it drops. Move the slider and see what's at stake — in real dollars.</p>
+      <p>Plant trees and your value goes up. Cut them down and it drops. Move the slider and see what's at stake — in real dollars. <span style="color: var(--stone-400); font-size: 0.82rem;">(Soil Score integration coming soon)</span></p>
     </div>
     <div class="projector">
       <div class="proj-controls">
@@ -631,6 +752,33 @@
   </div>
 </section>
 
+<!-- CONSULTANT CONNECTION — PREMIUM FEATURE -->
+<section style="background:var(--white);position:relative;padding:6rem 0;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:2.5rem;">
+      <p class="label" style="color:var(--gold-500);">Premium</p>
+      <h2 style="margin-bottom:0.75rem;">Need expert eyes on your property?</h2>
+      <p style="color:var(--stone-500);max-width:520px;margin:0 auto;font-size:0.95rem;">TerraValue gives you the data. A P&X consultant gives you the plan. Unlock premium access to work directly with an ISA Certified Arborist.</p>
+    </div>
+    <div style="max-width:640px;margin:0 auto;background:var(--stone-50);border:1px solid var(--stone-200);border-radius:var(--radius-lg);padding:2.5rem;text-align:center;">
+      <div style="width:56px;height:56px;border-radius:50%;background:var(--gold-100);border:1px solid var(--gold-200);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h3 style="font-size:1.15rem;margin-bottom:0.5rem;">Consultant Access</h3>
+      <p style="color:var(--stone-500);font-size:0.88rem;margin-bottom:1.5rem;line-height:1.6;">Get paired with a specialist for on-site assessments, custom ecosystem valuations, tree preservation planning, and ongoing advisory services.</p>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;max-width:340px;margin:0 auto 1.75rem;text-align:left;">
+        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:var(--stone-600);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Dedicated ISA Certified Arborist</div>
+        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:var(--stone-600);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> On-site property assessments</div>
+        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:var(--stone-600);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Custom TerraValue reports with field verification</div>
+        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:var(--stone-600);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Tree preservation & regenerative design plans</div>
+        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:var(--stone-600);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Priority response & ongoing advisory</div>
+      </div>
+      <a href="index.html#consultant" class="btn btn-gold" style="padding:0.8rem 2rem;font-size:0.9rem;">Unlock Premium Access</a>
+      <p style="font-size:0.68rem;color:var(--stone-400);margin-top:1rem;margin-bottom:0;">Starting at $2,500/engagement. Custom scoping included.</p>
+    </div>
+  </div>
+</section>
+
 <section class="cta-section">
   <div class="container cta-inner">
     <p class="label" style="color: var(--gold-400);">Ready?</p>
@@ -759,6 +907,64 @@
   ps.addEventListener('input', updateProjector);
   tl.addEventListener('input', updateProjector);
   updateProjector();
+
+  // Land Valuation Tool
+  var lvBtn = document.getElementById('lv-run');
+  if (lvBtn && typeof TerraValueEngine !== 'undefined') {
+    var lvFmt = new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
+
+    lvBtn.addEventListener('click', function() {
+      var lot = parseInt(document.getElementById('lv-lot').value) || 18000;
+      var bldg = parseInt(document.getElementById('lv-bldg').value) || 2400;
+      var assessed = parseInt(document.getElementById('lv-assessed').value) || 180000;
+      var year = parseInt(document.getElementById('lv-year').value) || 1995;
+      var canopy = parseInt(document.getElementById('lv-canopy').value) || 25;
+      var zoning = document.getElementById('lv-zoning').value || 'R-1';
+
+      var report = TerraValueEngine.LandValuation.fullValuation({
+        lotSizeSqFt: lot,
+        buildingSqFt: bldg,
+        assessedValue: assessed,
+        yearBuilt: year,
+        canopyPct: canopy,
+        zoning: zoning,
+        state: 'GA',
+        propertyType: 'singleFamily',
+        condition: 3,
+        locationQuality: 3,
+      });
+
+      var v = report.valuation;
+      document.getElementById('lv-value').textContent = lvFmt.format(v.reconciledValue);
+      document.getElementById('lv-range').textContent = 'Range: ' + lvFmt.format(v.valueRange.low) + ' – ' + lvFmt.format(v.valueRange.high);
+      document.getElementById('lv-psf').textContent = '$' + report.keyMetrics.pricePerSqFt.toFixed(2);
+      document.getElementById('lv-cap').textContent = (report.keyMetrics.capRate * 100).toFixed(1) + '%';
+      document.getElementById('lv-eco').textContent = '+' + report.keyMetrics.ecosystemPremiumPct.toFixed(1) + '%';
+
+      document.getElementById('lv-sc').textContent = lvFmt.format(v.approachValues.salesComparison);
+      document.getElementById('lv-sc-w').textContent = 'Weight: ' + Math.round(v.weights.salesComparison * 100) + '%';
+      document.getElementById('lv-ic').textContent = lvFmt.format(v.approachValues.incomeCapitalization);
+      document.getElementById('lv-ic-w').textContent = 'Weight: ' + Math.round(v.weights.income * 100) + '%';
+      document.getElementById('lv-ca').textContent = lvFmt.format(v.approachValues.costApproach);
+      document.getElementById('lv-ca-w').textContent = 'Weight: ' + Math.round(v.weights.cost * 100) + '%';
+
+      var hbu = report.highestAndBestUse;
+      if (hbu.tests.maximallyProductive.pass) {
+        document.getElementById('lv-hbu').textContent = hbu.tests.maximallyProductive.recommendedUse;
+      } else {
+        document.getElementById('lv-hbu').textContent = 'Further analysis needed';
+      }
+      document.getElementById('lv-hbu-note').textContent = hbu.conclusion;
+
+      document.getElementById('lv-ecosvc').textContent = lvFmt.format(report.ecosystemServices.annualValue) + '/yr';
+      document.getElementById('lv-ecocap').textContent = 'Capitalized: ' + lvFmt.format(report.ecosystemServices.capitalizedValue);
+
+      document.getElementById('lv-results').style.display = 'block';
+    });
+
+    // Auto-run on load
+    lvBtn.click();
+  }
 
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {

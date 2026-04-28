@@ -148,7 +148,7 @@
     }
     .hero-inner {
       position: relative; z-index: 1;
-      display: grid; grid-template-columns: 1fr 360px; gap: 4rem; align-items: center;
+      max-width: 680px; margin: 0 auto; text-align: center;
     }
     .hero-label {
       font-size: 0.72rem; font-weight: 600;
@@ -170,30 +170,10 @@
     .hero-sub {
       font-size: 1.05rem; line-height: 1.7;
       color: rgba(255,255,255,0.65);
-      max-width: 520px; margin-bottom: 2.5rem;
+      max-width: 580px; margin: 0 auto 2.5rem;
     }
-    .hero-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-    .hero-right {
-      display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
-    }
-    .reggie-frame {
-      width: 280px; height: 280px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.03);
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-    }
-    .reggie-frame img {
-      width: 100%; height: 100%; object-fit: cover;
-    }
-    .reggie-caption {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.35);
-      text-align: center;
-      letter-spacing: 0.04em;
-    }
+    .hero-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+    .hero-label { justify-content: center; }
 
     /* METRICS STRIP */
     .metrics-strip {
@@ -568,12 +548,7 @@
 
     /* RESPONSIVE */
     @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; text-align: center; }
-      .hero-sub { margin-left: auto; margin-right: auto; }
-      .hero-buttons { justify-content: center; }
-      .hero-label { justify-content: center; }
-      .hero-right { margin-top: 1rem; }
-      .reggie-frame { width: 200px; height: 200px; }
+      .hero { padding: 6rem 0 5rem; }
       .approach-grid { grid-template-columns: 1fr; }
       .services-grid { grid-template-columns: 1fr 1fr; }
       .data-grid { grid-template-columns: 1fr; }
@@ -623,6 +598,7 @@
       <a href="#services">Services</a>
       <a href="#terravalue">TerraValue</a>
       <a href="#clients">Clients</a>
+      <a href="#consultant" style="color:var(--gold-500) !important;font-weight:600 !important;">Premium</a>
       <a href="#contact" class="nav-cta">Get in Touch</a>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
@@ -634,52 +610,12 @@
 <section class="hero">
   <div class="container">
     <div class="hero-inner">
-      <div>
-        <p class="hero-label">Land Valuation & Ecosystem Services</p>
-        <h1><em>Green is the new gold.</em><br>We prove it with data.</h1>
-        <p class="hero-sub">P&X quantifies the real dollar value of your land's ecosystem services — carbon, stormwater, air quality, energy, habitat, and property value. Peer-reviewed methodology. Parcel-level precision. Actionable reports.</p>
-        <div class="hero-buttons">
-          <a href="terravalue.html" class="btn btn-gold">Explore TerraValue</a>
-          <a href="#approach" class="btn btn-ghost">Our Approach</a>
-        </div>
-      </div>
-      <div class="hero-right">
-        <div class="reggie-frame" id="reggieFrame">
-          <svg width="200" height="200" viewBox="-60 -80 120 190" fill="none" stroke="#b4dfc9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M-32,-55 C-48,-65 -55,-42 -48,-28 C-42,-16 -34,-18 -30,-25"/>
-            <path d="M-44,-48 C-42,-42 -40,-38 -38,-32" stroke-width="1" opacity="0.5"/>
-            <path d="M-48,-40 C-46,-35 -43,-30 -42,-27" stroke-width="1" opacity="0.5"/>
-            <path d="M32,-55 C48,-65 55,-42 48,-28 C42,-16 34,-18 30,-25"/>
-            <path d="M44,-48 C42,-42 40,-38 38,-32" stroke-width="1" opacity="0.5"/>
-            <path d="M48,-40 C46,-35 43,-30 42,-27" stroke-width="1" opacity="0.5"/>
-            <path d="M-30,-25 C-35,-50 -25,-68 0,-70 C25,-68 35,-50 30,-25"/>
-            <path d="M-30,-25 C-32,-12 -28,0 -20,8"/>
-            <path d="M30,-25 C32,-12 28,0 20,8"/>
-            <path d="M-20,-62 C-15,-70 -5,-72 0,-70" stroke-width="1" opacity="0.5"/>
-            <path d="M0,-70 C5,-72 15,-70 20,-62" stroke-width="1" opacity="0.5"/>
-            <circle cx="-12" cy="-32" r="3.5" fill="#b4dfc9" stroke="none"/>
-            <circle cx="12" cy="-32" r="3.5" fill="#b4dfc9" stroke="none"/>
-            <circle cx="-10.5" cy="-33.5" r="1.3" fill="rgba(10,33,22,0.8)" stroke="none"/>
-            <circle cx="13.5" cy="-33.5" r="1.3" fill="rgba(10,33,22,0.8)" stroke="none"/>
-            <ellipse cx="0" cy="-16" rx="5.5" ry="4" fill="#b4dfc9" stroke="none"/>
-            <path d="M0,-12 C-4,-10 -10,-4 -16,2" stroke-width="1.4"/>
-            <path d="M0,-12 C4,-10 10,-4 16,2" stroke-width="1.4"/>
-            <path d="M-3,-10 C-4,0 -6,10 -4,18 C-2,22 2,22 4,18 C6,10 4,0 3,-10" fill="rgba(180,120,120,0.4)" stroke="rgba(160,100,100,0.5)" stroke-width="1"/>
-            <path d="M-20,0 C-24,4 -26,2 -24,-2" stroke-width="1" opacity="0.4"/>
-            <path d="M20,0 C24,4 26,2 24,-2" stroke-width="1" opacity="0.4"/>
-            <path d="M-20,8 C-24,20 -26,40 -24,65"/>
-            <path d="M20,8 C24,20 26,40 24,65"/>
-            <path d="M-14,15 C-10,22 -6,18 -4,25" stroke-width="1" opacity="0.4"/>
-            <path d="M4,25 C6,18 10,22 14,15" stroke-width="1" opacity="0.4"/>
-            <path d="M-24,65 C-26,72 -24,78 -18,80"/>
-            <path d="M-18,80 C-10,82 -6,80 -6,75"/>
-            <path d="M24,65 C26,72 24,78 18,80"/>
-            <path d="M18,80 C10,82 6,80 6,75"/>
-            <path d="M-16,79 C-14,82 -12,79" stroke-width="1" opacity="0.4"/>
-            <path d="M16,79 C14,82 12,79" stroke-width="1" opacity="0.4"/>
-          </svg>
-        </div>
-        <span class="reggie-caption">Chief Soil Inspector</span>
+      <p class="hero-label">Land Valuation & Ecosystem Services</p>
+      <h1><em>Green is the new gold.</em><br>We prove it with data.</h1>
+      <p class="hero-sub">P&X quantifies the real dollar value of your land's ecosystem services — carbon, stormwater, air quality, energy, habitat, and property value. Peer-reviewed methodology. Parcel-level precision. Actionable reports.</p>
+      <div class="hero-buttons">
+        <a href="terravalue.html" class="btn btn-gold">Explore TerraValue</a>
+        <a href="#approach" class="btn btn-ghost">Our Approach</a>
       </div>
     </div>
   </div>
@@ -701,7 +637,7 @@
         <div class="metric-label">Avg. Annual Value</div>
       </div>
       <div class="metric">
-        <div class="metric-num">0–100</div>
+        <div class="metric-num" style="font-size:1.1rem; color: var(--stone-400);">Coming Soon</div>
         <div class="metric-label">Soil Score Index</div>
       </div>
     </div>
@@ -784,7 +720,7 @@
           <span class="rlabel">Annual Value</span>
         </div>
         <div class="tv-result">
-          <span class="num" style="color: var(--gold-300);" id="tvScore">72</span>
+          <span class="num" style="color: var(--stone-400); font-size: 1rem;">Coming Soon</span>
           <span class="rlabel">Soil Score</span>
         </div>
         <div class="tv-result">
@@ -959,6 +895,66 @@
   </div>
 </section>
 
+<!-- CONSULTANT CONNECTION — PREMIUM FEATURE -->
+<section class="consultant-section" id="consultant" style="background: var(--green-900); color: var(--white); position: relative; overflow: hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 700px 400px at 50% 50%,rgba(184,149,42,0.08) 0%,transparent 60%);"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div style="text-align:center;margin-bottom:2.5rem;">
+      <p class="label" style="color:var(--gold-400);">Premium</p>
+      <h2 style="color:var(--white);margin-bottom:0.75rem;">Work directly with a P&X consultant</h2>
+      <p style="color:rgba(255,255,255,0.5);max-width:560px;margin:0 auto;font-size:0.95rem;">Get a dedicated ISA Certified Arborist and environmental specialist assigned to your property. Site visits, custom reports, and ongoing advisory — all backed by the same data that powers TerraValue.</p>
+    </div>
+    <div class="consultant-gate" style="max-width:640px;margin:0 auto;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:2.5rem;text-align:center;">
+      <div style="width:56px;height:56px;border-radius:50%;background:rgba(184,149,42,0.15);border:1px solid rgba(184,149,42,0.25);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h3 style="color:var(--white);font-size:1.15rem;margin-bottom:0.5rem;">Consultant Access</h3>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.88rem;margin-bottom:1.5rem;line-height:1.6;">This feature is available to P&X Premium clients. Get paired with a specialist for on-site assessments, custom ecosystem valuations, tree preservation planning, and ongoing advisory services.</p>
+      <div style="display:flex;flex-direction:column;gap:0.6rem;max-width:360px;margin:0 auto 1.75rem;">
+        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:rgba(255,255,255,0.55);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-400)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Dedicated ISA Certified Arborist</div>
+        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:rgba(255,255,255,0.55);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-400)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> On-site property assessments</div>
+        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:rgba(255,255,255,0.55);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-400)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Custom TerraValue reports with field verification</div>
+        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:rgba(255,255,255,0.55);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-400)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Tree preservation & regenerative design plans</div>
+        <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:rgba(255,255,255,0.55);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-400)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Priority response & ongoing advisory</div>
+      </div>
+      <button onclick="document.getElementById('consultantModal').style.display='flex'" class="btn btn-gold" style="padding:0.8rem 2rem;font-size:0.9rem;">Unlock Premium Access</button>
+      <p style="font-size:0.68rem;color:rgba(255,255,255,0.25);margin-top:1rem;margin-bottom:0;">Starting at $2,500/engagement. Custom scoping included.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Consultant Premium Modal -->
+<div id="consultantModal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1.5rem;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:var(--white);border-radius:var(--radius-lg);max-width:480px;width:100%;padding:2.5rem;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
+    <button onclick="document.getElementById('consultantModal').style.display='none'" style="position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;color:var(--stone-400);font-size:1.2rem;line-height:1;">&times;</button>
+    <div style="text-align:center;margin-bottom:1.5rem;">
+      <div style="width:48px;height:48px;border-radius:50%;background:var(--gold-100);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <h3 style="margin-bottom:0.4rem;">Connect with a P&X Consultant</h3>
+      <p style="font-size:0.85rem;color:var(--stone-500);margin-bottom:0;">Tell us about your property and we'll scope a custom engagement.</p>
+    </div>
+    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="display:flex;flex-direction:column;gap:0.75rem;">
+      <input type="hidden" name="_subject" value="Premium Consultant Request">
+      <input type="text" name="name" placeholder="Your name" required style="padding:0.65rem 0.85rem;border:1px solid var(--stone-200);border-radius:var(--radius);font-family:inherit;font-size:0.9rem;">
+      <input type="email" name="email" placeholder="Email address" required style="padding:0.65rem 0.85rem;border:1px solid var(--stone-200);border-radius:var(--radius);font-family:inherit;font-size:0.9rem;">
+      <input type="text" name="property_address" placeholder="Property address" style="padding:0.65rem 0.85rem;border:1px solid var(--stone-200);border-radius:var(--radius);font-family:inherit;font-size:0.9rem;">
+      <select name="service_interest" style="padding:0.65rem 0.85rem;border:1px solid var(--stone-200);border-radius:var(--radius);font-family:inherit;font-size:0.9rem;color:var(--stone-600);">
+        <option value="">What do you need?</option>
+        <option value="full_assessment">Full Property Assessment</option>
+        <option value="tree_preservation">Tree Preservation Plan</option>
+        <option value="ecosystem_valuation">Custom Ecosystem Valuation</option>
+        <option value="regenerative_design">Regenerative Design</option>
+        <option value="development_consulting">Development Consulting</option>
+        <option value="other">Other</option>
+      </select>
+      <textarea name="message" placeholder="Tell us about your project..." rows="3" style="padding:0.65rem 0.85rem;border:1px solid var(--stone-200);border-radius:var(--radius);font-family:inherit;font-size:0.9rem;resize:vertical;"></textarea>
+      <button type="submit" class="btn btn-gold" style="width:100%;justify-content:center;padding:0.75rem;">Request Consultation</button>
+      <p style="font-size:0.68rem;color:var(--stone-400);text-align:center;margin-bottom:0;">We'll respond within 24 hours with a custom scope and quote.</p>
+    </form>
+  </div>
+</div>
+
 <section class="contact-section" id="contact">
   <div class="container">
     <div class="contact-grid">
@@ -1073,17 +1069,13 @@
       const eco = TerraValueEngine.EcosystemServices.calculate({
         lotSizeSqFt: d.lotSqFt, canopyPct: d.canopy, assessedValue: d.assessed, state: 'GA'
       });
-      const score = TerraValueEngine.EcosystemServices.calculateSoilScore({
-        canopyPct: d.canopy
-      });
       const proj = TerraValueEngine.LandAppreciation.project({
-        currentScore: score, projectedScore: Math.min(100, score + 10),
+        currentScore: 60, projectedScore: 70,
         timelineYears: 30, propertyValue: d.assessed / 0.40,
         currentCanopyPct: d.canopy, lotSizeSqFt: d.lotSqFt,
       });
       const fmt = new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
       document.getElementById('tvTotal').textContent = fmt.format(eco.totalAnnual);
-      document.getElementById('tvScore').textContent = score;
       document.getElementById('tv30yr').textContent = fmt.format(proj.totalImpact.withMarketAppreciation);
       // Update per-service pills
       const svEls = document.querySelectorAll('.tv-sv .sv-num');
