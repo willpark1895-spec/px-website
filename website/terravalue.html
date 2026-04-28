@@ -655,13 +655,14 @@
       <a href="https://terravalue.app" target="_blank">TerraValue App</a>
       <a href="index.html#contact">Contact</a>
     </div>
-    <div class="footer-reggie">Reggie is napping. He earned it.</div>
+    <div class="footer-reggie">In memory of Sir Reginald Woofington III</div>
     <div class="footer-copy">
       &copy; 2026 P&X LLC — Phloem & Xylem. All rights reserved.
     </div>
   </div>
 </footer>
 
+<script src="terravalue-engine.js"></script>
 <script>
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
@@ -685,54 +686,73 @@
     document.getElementById('projOut').textContent = proj;
     document.getElementById('timeOut').textContent = yrs + ' yr';
 
-    var scoreDelta = proj - curr;
-    var canopyChangePct = scoreDelta * 0.5;
-    var propPremiumPct = canopyChangePct * 0.07;
-    var propShift = Math.round(home * propPremiumPct / 100);
+    // Use TerraValue Engine for real calculations
+    if (typeof TerraValueEngine !== 'undefined') {
+      var result = TerraValueEngine.LandAppreciation.project({
+        currentScore: curr,
+        projectedScore: proj,
+        timelineYears: yrs,
+        propertyValue: home,
+        currentCanopyPct: curr * 0.4,
+        lotSizeSqFt: 15000,
+      });
 
-    var baseEco = 2800;
-    var ecoChangePct = canopyChangePct;
-    var ecoAnnualDelta = Math.round(baseEco * ecoChangePct / 100);
-    var ecoCum = ecoAnnualDelta * yrs;
-    var total = propShift + ecoCum;
+      var propEl = document.getElementById('propShift');
+      var propPctEl = document.getElementById('propPct');
+      var ecoEl = document.getElementById('ecoShift');
+      var totalEl = document.getElementById('totalImpact');
 
-    var propEl = document.getElementById('propShift');
-    var propPctEl = document.getElementById('propPct');
-    var ecoEl = document.getElementById('ecoShift');
-    var totalEl = document.getElementById('totalImpact');
+      var propShift = result.propertyImpact.greenPremiumShift;
+      var propPct = result.propertyImpact.greenPremiumPct;
+      var ecoAnnual = result.ecosystemValue.annualDelta;
+      var total = result.totalImpact.greenInfraOnly;
 
-    propEl.textContent = (propShift >= 0 ? '+' : '') + fmt.format(propShift);
-    propPctEl.textContent = (propPremiumPct >= 0 ? '+' : '') + propPremiumPct.toFixed(1) + '%';
-    ecoEl.textContent = (ecoAnnualDelta >= 0 ? '+' : '') + fmt.format(ecoAnnualDelta) + '/yr';
-    document.getElementById('ecoPeriod').textContent = yrs;
-    totalEl.textContent = (total >= 0 ? '+' : '') + fmt.format(total);
+      propEl.textContent = (propShift >= 0 ? '+' : '') + fmt.format(propShift);
+      propPctEl.textContent = (propPct >= 0 ? '+' : '') + propPct.toFixed(1) + '%';
+      ecoEl.textContent = (ecoAnnual >= 0 ? '+' : '') + fmt.format(ecoAnnual) + '/yr';
+      document.getElementById('ecoPeriod').textContent = yrs;
+      totalEl.textContent = (total >= 0 ? '+' : '') + fmt.format(total);
 
-    var posColor = '#27500A';
-    var negColor = '#791F1F';
-    var neutralColor = '#777';
-    var c = scoreDelta > 0 ? posColor : scoreDelta < 0 ? negColor : neutralColor;
+      var scoreDelta = proj - curr;
+      var posColor = '#27500A';
+      var negColor = '#791F1F';
+      var neutralColor = '#777';
+      var c = scoreDelta > 0 ? posColor : scoreDelta < 0 ? negColor : neutralColor;
 
-    propEl.style.color = c;
-    propPctEl.style.color = c;
-    ecoEl.style.color = c;
-    totalEl.style.color = c;
+      propEl.style.color = c;
+      propPctEl.style.color = c;
+      ecoEl.style.color = c;
+      totalEl.style.color = c;
 
-    var services = [
-      {id:'carbon', base:663},
-      {id:'storm', base:520},
-      {id:'air', base:418},
-      {id:'energy', base:350},
-      {id:'habitat', base:320},
-      {id:'prop', base:2576}
-    ];
+      // Per-service bars from engine data
+      var svDelta = result.ecosystemValue.perServiceDelta;
+      var svMap = [
+        {id:'carbon', base:663, delta: svDelta.carbon},
+        {id:'storm', base:520, delta: svDelta.stormwater},
+        {id:'air', base:418, delta: svDelta.airQuality},
+        {id:'energy', base:350, delta: svDelta.energy},
+        {id:'habitat', base:320, delta: svDelta.habitat},
+        {id:'prop', base:2576, delta: Math.round(propShift / yrs)},
+      ];
 
-    services.forEach(function(s) {
-      var val = Math.round(s.base * (1 + ecoChangePct/100));
-      var maxVal = s.id === 'prop' ? 4000 : 1000;
-      var pct = Math.max(5, Math.min(100, Math.round((val / maxVal) * 100)));
-      document.getElementById('bar-' + s.id).style.width = pct + '%';
-      document.getElementById('bv-' + s.id).textContent = fmt.format(val) + '/yr';
-    });
+      svMap.forEach(function(s) {
+        var val = s.base + s.delta;
+        var maxVal = s.id === 'prop' ? 4000 : 1000;
+        var pct = Math.max(5, Math.min(100, Math.round((val / maxVal) * 100)));
+        document.getElementById('bar-' + s.id).style.width = pct + '%';
+        document.getElementById('bv-' + s.id).textContent = fmt.format(val) + '/yr';
+      });
+
+      // Show sustainability value
+      if (result.sustainabilityValue) {
+        var sv = result.sustainabilityValue;
+        var noteEl = document.getElementById('totalNote');
+        if (sv.hvac.totalAnnual !== 0) {
+          noteEl.textContent = 'Incl. ' + fmt.format(Math.abs(sv.hvac.totalAnnual)) + '/yr HVAC ' +
+            (sv.hvac.totalAnnual > 0 ? 'savings' : 'cost');
+        }
+      }
+    }
   }
 
   cs.addEventListener('input', updateProjector);

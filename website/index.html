@@ -645,9 +645,41 @@
       </div>
       <div class="hero-right">
         <div class="reggie-frame" id="reggieFrame">
-          <img src="reggie-sketch.png" alt="Sir Reginald Woofington III — hand-drawn pencil sketch of an apricot goldendoodle" width="280" height="280">
+          <svg width="200" height="200" viewBox="-60 -80 120 190" fill="none" stroke="#b4dfc9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M-32,-55 C-48,-65 -55,-42 -48,-28 C-42,-16 -34,-18 -30,-25"/>
+            <path d="M-44,-48 C-42,-42 -40,-38 -38,-32" stroke-width="1" opacity="0.5"/>
+            <path d="M-48,-40 C-46,-35 -43,-30 -42,-27" stroke-width="1" opacity="0.5"/>
+            <path d="M32,-55 C48,-65 55,-42 48,-28 C42,-16 34,-18 30,-25"/>
+            <path d="M44,-48 C42,-42 40,-38 38,-32" stroke-width="1" opacity="0.5"/>
+            <path d="M48,-40 C46,-35 43,-30 42,-27" stroke-width="1" opacity="0.5"/>
+            <path d="M-30,-25 C-35,-50 -25,-68 0,-70 C25,-68 35,-50 30,-25"/>
+            <path d="M-30,-25 C-32,-12 -28,0 -20,8"/>
+            <path d="M30,-25 C32,-12 28,0 20,8"/>
+            <path d="M-20,-62 C-15,-70 -5,-72 0,-70" stroke-width="1" opacity="0.5"/>
+            <path d="M0,-70 C5,-72 15,-70 20,-62" stroke-width="1" opacity="0.5"/>
+            <circle cx="-12" cy="-32" r="3.5" fill="#b4dfc9" stroke="none"/>
+            <circle cx="12" cy="-32" r="3.5" fill="#b4dfc9" stroke="none"/>
+            <circle cx="-10.5" cy="-33.5" r="1.3" fill="rgba(10,33,22,0.8)" stroke="none"/>
+            <circle cx="13.5" cy="-33.5" r="1.3" fill="rgba(10,33,22,0.8)" stroke="none"/>
+            <ellipse cx="0" cy="-16" rx="5.5" ry="4" fill="#b4dfc9" stroke="none"/>
+            <path d="M0,-12 C-4,-10 -10,-4 -16,2" stroke-width="1.4"/>
+            <path d="M0,-12 C4,-10 10,-4 16,2" stroke-width="1.4"/>
+            <path d="M-3,-10 C-4,0 -6,10 -4,18 C-2,22 2,22 4,18 C6,10 4,0 3,-10" fill="rgba(180,120,120,0.4)" stroke="rgba(160,100,100,0.5)" stroke-width="1"/>
+            <path d="M-20,0 C-24,4 -26,2 -24,-2" stroke-width="1" opacity="0.4"/>
+            <path d="M20,0 C24,4 26,2 24,-2" stroke-width="1" opacity="0.4"/>
+            <path d="M-20,8 C-24,20 -26,40 -24,65"/>
+            <path d="M20,8 C24,20 26,40 24,65"/>
+            <path d="M-14,15 C-10,22 -6,18 -4,25" stroke-width="1" opacity="0.4"/>
+            <path d="M4,25 C6,18 10,22 14,15" stroke-width="1" opacity="0.4"/>
+            <path d="M-24,65 C-26,72 -24,78 -18,80"/>
+            <path d="M-18,80 C-10,82 -6,80 -6,75"/>
+            <path d="M24,65 C26,72 24,78 18,80"/>
+            <path d="M18,80 C10,82 6,80 6,75"/>
+            <path d="M-16,79 C-14,82 -12,79" stroke-width="1" opacity="0.4"/>
+            <path d="M16,79 C14,82 12,79" stroke-width="1" opacity="0.4"/>
+          </svg>
         </div>
-        <span class="reggie-caption">Sir Reginald Woofington III — Chief Soil Inspector</span>
+        <span class="reggie-caption">Chief Soil Inspector</span>
       </div>
     </div>
   </div>
@@ -993,13 +1025,14 @@
       <a href="terravalue.html">TerraValue</a>
       <a href="#contact">Contact</a>
     </div>
-    <div class="footer-reggie">Reggie is napping. He earned it.</div>
+    <div class="footer-reggie">In memory of Sir Reginald Woofington III</div>
     <div class="footer-copy">
       &copy; 2026 P&X LLC — Phloem & Xylem. All rights reserved.
     </div>
   </div>
 </footer>
 
+<script src="terravalue-engine.js"></script>
 <script>
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
@@ -1017,30 +1050,56 @@
     emailInput.addEventListener('input', () => { replyTo.value = emailInput.value; });
   }
 
-  const demoAddresses = {
-    '7840 roswell rd': { total: '$4,847', score: '72', proj: '$145,410' },
-    '1578 mount vernon': { total: '$3,290', score: '58', proj: '$98,700' },
-    '4700 north river': { total: '$6,120', score: '84', proj: '$183,600' }
+  // TerraValue Engine demo — uses real calculation module
+  const demoData = {
+    '7840 roswell rd': { lotSqFt: 18000, canopy: 32, assessed: 180000 },
+    '1578 mount vernon': { lotSqFt: 12000, canopy: 22, assessed: 120000 },
+    '4700 north river': { lotSqFt: 28000, canopy: 40, assessed: 240000 },
   };
+  function runDemo(addr) {
+    let d = null;
+    const lower = addr.toLowerCase();
+    for (const key of Object.keys(demoData)) {
+      if (lower.includes(key)) { d = demoData[key]; break; }
+    }
+    if (!d) {
+      d = {
+        lotSqFt: 10000 + Math.floor(Math.random() * 20000),
+        canopy: 15 + Math.floor(Math.random() * 35),
+        assessed: 100000 + Math.floor(Math.random() * 200000),
+      };
+    }
+    if (typeof TerraValueEngine !== 'undefined') {
+      const eco = TerraValueEngine.EcosystemServices.calculate({
+        lotSizeSqFt: d.lotSqFt, canopyPct: d.canopy, assessedValue: d.assessed, state: 'GA'
+      });
+      const score = TerraValueEngine.EcosystemServices.calculateSoilScore({
+        canopyPct: d.canopy
+      });
+      const proj = TerraValueEngine.LandAppreciation.project({
+        currentScore: score, projectedScore: Math.min(100, score + 10),
+        timelineYears: 30, propertyValue: d.assessed / 0.40,
+        currentCanopyPct: d.canopy, lotSizeSqFt: d.lotSqFt,
+      });
+      const fmt = new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
+      document.getElementById('tvTotal').textContent = fmt.format(eco.totalAnnual);
+      document.getElementById('tvScore').textContent = score;
+      document.getElementById('tv30yr').textContent = fmt.format(proj.totalImpact.withMarketAppreciation);
+      // Update per-service pills
+      const svEls = document.querySelectorAll('.tv-sv .sv-num');
+      const svVals = [eco.services.carbon.value, eco.services.stormwater.value,
+        eco.services.airQuality.value, eco.services.energy.value,
+        eco.services.habitat.value, eco.services.propertyPremium.value];
+      svEls.forEach((el, i) => { if (svVals[i] != null) el.textContent = fmt.format(svVals[i]); });
+    }
+  }
   const tvBtn = document.getElementById('tvCalcBtn');
   if (tvBtn) {
     tvBtn.addEventListener('click', () => {
-      const addr = document.getElementById('tvAddress').value.toLowerCase();
-      let match = null;
-      for (const key of Object.keys(demoAddresses)) {
-        if (addr.includes(key)) { match = demoAddresses[key]; break; }
-      }
-      if (!match) {
-        match = {
-          total: '$' + (2000 + Math.floor(Math.random() * 5000)).toLocaleString(),
-          score: String(40 + Math.floor(Math.random() * 45)),
-          proj: '$' + (60000 + Math.floor(Math.random() * 150000)).toLocaleString()
-        };
-      }
-      document.getElementById('tvTotal').textContent = match.total;
-      document.getElementById('tvScore').textContent = match.score;
-      document.getElementById('tv30yr').textContent = match.proj;
+      runDemo(document.getElementById('tvAddress').value);
     });
+    // Run initial demo
+    runDemo(document.getElementById('tvAddress').value);
   }
 
   const observer = new IntersectionObserver((entries) => {
