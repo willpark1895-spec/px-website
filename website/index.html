@@ -716,7 +716,7 @@
       </div>
       <div class="tv-results-grid" id="tvResults">
         <div class="tv-result">
-          <span class="num" style="color: var(--green-300);" id="tvTotal">$4,580</span>
+          <span class="num" style="color: var(--green-300);" id="tvTotal">—</span>
           <span class="rlabel">Annual Value</span>
         </div>
         <div class="tv-result">
@@ -724,18 +724,18 @@
           <span class="rlabel">Soil Score</span>
         </div>
         <div class="tv-result">
-          <span class="num" style="color: var(--white);" id="tv30yr">$145,410</span>
+          <span class="num" style="color: var(--white);" id="tv30yr">—</span>
           <span class="rlabel">30-Year Projection</span>
         </div>
       </div>
     </div>
     <div class="tv-services-row">
-      <div class="tv-sv"><span class="sv-num">$494</span>Carbon</div>
-      <div class="tv-sv"><span class="sv-num">$520</span>Stormwater</div>
-      <div class="tv-sv"><span class="sv-num">$418</span>Air Quality</div>
-      <div class="tv-sv"><span class="sv-num">$252</span>Energy</div>
-      <div class="tv-sv"><span class="sv-num">$320</span>Habitat</div>
-      <div class="tv-sv"><span class="sv-num">$2,576</span>Property</div>
+      <div class="tv-sv"><span class="sv-num" id="sv-carbon">—</span>Carbon</div>
+      <div class="tv-sv"><span class="sv-num" id="sv-storm">—</span>Stormwater</div>
+      <div class="tv-sv"><span class="sv-num" id="sv-air">—</span>Air Quality</div>
+      <div class="tv-sv"><span class="sv-num" id="sv-energy">—</span>Energy</div>
+      <div class="tv-sv"><span class="sv-num" id="sv-habitat">—</span>Habitat</div>
+      <div class="tv-sv"><span class="sv-num" id="sv-prop">—</span>Property</div>
     </div>
     <div class="tv-citations">
       <span class="cite-pill">EPA SC-GHG $190/tonne</span>
@@ -934,24 +934,11 @@
       <h3 style="margin-bottom:0.4rem;">Connect with a P&X Consultant</h3>
       <p style="font-size:0.85rem;color:var(--stone-500);margin-bottom:0;">Tell us about your property and we'll scope a custom engagement.</p>
     </div>
-    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="display:flex;flex-direction:column;gap:0.75rem;">
-      <input type="hidden" name="_subject" value="Premium Consultant Request">
-      <input type="text" name="name" placeholder="Your name" required style="padding:0.65rem 0.85rem;border:1px solid var(--stone-200);border-radius:var(--radius);font-family:inherit;font-size:0.9rem;">
-      <input type="email" name="email" placeholder="Email address" required style="padding:0.65rem 0.85rem;border:1px solid var(--stone-200);border-radius:var(--radius);font-family:inherit;font-size:0.9rem;">
-      <input type="text" name="property_address" placeholder="Property address" style="padding:0.65rem 0.85rem;border:1px solid var(--stone-200);border-radius:var(--radius);font-family:inherit;font-size:0.9rem;">
-      <select name="service_interest" style="padding:0.65rem 0.85rem;border:1px solid var(--stone-200);border-radius:var(--radius);font-family:inherit;font-size:0.9rem;color:var(--stone-600);">
-        <option value="">What do you need?</option>
-        <option value="full_assessment">Full Property Assessment</option>
-        <option value="tree_preservation">Tree Preservation Plan</option>
-        <option value="ecosystem_valuation">Custom Ecosystem Valuation</option>
-        <option value="regenerative_design">Regenerative Design</option>
-        <option value="development_consulting">Development Consulting</option>
-        <option value="other">Other</option>
-      </select>
-      <textarea name="message" placeholder="Tell us about your project..." rows="3" style="padding:0.65rem 0.85rem;border:1px solid var(--stone-200);border-radius:var(--radius);font-family:inherit;font-size:0.9rem;resize:vertical;"></textarea>
-      <button type="submit" class="btn btn-gold" style="width:100%;justify-content:center;padding:0.75rem;">Request Consultation</button>
-      <p style="font-size:0.68rem;color:var(--stone-400);text-align:center;margin-bottom:0;">We'll respond within 24 hours with a custom scope and quote.</p>
-    </form>
+    <div style="display:flex;flex-direction:column;gap:1rem;text-align:center;">
+      <a href="mailto:hello@pxconsulting.io?subject=Premium%20Consultant%20Request&body=Name:%0AProperty%20Address:%0AService%20Interest:%0AProject%20Details:" class="btn btn-gold" style="width:100%;justify-content:center;padding:0.75rem;">Email Us to Request Consultation</a>
+      <p style="font-size:0.85rem;color:var(--stone-600);margin-bottom:0;">Or reach us directly at <a href="mailto:hello@pxconsulting.io" style="color:var(--green-700);font-weight:600;">hello@pxconsulting.io</a></p>
+      <p style="font-size:0.68rem;color:var(--stone-400);margin-bottom:0;">We'll respond within 24 hours with a custom scope and quote.</p>
+    </div>
   </div>
 </div>
 
@@ -975,36 +962,11 @@
           <span>pxconsulting.io</span>
         </div>
       </div>
-      <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <div class="contact-form">
         <h3>Send a message</h3>
-        <div class="form-group">
-          <label>Name</label>
-          <input type="text" name="name" placeholder="Your name" required>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" name="email" placeholder="you@email.com" required>
-          <input type="hidden" name="_replyto" value="">
-        </div>
-        <div class="form-group">
-          <label>I am a...</label>
-          <select name="role">
-            <option value="">Select one</option>
-            <option value="Homeowner / Property Owner">Homeowner / Property Owner</option>
-            <option value="Developer / Builder">Developer / Builder</option>
-            <option value="Engineer / Consultant">Engineer / Consultant</option>
-            <option value="Contractor / Landscape Company">Contractor / Landscape Company</option>
-            <option value="HOA / Neighborhood Association">HOA / Neighborhood Association</option>
-            <option value="Municipal / Government">Municipal / Government</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Message</label>
-          <textarea name="message" placeholder="Tell us about your project or property..."></textarea>
-        </div>
-        <button type="submit" class="form-submit">Send Message &#8594;</button>
-      </form>
+        <p style="color:var(--stone-500);font-size:0.9rem;margin-bottom:1.25rem;line-height:1.6;">Email us directly — include your name, property address, and what you're looking for.</p>
+        <a href="mailto:hello@pxconsulting.io?subject=P%26X%20Inquiry&body=Name:%0AProperty%20Address:%0AI%20am%20a:%0AMessage:" class="form-submit" style="display:inline-flex;align-items:center;gap:0.4rem;text-decoration:none;">Send Message &#8594;</a>
+      </div>
     </div>
   </div>
 </section>
@@ -1040,57 +1002,67 @@
   links.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => links.classList.remove('open'));
   });
-  const emailInput = document.querySelector('input[name="email"]');
-  const replyTo = document.querySelector('input[name="_replyto"]');
-  if (emailInput && replyTo) {
-    emailInput.addEventListener('input', () => { replyTo.value = emailInput.value; });
-  }
-
   // TerraValue Engine demo — uses real calculation module
+  // Demo parcel data for known addresses (real properties used as examples)
   const demoData = {
     '7840 roswell rd': { lotSqFt: 18000, canopy: 32, assessed: 180000 },
     '1578 mount vernon': { lotSqFt: 12000, canopy: 22, assessed: 120000 },
     '4700 north river': { lotSqFt: 28000, canopy: 40, assessed: 240000 },
   };
   function runDemo(addr) {
+    if (typeof TerraValueEngine === 'undefined') return;
+
     let d = null;
     const lower = addr.toLowerCase();
     for (const key of Object.keys(demoData)) {
       if (lower.includes(key)) { d = demoData[key]; break; }
     }
+
+    const fmt = new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
+
     if (!d) {
-      d = {
-        lotSqFt: 10000 + Math.floor(Math.random() * 20000),
-        canopy: 15 + Math.floor(Math.random() * 35),
-        assessed: 100000 + Math.floor(Math.random() * 200000),
-      };
+      // Unknown address — show prompt instead of random data
+      document.getElementById('tvTotal').textContent = '—';
+      document.getElementById('tv30yr').textContent = '—';
+      document.getElementById('sv-carbon').textContent = '—';
+      document.getElementById('sv-storm').textContent = '—';
+      document.getElementById('sv-air').textContent = '—';
+      document.getElementById('sv-energy').textContent = '—';
+      document.getElementById('sv-habitat').textContent = '—';
+      document.getElementById('sv-prop').textContent = '—';
+      document.getElementById('tvTotal').insertAdjacentHTML('afterend',
+        '<span id="tv-notice" style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.35);margin-top:0.25rem;">Try the full app for any address</span>');
+      return;
     }
-    if (typeof TerraValueEngine !== 'undefined') {
-      const eco = TerraValueEngine.EcosystemServices.calculate({
-        lotSizeSqFt: d.lotSqFt, canopyPct: d.canopy, assessedValue: d.assessed, state: 'GA'
-      });
-      const proj = TerraValueEngine.LandAppreciation.project({
-        currentScore: 60, projectedScore: 70,
-        timelineYears: 30, propertyValue: d.assessed / 0.40,
-        currentCanopyPct: d.canopy, lotSizeSqFt: d.lotSqFt,
-      });
-      const fmt = new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
-      document.getElementById('tvTotal').textContent = fmt.format(eco.totalAnnual);
-      document.getElementById('tv30yr').textContent = fmt.format(proj.totalImpact.withMarketAppreciation);
-      // Update per-service pills
-      const svEls = document.querySelectorAll('.tv-sv .sv-num');
-      const svVals = [eco.services.carbon.value, eco.services.stormwater.value,
-        eco.services.airQuality.value, eco.services.energy.value,
-        eco.services.habitat.value, eco.services.propertyPremium.value];
-      svEls.forEach((el, i) => { if (svVals[i] != null) el.textContent = fmt.format(svVals[i]); });
-    }
+
+    // Remove any previous notice
+    const notice = document.getElementById('tv-notice');
+    if (notice) notice.remove();
+
+    const eco = TerraValueEngine.EcosystemServices.calculate({
+      lotSizeSqFt: d.lotSqFt, canopyPct: d.canopy, assessedValue: d.assessed, state: 'GA'
+    });
+    const proj = TerraValueEngine.LandAppreciation.project({
+      currentScore: 60, projectedScore: 70,
+      timelineYears: 30, propertyValue: d.assessed / 0.40,
+      currentCanopyPct: d.canopy, lotSizeSqFt: d.lotSqFt,
+    });
+
+    document.getElementById('tvTotal').textContent = fmt.format(eco.totalAnnual);
+    document.getElementById('tv30yr').textContent = fmt.format(proj.totalImpact.withMarketAppreciation);
+    document.getElementById('sv-carbon').textContent = fmt.format(eco.services.carbon.value);
+    document.getElementById('sv-storm').textContent = fmt.format(eco.services.stormwater.value);
+    document.getElementById('sv-air').textContent = fmt.format(eco.services.airQuality.value);
+    document.getElementById('sv-energy').textContent = fmt.format(eco.services.energy.value);
+    document.getElementById('sv-habitat').textContent = fmt.format(eco.services.habitat.value);
+    document.getElementById('sv-prop').textContent = fmt.format(eco.services.propertyPremium.value);
   }
   const tvBtn = document.getElementById('tvCalcBtn');
   if (tvBtn) {
     tvBtn.addEventListener('click', () => {
       runDemo(document.getElementById('tvAddress').value);
     });
-    // Run initial demo
+    // Run initial demo on page load
     runDemo(document.getElementById('tvAddress').value);
   }
 

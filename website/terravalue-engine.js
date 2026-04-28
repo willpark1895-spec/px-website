@@ -1363,9 +1363,11 @@ class LandValuation {
    * @returns {Object} adjusted value with confidence metrics
    */
   static salesComparison(subject, comparables = []) {
+    let usingSyntheticComps = false;
     if (!comparables.length) {
       // Generate synthetic comparables from subject data (demo mode)
       comparables = LandValuation._generateSyntheticComps(subject);
+      usingSyntheticComps = true;
     }
 
     const adjustedComps = comparables.map((comp, idx) => {
@@ -1457,6 +1459,7 @@ class LandValuation {
         pricePerSqFt: comp.buildingSqFt ? Math.round(comp.salePrice / comp.buildingSqFt) : null,
         adjustedPricePerSqFt: comp.buildingSqFt ? Math.round(adjustedPrice / comp.buildingSqFt) : null,
         weight: 1.0, // Will be recalculated based on similarity
+        ...(comp.isSynthetic && { isSynthetic: true }),
       };
     });
 
@@ -1482,6 +1485,7 @@ class LandValuation {
     return {
       approach: 'Sales Comparison',
       indicatedValue: weightedValue,
+      usingSyntheticComps,
       adjustedComparables: adjustedComps,
       statistics: {
         low: Math.min(...adjustedComps.map(c => c.adjustedPrice)),
@@ -1489,9 +1493,13 @@ class LandValuation {
         mean: Math.round(adjustedComps.reduce((s, c) => s + c.adjustedPrice, 0) / adjustedComps.length),
         median: LandValuation._median(adjustedComps.map(c => c.adjustedPrice)),
       },
-      confidence,
+      confidence: usingSyntheticComps ? 'demo' : confidence,
       methodology: 'USPAP-compliant paired sales analysis with market-derived adjustments. ' +
         'Canopy premium per Netusil et al. 2014. Time adjustments per FHFA HPI (long-term avg).',
+      ...(usingSyntheticComps && {
+        syntheticDisclaimer: 'Comparables were generated from subject property data for demonstration purposes. '
+          + 'These are NOT real transactions. For accurate valuation, provide actual comparable sales.',
+      }),
     };
   }
 
@@ -1991,14 +1999,14 @@ class LandValuation {
     const effectiveAge = yearBuilt ? currentYear - yearBuilt : 15;
 
     // 1. Sales Comparison
+    const hasRealComps = comparables.length > 0;
     const sc = LandValuation.salesComparison(
       { lotSizeSqFt, canopyPct, yearBuilt, condition, locationQuality, buildingSqFt },
-      comparables.length > 0 ? comparables : LandValuation._generateSyntheticComps({
-        lotSizeSqFt, assessedValue, state, canopyPct, yearBuilt, buildingSqFt, condition, locationQuality,
-      })
+      hasRealComps ? comparables : [] // Let salesComparison generate & flag synthetic comps
     );
 
     // 2. Income Capitalization
+    const hasRealIncome = !!grossPotentialIncome;
     const gpi = grossPotentialIncome || Math.round(marketValue * 0.065); // ~6.5% GRM estimate
     const ic = LandValuation.incomeCapitalization({
       propertyType,
@@ -2007,6 +2015,11 @@ class LandValuation {
       operatingExpenseRatio: propertyType === 'singleFamily' ? 0.30 : 0.40,
       holdingPeriodYears: 10,
     });
+    if (!hasRealIncome) {
+      ic.incomeEstimated = true;
+      ic.incomeDisclaimer = 'Gross potential income was estimated from market value (6.5% GRM). '
+        + 'For accurate income analysis, provide actual rental income data.';
+    }
 
     // 3. Cost Approach
     const ca = LandValuation.costApproach({
@@ -2053,10 +2066,22 @@ class LandValuation {
     const pricePerSqFt = Math.round((reconciled.reconciledValue / lotSizeSqFt) * 100) / 100;
     const pricePerAcre = Math.round(reconciled.reconciledValue / lotAcres);
 
+    // Data quality assessment
+    const dataQuality = {
+      hasRealComparables: hasRealComps,
+      hasRealIncome: hasRealIncome,
+      syntheticDataUsed: !hasRealComps || !hasRealIncome,
+      warnings: [
+        ...(!hasRealComps ? ['Sales Comparison uses synthetic comparables — not real transactions'] : []),
+        ...(!hasRealIncome ? ['Income approach uses estimated GPI (6.5% of market value) — not actual rental data'] : []),
+      ],
+    };
+
     return {
       report: 'P&X Land Valuation Report',
       version: METHODOLOGY_VERSION,
       generatedAt: new Date().toISOString(),
+      dataQuality,
       subject: {
         lotSizeSqFt,
         lotAcres: Math.round(lotAcres * 1000) / 1000,
@@ -2143,6 +2168,7 @@ class LandValuation {
       canopyPct: Math.max(0, Math.min(80, (subject.canopyPct || 25) + v.canopyDelta)),
       condition: subject.condition || 3,
       locationQuality: subject.locationQuality || 3,
+      isSynthetic: true, // Flag: generated from subject data, not a real transaction
     }));
   }
 

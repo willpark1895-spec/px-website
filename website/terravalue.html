@@ -615,6 +615,7 @@
       <div class="proj-controls">
         <div class="proj-row">
           <label>Home Value</label>
+          <input type="range" min="100000" max="2000000" value="450000" step="10000" id="homeSlider">
           <span class="val" id="homeVal">$450,000</span>
         </div>
         <div class="proj-row">
@@ -679,7 +680,7 @@
         <div class="proj-bar-row">
           <span class="proj-bar-label">Property</span>
           <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-prop" style="background: var(--green-200); width: 50%;"></div></div>
-          <span class="proj-bar-val" id="bv-prop">$2,576/yr</span>
+          <span class="proj-bar-val" id="bv-prop">—</span>
         </div>
       </div>
       <div class="proj-citations">
@@ -823,13 +824,15 @@
   var cs = document.getElementById('currentScore');
   var ps = document.getElementById('projScore');
   var tl = document.getElementById('timeline');
+  var hs = document.getElementById('homeSlider');
 
   function updateProjector() {
     var curr = parseInt(cs.value);
     var proj = parseInt(ps.value);
     var yrs = parseInt(tl.value);
-    var home = 450000;
+    var home = parseInt(hs.value);
 
+    document.getElementById('homeVal').textContent = fmt.format(home);
     document.getElementById('currentOut').textContent = curr;
     document.getElementById('projOut').textContent = proj;
     document.getElementById('timeOut').textContent = yrs + ' yr';
@@ -872,20 +875,27 @@
       ecoEl.style.color = c;
       totalEl.style.color = c;
 
-      // Per-service bars from engine data
+      // Per-service bars — compute current values from engine constants (not hardcoded)
       var svDelta = result.ecosystemValue.perServiceDelta;
+      var canopyPct = curr * 0.4;
+      var lotAcres = 15000 / 43560;
+      var canopyAcres = lotAcres * (canopyPct / 100);
+      var rates = TerraValueEngine.ECOSYSTEM_SERVICE_RATES;
+      var currentPropPremium = Math.round(home * Math.min(0.12, rates.propertyPremium.premiumPct * (canopyPct / 30)));
       var svMap = [
-        {id:'carbon', base:663, delta: svDelta.carbon},
-        {id:'storm', base:520, delta: svDelta.stormwater},
-        {id:'air', base:418, delta: svDelta.airQuality},
-        {id:'energy', base:350, delta: svDelta.energy},
-        {id:'habitat', base:320, delta: svDelta.habitat},
-        {id:'prop', base:2576, delta: Math.round(propShift / yrs)},
+        {id:'carbon', base: Math.round(canopyAcres * rates.carbon.ratePerCanopyAcre), delta: svDelta.carbon},
+        {id:'storm', base: Math.round(canopyAcres * rates.stormwater.ratePerCanopyAcre), delta: svDelta.stormwater},
+        {id:'air', base: Math.round(canopyAcres * rates.airQuality.ratePerCanopyAcre), delta: svDelta.airQuality},
+        {id:'energy', base: Math.round(canopyAcres * rates.energy.ratePerCanopyAcre), delta: svDelta.energy},
+        {id:'habitat', base: Math.round(canopyAcres * rates.habitat.ratePerCanopyAcre), delta: svDelta.habitat},
+        {id:'prop', base: currentPropPremium, delta: Math.round(propShift / yrs)},
       ];
 
       svMap.forEach(function(s) {
         var val = s.base + s.delta;
-        var maxVal = s.id === 'prop' ? 4000 : 1000;
+        // Scale: non-property bars relative to max per-acre rate × reasonable canopy;
+        // property bar relative to the premium at max realistic canopy (12% of home value)
+        var maxVal = s.id === 'prop' ? Math.round(home * 0.12) : 300;
         var pct = Math.max(5, Math.min(100, Math.round((val / maxVal) * 100)));
         document.getElementById('bar-' + s.id).style.width = pct + '%';
         document.getElementById('bv-' + s.id).textContent = fmt.format(val) + '/yr';
@@ -906,6 +916,7 @@
   cs.addEventListener('input', updateProjector);
   ps.addEventListener('input', updateProjector);
   tl.addEventListener('input', updateProjector);
+  hs.addEventListener('input', updateProjector);
   updateProjector();
 
   // Land Valuation Tool
