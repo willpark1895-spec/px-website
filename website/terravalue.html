@@ -3,306 +3,350 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TerraValue — Know What Your Land Is Worth | P&X</title>
-  <meta name="description" content="TerraValue is a parcel-level ecosystem services calculator. Enter any address and get a peer-reviewed, dollar-value breakdown of what your trees and green infrastructure provide annually.">
+  <title>TerraValue — Parcel-Level Ecosystem Services Calculator | P&X</title>
+  <meta name="description" content="TerraValue puts a dollar value on your land's ecosystem services. Enter any address, get a peer-reviewed breakdown of carbon, stormwater, air quality, energy, habitat, and property value.">
   <meta name="author" content="P&X — Phloem & Xylem">
-  <meta property="og:title" content="TerraValue — Your trees are doing a lot. Nobody's paying them.">
+  <meta property="og:title" content="TerraValue — Know What Your Land Is Worth">
   <meta property="og:description" content="Enter any address. Get a peer-reviewed, dollar-value breakdown of your property's ecosystem services. Built by P&X.">
   <meta property="og:type" content="product">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 16px; }
     body {
-      font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
-      color: #1a1a1a; background: #faf9f6;
-      line-height: 1.7; -webkit-font-smoothing: antialiased;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1a1a1a; background: #ffffff;
+      line-height: 1.65; -webkit-font-smoothing: antialiased;
     }
     a { color: inherit; text-decoration: none; }
 
     :root {
-      --forest-deep: #1b4332;
-      --forest: #2d6a4f;
-      --sage: #40916c;
-      --mint: #52b788;
-      --seafoam: #b7e4c7;
-      --pale-green: #d8f3dc;
-      --coral: #f4845f;
-      --golden: #ffd166;
-      --cream: #faf9f6;
-      --cream-dark: #f0ece6;
-      --text-primary: #1a1a1a;
-      --text-secondary: #4a4a4a;
-      --text-light: #7a7a7a;
+      --green-900: #0a2116;
+      --green-800: #14412b;
+      --green-700: #1b5e3a;
+      --green-600: #22734a;
+      --green-500: #2d8f5e;
+      --green-400: #48a672;
+      --green-300: #7ac4a0;
+      --green-200: #b4dfc9;
+      --green-100: #e0f2eb;
+      --green-50: #f0f9f4;
+      --gold-500: #b8952a;
+      --gold-400: #d4ac33;
+      --gold-300: #e8c847;
+      --gold-200: #f2dfa0;
+      --gold-100: #faf3dd;
+      --stone-900: #1a1a1a;
+      --stone-700: #444444;
+      --stone-600: #5a5a5a;
+      --stone-500: #777777;
+      --stone-400: #999999;
+      --stone-300: #bbbbbb;
+      --stone-200: #e0e0e0;
+      --stone-100: #f2f2f2;
+      --stone-50: #fafafa;
+      --white: #ffffff;
       --red-text: #791F1F;
       --green-text: #27500A;
-      --white: #ffffff;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
-      --radius: 12px;
-      --radius-sm: 8px;
+      --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+      --radius: 8px;
+      --radius-lg: 12px;
       --radius-pill: 100px;
-      --max-width: 1100px;
+      --max-width: 1120px;
+      --transition: 0.2s ease;
     }
 
-    h1, h2, h3, h4 { color: var(--forest-deep); line-height: 1.2; font-weight: 700; }
-    h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); }
-    h2 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 600; }
-    h3 { font-size: 1.15rem; font-weight: 600; }
+    h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; color: var(--stone-900); }
+    h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); letter-spacing: -0.03em; }
+    h2 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 600; letter-spacing: -0.02em; }
+    h3 { font-size: 1.1rem; font-weight: 600; }
     p { margin-bottom: 1rem; }
-    .section-inner { max-width: var(--max-width); margin: 0 auto; }
-    section { padding: 5rem 2rem; }
-    .eyebrow {
-      font-size: 0.75rem; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--sage); margin-bottom: 0.75rem;
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+    section { padding: 6rem 0; }
+    .label {
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--green-600); margin-bottom: 0.75rem;
     }
-    .icon-svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
     .btn {
       display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.85rem 1.75rem; font-size: 0.95rem; font-weight: 600;
-      border-radius: var(--radius-pill); transition: all 0.25s; cursor: pointer;
-      border: none; font-family: inherit;
+      padding: 0.75rem 1.6rem; font-size: 0.9rem; font-weight: 600;
+      border-radius: var(--radius); transition: all var(--transition);
+      cursor: pointer; border: none; font-family: inherit;
     }
-    .btn-coral { background: var(--coral); color: var(--white); }
-    .btn-coral:hover { background: #e8734e; transform: translateY(-2px); box-shadow: var(--shadow-md); }
-    .btn-outline { background: transparent; color: var(--forest); border: 2px solid var(--forest); }
-    .btn-outline:hover { background: var(--pale-green); }
-    .btn-white { background: var(--white); color: var(--forest-deep); }
-    .btn-white:hover { background: var(--cream-dark); transform: translateY(-2px); }
+    .btn-gold { background: var(--gold-500); color: var(--white); }
+    .btn-gold:hover { background: #a6852a; box-shadow: var(--shadow-sm); }
+    .btn-secondary { background: var(--white); color: var(--green-800); border: 1px solid var(--stone-200); }
+    .btn-secondary:hover { background: var(--stone-50); border-color: var(--stone-300); }
+    .btn-white { background: var(--white); color: var(--green-800); }
+    .btn-white:hover { background: var(--green-50); }
+    .btn-ghost { background: transparent; color: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,0.25); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4); }
 
+    /* NAV */
     .nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      background: rgba(250,249,246,0.92);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(27,67,50,0.06);
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--stone-100);
       transition: box-shadow 0.3s;
     }
-    .nav.scrolled { box-shadow: var(--shadow-sm); }
+    .nav.scrolled { box-shadow: var(--shadow-xs); }
     .nav-inner {
       max-width: var(--max-width); margin: 0 auto; padding: 0 2rem;
-      display: flex; align-items: center; justify-content: space-between; height: 64px;
+      display: flex; align-items: center; justify-content: space-between; height: 60px;
     }
-    .nav-logo { font-size: 1.5rem; font-weight: 700; color: var(--forest-deep); letter-spacing: -0.02em; }
-    .nav-links { display: flex; gap: 1.75rem; align-items: center; }
-    .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); transition: color 0.2s; }
-    .nav-links a:hover { color: var(--forest); }
-    .nav-links a.active { color: var(--forest); font-weight: 600; }
+    .nav-brand { display: flex; align-items: center; gap: 0.75rem; }
+    .nav-logo { font-size: 1.2rem; font-weight: 700; color: var(--green-800); letter-spacing: -0.02em; }
+    .nav-divider { width: 1px; height: 16px; background: var(--stone-200); }
+    .nav-tagline { font-size: 0.72rem; color: var(--stone-400); font-weight: 500; letter-spacing: 0.04em; }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { font-size: 0.82rem; font-weight: 500; color: var(--stone-600); transition: color var(--transition); }
+    .nav-links a:hover { color: var(--green-700); }
+    .nav-links a.active { color: var(--green-700); font-weight: 600; }
     .nav-cta {
-      background: var(--forest) !important; color: var(--white) !important;
-      padding: 0.45rem 1.15rem !important; border-radius: var(--radius-pill);
-      font-weight: 600 !important; font-size: 0.85rem !important;
+      background: var(--gold-500) !important; color: var(--white) !important;
+      padding: 0.4rem 1rem !important; border-radius: var(--radius);
+      font-weight: 600 !important; font-size: 0.82rem !important;
     }
-    .nav-cta:hover { background: var(--forest-deep) !important; }
+    .nav-cta:hover { background: #a6852a !important; }
     .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
-    .nav-toggle span { display: block; width: 20px; height: 2px; background: var(--forest-deep); margin: 4px 0; border-radius: 2px; }
+    .nav-toggle span { display: block; width: 18px; height: 1.5px; background: var(--stone-700); margin: 4px 0; border-radius: 1px; }
 
+    /* HERO */
     .product-hero {
-      margin-top: 64px;
-      background: linear-gradient(155deg, var(--forest-deep) 0%, var(--forest) 40%, var(--sage) 100%);
-      color: var(--white); padding: 5rem 2rem 4rem;
+      margin-top: 60px;
+      background: var(--green-900);
+      color: var(--white); padding: 6rem 0 5rem;
       position: relative; overflow: hidden;
     }
     .product-hero::before {
       content: ''; position: absolute; inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='2' fill='%23ffffff' opacity='0.04'/%3E%3C/svg%3E");
+      background:
+        radial-gradient(ellipse 800px 500px at 60% 10%, rgba(45,143,94,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 500px 300px at 30% 90%, rgba(184,149,42,0.06) 0%, transparent 60%);
     }
     .product-hero-inner {
-      max-width: var(--max-width); margin: 0 auto; position: relative; z-index: 1;
-      text-align: center;
+      position: relative; z-index: 1; text-align: center;
     }
     .product-hero h1 { color: var(--white); margin-bottom: 1rem; }
-    .product-hero .hero-sub {
-      font-size: 1.15rem; color: rgba(255,255,255,0.8);
-      max-width: 620px; margin: 0 auto 2rem; line-height: 1.7;
+    .product-hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--gold-300), var(--gold-500));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .product-hero .hero-sub {
+      font-size: 1.05rem; color: rgba(255,255,255,0.6);
+      max-width: 600px; margin: 0 auto 2rem; line-height: 1.7;
+    }
+    .hero-buttons { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
     .hero-badges {
-      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;
       margin-top: 2.5rem;
     }
     .hero-badge {
-      display: flex; align-items: center; gap: 0.4rem;
-      padding: 0.4rem 0.9rem;
-      background: rgba(255,255,255,0.08);
-      border-radius: var(--radius-pill);
-      font-size: 0.75rem; color: rgba(255,255,255,0.6);
-      border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; gap: 0.35rem;
+      padding: 0.35rem 0.8rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: var(--radius);
+      font-size: 0.72rem; color: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.06);
     }
-    .hero-badge .num { font-weight: 700; color: var(--seafoam); margin-right: 0.2rem; }
+    .hero-badge .bnum { font-weight: 700; color: var(--gold-300); margin-right: 0.15rem; }
 
-    .pitch-section { background: var(--white); }
-    .pitch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-    .pitch-text h2 { margin-bottom: 1rem; }
-    .pitch-text p { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; }
-    .pitch-visual {
-      background: var(--cream); border-radius: var(--radius); padding: 2rem;
-      border: 1px solid rgba(27,67,50,0.06);
+    /* HOW IT WORKS */
+    .how-section { background: var(--white); }
+    .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .how-text h2 { margin-bottom: 1rem; }
+    .how-text p { font-size: 0.95rem; color: var(--stone-600); line-height: 1.7; }
+    .how-steps {
+      background: var(--stone-50); border-radius: var(--radius-lg);
+      padding: 2rem; border: 1px solid var(--stone-100);
     }
-    .pitch-step {
+    .how-step {
       display: flex; gap: 1rem; align-items: flex-start;
       margin-bottom: 1.25rem;
     }
-    .pitch-step:last-child { margin-bottom: 0; }
-    .pitch-step .step-num {
-      width: 32px; height: 32px; flex-shrink: 0;
-      background: var(--pale-green); color: var(--forest-deep);
+    .how-step:last-child { margin-bottom: 0; }
+    .step-num {
+      width: 28px; height: 28px; flex-shrink: 0;
+      background: var(--green-100); color: var(--green-700);
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: 0.85rem; font-weight: 600;
+      font-size: 0.75rem; font-weight: 700;
     }
-    .pitch-step .step-text h4 { font-size: 0.95rem; margin-bottom: 0.15rem; }
-    .pitch-step .step-text p { font-size: 0.85rem; color: var(--text-light); margin-bottom: 0; }
+    .step-text h4 { font-size: 0.9rem; margin-bottom: 0.1rem; color: var(--stone-900); font-weight: 600; }
+    .step-text p { font-size: 0.82rem; color: var(--stone-500); margin-bottom: 0; }
 
-    .services-section { background: var(--cream); }
-    .services-header { text-align: center; margin-bottom: 3rem; }
-    .services-header p { color: var(--text-secondary); max-width: 560px; margin: 0.75rem auto 0; font-size: 1.05rem; }
-    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    /* SERVICES */
+    .services-section { background: var(--stone-50); }
+    .services-header { text-align: center; margin-bottom: 3.5rem; }
+    .services-header p { color: var(--stone-500); max-width: 520px; margin: 0.75rem auto 0; font-size: 0.95rem; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
     .service-card {
-      background: var(--white); border-radius: var(--radius); padding: 1.75rem;
-      border: 1px solid rgba(27,67,50,0.06); transition: all 0.3s;
+      background: var(--white); border-radius: var(--radius-lg); padding: 1.75rem;
+      border: 1px solid var(--stone-100); transition: all 0.25s;
     }
-    .service-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .service-card:hover { border-color: var(--green-200); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
     .service-card .sv-value {
-      font-size: 1.4rem; font-weight: 700; color: var(--forest);
-      margin-bottom: 0.25rem;
+      font-size: 1.4rem; font-weight: 700; color: var(--green-700);
+      margin-bottom: 0.25rem; letter-spacing: -0.02em;
     }
-    .service-card h3 { margin-bottom: 0.5rem; font-size: 1rem; }
-    .service-card p { font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.5rem; line-height: 1.5; }
+    .service-card h3 { margin-bottom: 0.5rem; font-size: 0.95rem; }
+    .service-card p { font-size: 0.82rem; color: var(--stone-500); margin-bottom: 0.5rem; line-height: 1.5; }
     .service-card .citation {
-      font-size: 0.7rem; color: var(--sage);
-      padding-top: 0.5rem; border-top: 1px solid rgba(27,67,50,0.06);
+      font-size: 0.68rem; color: var(--stone-400);
+      padding-top: 0.5rem; border-top: 1px solid var(--stone-100);
       margin-bottom: 0;
     }
 
+    /* VALUE PROJECTOR */
     .projector-section { background: var(--white); }
     .projector-header { text-align: center; margin-bottom: 3rem; }
-    .projector-header p { color: var(--text-secondary); max-width: 560px; margin: 0.75rem auto 0; font-size: 1.05rem; }
+    .projector-header p { color: var(--stone-500); max-width: 520px; margin: 0.75rem auto 0; font-size: 0.95rem; }
     .projector {
-      max-width: 750px; margin: 0 auto;
-      background: var(--cream); border-radius: var(--radius);
-      padding: 2rem; border: 1px solid rgba(27,67,50,0.06);
+      max-width: 720px; margin: 0 auto;
+      background: var(--stone-50); border-radius: var(--radius-lg);
+      padding: 2rem; border: 1px solid var(--stone-100);
     }
     .proj-controls { margin-bottom: 1.5rem; }
     .proj-row {
       display: flex; gap: 12px; align-items: center; margin-bottom: 0.75rem;
     }
-    .proj-row label { font-size: 0.9rem; color: var(--text-secondary); min-width: 110px; font-weight: 500; }
+    .proj-row label { font-size: 0.82rem; color: var(--stone-600); min-width: 110px; font-weight: 500; }
     .proj-row input[type="range"] {
-      flex: 1; height: 6px; -webkit-appearance: none; appearance: none;
-      background: var(--pale-green); border-radius: 3px; outline: none;
+      flex: 1; height: 4px; -webkit-appearance: none; appearance: none;
+      background: var(--green-100); border-radius: 2px; outline: none;
     }
     .proj-row input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none; width: 18px; height: 18px;
-      background: var(--forest); border-radius: 50%; cursor: pointer;
+      -webkit-appearance: none; width: 16px; height: 16px;
+      background: var(--green-700); border-radius: 50%; cursor: pointer;
+      border: 2px solid var(--white); box-shadow: var(--shadow-xs);
     }
-    .proj-row .val { font-size: 0.9rem; font-weight: 600; min-width: 50px; text-align: right; }
-    .proj-results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+    .proj-row .val { font-size: 0.85rem; font-weight: 600; min-width: 55px; text-align: right; color: var(--stone-900); }
+    .proj-results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
     .proj-card {
-      background: var(--white); border-radius: var(--radius-sm); padding: 1rem;
-      border: 1px solid rgba(27,67,50,0.06);
+      background: var(--white); border-radius: var(--radius); padding: 1rem;
+      border: 1px solid var(--stone-100);
     }
-    .proj-card .pc-label { font-size: 0.75rem; color: var(--text-light); margin-bottom: 4px; }
-    .proj-card .pc-value { font-size: 1.35rem; font-weight: 700; }
-    .proj-card .pc-delta { font-size: 0.75rem; margin-top: 2px; }
-    .proj-bars { }
-    .proj-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-    .proj-bar-label { font-size: 0.75rem; color: var(--text-light); min-width: 80px; text-align: right; }
-    .proj-bar-track { flex: 1; height: 16px; background: var(--white); border-radius: 8px; overflow: hidden; border: 1px solid rgba(27,67,50,0.06); }
-    .proj-bar-fill { height: 100%; border-radius: 8px; transition: width 0.3s; }
-    .proj-bar-val { font-size: 0.75rem; font-weight: 600; min-width: 55px; }
+    .proj-card .pc-label { font-size: 0.7rem; color: var(--stone-500); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .proj-card .pc-value { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; }
+    .proj-card .pc-delta { font-size: 0.72rem; margin-top: 2px; }
+    .proj-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+    .proj-bar-label { font-size: 0.72rem; color: var(--stone-500); min-width: 80px; text-align: right; }
+    .proj-bar-track { flex: 1; height: 14px; background: var(--white); border-radius: 7px; overflow: hidden; border: 1px solid var(--stone-100); }
+    .proj-bar-fill { height: 100%; border-radius: 7px; transition: width 0.3s; }
+    .proj-bar-val { font-size: 0.72rem; font-weight: 600; min-width: 55px; color: var(--stone-700); }
     .proj-citations {
-      display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1rem;
+      display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 1rem;
     }
     .proj-cite {
-      font-size: 0.65rem; font-weight: 500;
-      padding: 0.2rem 0.6rem; border-radius: var(--radius-pill);
-      background: var(--pale-green); color: var(--forest-deep);
+      font-size: 0.6rem; font-weight: 500;
+      padding: 0.2rem 0.55rem; border-radius: var(--radius-pill);
+      background: var(--green-50); color: var(--green-800);
+      border: 1px solid var(--green-100);
     }
     .proj-note {
-      font-size: 0.8rem; color: var(--text-light);
+      font-size: 0.75rem; color: var(--stone-400);
       text-align: center; margin-top: 1rem; line-height: 1.5;
     }
 
-    .personas-section { background: var(--cream); }
+    /* PERSONAS */
+    .personas-section { background: var(--stone-50); }
     .personas-header { text-align: center; margin-bottom: 3rem; }
-    .personas-header p { color: var(--text-secondary); max-width: 520px; margin: 0.75rem auto 0; font-size: 1.05rem; }
-    .personas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    .personas-header p { color: var(--stone-500); max-width: 520px; margin: 0.75rem auto 0; font-size: 0.95rem; }
+    .personas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
     .persona-card {
-      background: var(--white); border-radius: var(--radius); padding: 1.5rem;
-      border: 1px solid rgba(27,67,50,0.06); transition: all 0.3s;
+      background: var(--white); border-radius: var(--radius-lg); padding: 1.5rem;
+      border: 1px solid var(--stone-100); transition: all 0.25s;
     }
-    .persona-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-sm); }
-    .persona-card h3 { margin-bottom: 0.4rem; font-size: 1rem; }
-    .persona-card p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0; line-height: 1.5; }
+    .persona-card:hover { border-color: var(--green-200); box-shadow: var(--shadow-xs); }
+    .persona-card h3 { margin-bottom: 0.4rem; font-size: 0.95rem; }
+    .persona-card p { font-size: 0.82rem; color: var(--stone-500); margin-bottom: 0; line-height: 1.5; }
 
+    /* JURISDICTIONS */
     .jurisdictions-section { background: var(--white); }
     .jurisdictions-header { text-align: center; margin-bottom: 2rem; }
-    .jurisdictions-header p { color: var(--text-secondary); max-width: 520px; margin: 0.75rem auto 0; font-size: 1.05rem; }
+    .jurisdictions-header p { color: var(--stone-500); max-width: 520px; margin: 0.75rem auto 0; font-size: 0.95rem; }
     .jurisdictions-pills {
-      display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;
+      display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center;
     }
     .j-pill {
-      padding: 0.5rem 1rem; border-radius: var(--radius-pill);
-      font-size: 0.85rem; font-weight: 500;
-      background: var(--pale-green); color: var(--forest-deep);
+      padding: 0.4rem 0.85rem; border-radius: var(--radius);
+      font-size: 0.8rem; font-weight: 500;
+      background: var(--green-50); color: var(--green-800);
+      border: 1px solid var(--green-100);
     }
-    .j-pill.county { background: var(--forest); color: var(--white); }
+    .j-pill.county { background: var(--green-800); color: var(--white); border-color: var(--green-800); }
 
+    /* CTA */
     .cta-section {
-      background: linear-gradient(155deg, var(--forest-deep) 0%, #0f2b1a 100%);
+      background: var(--green-900);
       color: var(--white); text-align: center;
+      position: relative; overflow: hidden;
     }
+    .cta-section::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 600px 300px at 50% 50%, rgba(184,149,42,0.06) 0%, transparent 60%);
+    }
+    .cta-inner { position: relative; z-index: 1; }
     .cta-section h2 { color: var(--white); margin-bottom: 0.75rem; }
-    .cta-section p { color: rgba(255,255,255,0.7); max-width: 500px; margin: 0 auto 2rem; }
-    .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .cta-section p { color: rgba(255,255,255,0.5); max-width: 460px; margin: 0 auto 2rem; font-size: 0.95rem; }
+    .cta-buttons { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
 
+    /* FOOTER */
     .footer {
-      background: var(--forest-deep); color: rgba(255,255,255,0.6);
-      padding: 3rem 2rem 2rem;
+      background: var(--green-900); color: rgba(255,255,255,0.5);
+      padding: 3rem 0 2rem;
     }
     .footer-inner {
-      max-width: var(--max-width); margin: 0 auto;
+      max-width: var(--max-width); margin: 0 auto; padding: 0 2rem;
       display: flex; justify-content: space-between; align-items: flex-start;
       flex-wrap: wrap; gap: 2rem;
     }
-    .footer-brand .name { font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: 0.25rem; }
-    .footer-brand .tagline { font-size: 0.8rem; color: rgba(255,255,255,0.35); max-width: 280px; line-height: 1.5; }
+    .footer-brand .fname { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.2rem; }
+    .footer-brand .ftagline { font-size: 0.75rem; color: rgba(255,255,255,0.3); max-width: 260px; line-height: 1.5; }
     .footer-links { display: flex; gap: 1.5rem; }
-    .footer-links a { font-size: 0.85rem; transition: color 0.2s; }
+    .footer-links a { font-size: 0.8rem; transition: color 0.2s; }
     .footer-links a:hover { color: var(--white); }
-    .footer-reggie { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: rgba(255,255,255,0.3); }
+    .footer-reggie { font-size: 0.7rem; color: rgba(255,255,255,0.2); font-style: italic; }
     .footer-copy {
-      width: 100%; text-align: center; margin-top: 2rem; padding-top: 1.5rem;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      font-size: 0.75rem; color: rgba(255,255,255,0.25);
+      width: 100%; text-align: center; margin-top: 2rem; padding-top: 1.25rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.7rem; color: rgba(255,255,255,0.2);
     }
 
+    /* RESPONSIVE */
     @media (max-width: 900px) {
-      .pitch-grid { grid-template-columns: 1fr; }
+      .how-grid { grid-template-columns: 1fr; }
       .services-grid { grid-template-columns: 1fr 1fr; }
       .personas-grid { grid-template-columns: 1fr 1fr; }
       .proj-results { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
-      section { padding: 3.5rem 1.25rem; }
+      section { padding: 4rem 0; }
+      .container { padding: 0 1.25rem; }
       .nav-inner { padding: 0 1.25rem; }
-      .product-hero { padding: 4rem 1.25rem 3rem; }
+      .product-hero { padding: 5rem 1.25rem 4rem; }
       .services-grid { grid-template-columns: 1fr; }
       .personas-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
       .nav-toggle { display: block; }
       .nav-links.open {
         display: flex; flex-direction: column;
-        position: absolute; top: 64px; left: 0; right: 0;
-        background: var(--cream); padding: 1.25rem 1.5rem;
-        border-bottom: 1px solid rgba(27,67,50,0.08);
-        box-shadow: var(--shadow-md);
+        position: absolute; top: 60px; left: 0; right: 0;
+        background: var(--white); padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--stone-100);
+        box-shadow: var(--shadow-md); gap: 0.75rem;
       }
       .footer-inner { flex-direction: column; align-items: center; text-align: center; }
       .hero-badges { flex-direction: column; align-items: center; }
+      .nav-tagline, .nav-divider { display: none; }
     }
   </style>
 </head>
@@ -310,13 +354,17 @@
 
 <nav class="nav" id="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">P&X</a>
+    <a href="index.html" class="nav-brand">
+      <span class="nav-logo">P&X</span>
+      <span class="nav-divider"></span>
+      <span class="nav-tagline">TerraValue</span>
+    </a>
     <div class="nav-links" id="navLinks">
-      <a href="index.html">home</a>
-      <a href="#how" class="active">how it works</a>
-      <a href="#services">the six services</a>
-      <a href="#projector">value projector</a>
-      <a href="https://terravalue.app" target="_blank" class="nav-cta">launch app</a>
+      <a href="index.html">Home</a>
+      <a href="#how" class="active">How It Works</a>
+      <a href="#services">The Six Services</a>
+      <a href="#projector">Value Projector</a>
+      <a href="https://terravalue.app" target="_blank" class="nav-cta">Launch App</a>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
       <span></span><span></span><span></span>
@@ -325,58 +373,60 @@
 </nav>
 
 <section class="product-hero">
-  <div class="product-hero-inner">
-    <p class="eyebrow" style="color: var(--seafoam);">P&X technology</p>
-    <h1>your trees are doing a lot.<br>nobody's paying them.</h1>
-    <p class="hero-sub">TerraValue puts a dollar value on what your land's trees and green infrastructure provide every single year — carbon, stormwater, air quality, energy, habitat, and property value. Peer-reviewed. Parcel-level. Instant.</p>
-    <div class="hero-buttons">
-      <a href="https://terravalue.app" class="btn btn-coral" target="_blank">try it free</a>
-      <a href="#how" class="btn btn-white">see how it works</a>
-    </div>
-    <div class="hero-badges">
-      <div class="hero-badge"><span class="num">6</span> ecosystem services</div>
-      <div class="hero-badge"><span class="num">10</span> GA jurisdictions</div>
-      <div class="hero-badge"><span class="num">0-100</span> soil score</div>
-      <div class="hero-badge"><span class="num">PDF</span> branded reports</div>
+  <div class="container">
+    <div class="product-hero-inner">
+      <p class="label" style="color: var(--gold-400);">P&X Technology</p>
+      <h1>Your land has <em>hidden value</em>.<br>We quantify it.</h1>
+      <p class="hero-sub">TerraValue puts a dollar value on what your property's trees and green infrastructure provide every year — carbon, stormwater, air quality, energy, habitat, and property value. Peer-reviewed. Parcel-level. Instant.</p>
+      <div class="hero-buttons">
+        <a href="https://terravalue.app" class="btn btn-gold" target="_blank">Try It Free</a>
+        <a href="#how" class="btn btn-ghost">See How It Works</a>
+      </div>
+      <div class="hero-badges">
+        <div class="hero-badge"><span class="bnum">6</span> ecosystem services</div>
+        <div class="hero-badge"><span class="bnum">10</span> GA jurisdictions</div>
+        <div class="hero-badge"><span class="bnum">0–100</span> soil score</div>
+        <div class="hero-badge"><span class="bnum">PDF</span> branded reports</div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="pitch-section" id="how">
-  <div class="section-inner">
-    <div class="pitch-grid">
-      <div class="pitch-text">
-        <p class="eyebrow">how it works</p>
-        <h2>one address. four steps. real numbers.</h2>
+<section class="how-section" id="how">
+  <div class="container">
+    <div class="how-grid">
+      <div class="how-text">
+        <p class="label">How It Works</p>
+        <h2>One address. Four steps. Real numbers.</h2>
         <p>TerraValue connects to live public ArcGIS parcel databases across 10 Georgia jurisdictions. It pulls your lot size, assessed value, and canopy data — then runs every number through peer-reviewed USDA and EPA methodologies.</p>
-        <p>The result: a complete picture of what your land's ecosystem is worth in actual dollars, broken down across six services, with a 0-100 stewardship score and a branded PDF report you can take to a meeting.</p>
+        <p>The result: a complete picture of what your land's ecosystem is worth in actual dollars, broken down across six services, with a 0–100 stewardship score and a branded PDF report you can take to a meeting.</p>
       </div>
-      <div class="pitch-visual">
-        <div class="pitch-step">
+      <div class="how-steps">
+        <div class="how-step">
           <div class="step-num">1</div>
           <div class="step-text">
-            <h4>enter any address</h4>
+            <h4>Enter any address</h4>
             <p>Nominatim geocodes it. We find the parcel in real time.</p>
           </div>
         </div>
-        <div class="pitch-step">
+        <div class="how-step">
           <div class="step-num">2</div>
           <div class="step-text">
-            <h4>auto-fill parcel data</h4>
+            <h4>Auto-fill parcel data</h4>
             <p>Cascading ArcGIS lookup: city endpoint first, county fallback. Lot size, assessed value, canopy %.</p>
           </div>
         </div>
-        <div class="pitch-step">
+        <div class="how-step">
           <div class="step-num">3</div>
           <div class="step-text">
-            <h4>calculate everything</h4>
+            <h4>Calculate everything</h4>
             <p>Six ecosystem services, dual GI methodology (EPA + GA Blue Book), tree inventory, Soil Score.</p>
           </div>
         </div>
-        <div class="pitch-step">
+        <div class="how-step">
           <div class="step-num">4</div>
           <div class="step-text">
-            <h4>get your results + report</h4>
+            <h4>Results + report</h4>
             <p>Interactive dashboard with satellite map, charts, per-service breakdown, and downloadable PDF.</p>
           </div>
         </div>
@@ -386,47 +436,47 @@
 </section>
 
 <section class="services-section" id="services">
-  <div class="section-inner">
+  <div class="container">
     <div class="services-header">
-      <p class="eyebrow">what we measure</p>
-      <h2>six ecosystem services, quantified</h2>
-      <p>Every value is calculated from peer-reviewed research. Every formula is traceable to a source paper. No vibes.</p>
+      <p class="label">What We Measure</p>
+      <h2>Six ecosystem services, quantified</h2>
+      <p>Every value is calculated from peer-reviewed research. Every formula traceable to a source paper.</p>
     </div>
     <div class="services-grid">
       <div class="service-card">
         <div class="sv-value">$663/yr</div>
-        <h3>carbon sequestration</h3>
+        <h3>Carbon Sequestration</h3>
         <p>Trees absorb CO2 and store it as biomass. We calculate annual sequestration per canopy acre and price it at the EPA social cost of carbon.</p>
-        <p class="citation">2.6 t CO2/acre/yr (Atlanta iTree Eco) x $255/tonne (EPA SC-GHG 2023)</p>
+        <p class="citation">2.6 t CO2/acre/yr (Atlanta iTree Eco) &times; $255/tonne (EPA SC-GHG 2023)</p>
       </div>
       <div class="service-card">
         <div class="sv-value">$520/yr</div>
-        <h3>stormwater management</h3>
-        <p>Canopy intercepts 35% of rainfall. We calculate gallons diverted from the storm system and price it at municipal avoided treatment costs.</p>
-        <p class="citation">USDA CUFR Fact Sheet #4 x $4.00/1,000 gal municipal average</p>
+        <h3>Stormwater Management</h3>
+        <p>Canopy intercepts 35% of rainfall. We calculate gallons diverted from the storm system and price at municipal avoided treatment costs.</p>
+        <p class="citation">USDA CUFR Fact Sheet #4 &times; $4.00/1,000 gal municipal average</p>
       </div>
       <div class="service-card">
         <div class="sv-value">$418/yr</div>
-        <h3>air quality improvement</h3>
-        <p>Trees filter PM2.5, ozone, NO2, and SO2 from the air. Atlanta's PM2.5 concentration makes this one of the highest-value services.</p>
-        <p class="citation">Nowak et al. 2014, BenMAP weighted x $142K/ton PM2.5 (Atlanta)</p>
+        <h3>Air Quality Improvement</h3>
+        <p>Trees filter PM2.5, ozone, NO2, and SO2. Atlanta's PM2.5 concentration makes this one of the highest-value services.</p>
+        <p class="citation">Nowak et al. 2014, BenMAP weighted &times; $142K/ton PM2.5 (Atlanta)</p>
       </div>
       <div class="service-card">
         <div class="sv-value">$350/yr</div>
-        <h3>energy savings</h3>
-        <p>Strategic canopy reduces cooling loads in summer and wind exposure in winter. We calculate avoided kWh per canopy acre.</p>
+        <h3>Energy Savings</h3>
+        <p>Strategic canopy reduces cooling loads in summer and wind exposure in winter. Avoided kWh per canopy acre.</p>
         <p class="citation">McPherson 2003, Atlanta iTree Eco: 1,800 kWh/acre/yr</p>
       </div>
       <div class="service-card">
         <div class="sv-value">$320/yr</div>
-        <h3>habitat value</h3>
-        <p>Canopy provides nesting, foraging, and corridor habitat. We use willingness-to-pay studies to price the public value of urban biodiversity.</p>
+        <h3>Habitat Value</h3>
+        <p>Canopy provides nesting, foraging, and corridor habitat. Priced using willingness-to-pay studies for urban biodiversity.</p>
         <p class="citation">Troy & Wilson 2006: $320/acre canopy (WTP studies)</p>
       </div>
       <div class="service-card">
         <div class="sv-value">+7%</div>
-        <h3>property value premium</h3>
-        <p>Mature canopy coverage adds a measurable premium to assessed property values. This is often the single largest ecosystem service dollar amount.</p>
+        <h3>Property Value Premium</h3>
+        <p>Mature canopy coverage adds a measurable premium to assessed property values. Often the single largest dollar amount.</p>
         <p class="citation">Kovacs et al. 2022, USDA NRS meta-analysis: 7% premium</p>
       </div>
     </div>
@@ -434,80 +484,80 @@
 </section>
 
 <section class="projector-section" id="projector">
-  <div class="section-inner">
+  <div class="container">
     <div class="projector-header">
-      <p class="eyebrow">value projector</p>
-      <h2>what happens if your score changes?</h2>
-      <p>Plant trees and your value goes up. Cut them down and it goes down. Drag the slider and see what's at stake — in real dollars.</p>
+      <p class="label">Value Projector</p>
+      <h2>What happens when your score changes?</h2>
+      <p>Plant trees and your value goes up. Cut them down and it drops. Move the slider and see what's at stake — in real dollars.</p>
     </div>
     <div class="projector">
       <div class="proj-controls">
         <div class="proj-row">
-          <label>home value</label>
+          <label>Home Value</label>
           <span class="val" id="homeVal">$450,000</span>
         </div>
         <div class="proj-row">
-          <label>current score</label>
+          <label>Current Score</label>
           <input type="range" min="0" max="100" value="62" step="1" id="currentScore">
           <span class="val" id="currentOut">62</span>
         </div>
         <div class="proj-row">
-          <label>projected score</label>
+          <label>Projected Score</label>
           <input type="range" min="0" max="100" value="62" step="1" id="projScore">
           <span class="val" id="projOut">62</span>
         </div>
         <div class="proj-row">
-          <label>timeline</label>
+          <label>Timeline</label>
           <input type="range" min="1" max="30" value="10" step="1" id="timeline">
           <span class="val" id="timeOut">10 yr</span>
         </div>
       </div>
       <div class="proj-results">
         <div class="proj-card">
-          <div class="pc-label">property value shift</div>
+          <div class="pc-label">Property Value Shift</div>
           <div class="pc-value" id="propShift">$0</div>
           <div class="pc-delta" id="propPct">0%</div>
         </div>
         <div class="proj-card">
-          <div class="pc-label">ecosystem value change</div>
+          <div class="pc-label">Ecosystem Value Change</div>
           <div class="pc-value" id="ecoShift">$0/yr</div>
-          <div class="pc-delta" id="ecoCum">cumulative over <span id="ecoPeriod">10</span> yr</div>
+          <div class="pc-delta" id="ecoCum">Cumulative over <span id="ecoPeriod">10</span> yr</div>
         </div>
         <div class="proj-card">
-          <div class="pc-label">total impact</div>
+          <div class="pc-label">Total Impact</div>
           <div class="pc-value" id="totalImpact">$0</div>
-          <div class="pc-delta" id="totalNote" style="color: var(--text-light);">property + ecosystem</div>
+          <div class="pc-delta" id="totalNote" style="color: var(--stone-400);">Property + Ecosystem</div>
         </div>
       </div>
       <div class="proj-bars">
         <div class="proj-bar-row">
-          <span class="proj-bar-label">carbon</span>
-          <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-carbon" style="background: #1b4332; width: 50%;"></div></div>
+          <span class="proj-bar-label">Carbon</span>
+          <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-carbon" style="background: var(--green-800); width: 50%;"></div></div>
           <span class="proj-bar-val" id="bv-carbon">$663/yr</span>
         </div>
         <div class="proj-bar-row">
-          <span class="proj-bar-label">stormwater</span>
-          <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-storm" style="background: #2d6a4f; width: 50%;"></div></div>
+          <span class="proj-bar-label">Stormwater</span>
+          <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-storm" style="background: var(--green-700); width: 50%;"></div></div>
           <span class="proj-bar-val" id="bv-storm">$520/yr</span>
         </div>
         <div class="proj-bar-row">
-          <span class="proj-bar-label">air quality</span>
-          <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-air" style="background: #40916c; width: 50%;"></div></div>
+          <span class="proj-bar-label">Air Quality</span>
+          <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-air" style="background: var(--green-600); width: 50%;"></div></div>
           <span class="proj-bar-val" id="bv-air">$418/yr</span>
         </div>
         <div class="proj-bar-row">
-          <span class="proj-bar-label">energy</span>
-          <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-energy" style="background: #52b788; width: 50%;"></div></div>
+          <span class="proj-bar-label">Energy</span>
+          <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-energy" style="background: var(--green-500); width: 50%;"></div></div>
           <span class="proj-bar-val" id="bv-energy">$350/yr</span>
         </div>
         <div class="proj-bar-row">
-          <span class="proj-bar-label">habitat</span>
-          <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-habitat" style="background: #74c69d; width: 50%;"></div></div>
+          <span class="proj-bar-label">Habitat</span>
+          <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-habitat" style="background: var(--green-400); width: 50%;"></div></div>
           <span class="proj-bar-val" id="bv-habitat">$320/yr</span>
         </div>
         <div class="proj-bar-row">
-          <span class="proj-bar-label">property</span>
-          <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-prop" style="background: #b7e4c7; width: 50%;"></div></div>
+          <span class="proj-bar-label">Property</span>
+          <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-prop" style="background: var(--green-200); width: 50%;"></div></div>
           <span class="proj-bar-val" id="bv-prop">$2,576/yr</span>
         </div>
       </div>
@@ -525,45 +575,45 @@
 </section>
 
 <section class="personas-section" id="personas">
-  <div class="section-inner">
+  <div class="container">
     <div class="personas-header">
-      <p class="eyebrow">who this is for</p>
-      <h2>if you own land, manage land, or make decisions about land — this is for you.</h2>
+      <p class="label">Who This Is For</p>
+      <h2>If you own, manage, or make decisions about land — this is for you.</h2>
     </div>
     <div class="personas-grid">
       <div class="persona-card">
-        <h3>homeowners</h3>
-        <p>Find out what your trees are actually doing for you — and what you'd lose if they came down. Great ammunition for HOA arguments.</p>
+        <h3>Homeowners</h3>
+        <p>Find out what your trees are doing for you — and what you'd lose if they came down. Real numbers for real decisions.</p>
       </div>
       <div class="persona-card">
-        <h3>HOAs & neighborhoods</h3>
-        <p>Quantify canopy value across your community. Make the case for tree preservation with real numbers, not feelings.</p>
+        <h3>HOAs & Neighborhoods</h3>
+        <p>Quantify canopy value across your community. Make the case for tree preservation with data, not opinions.</p>
       </div>
       <div class="persona-card">
-        <h3>municipal planners</h3>
-        <p>Assess ecosystem services at the parcel level across your jurisdiction. Feed real data into policy decisions and grant applications.</p>
+        <h3>Municipal Planners</h3>
+        <p>Assess ecosystem services at the parcel level across your jurisdiction. Feed real data into policy and grant applications.</p>
       </div>
       <div class="persona-card">
-        <h3>real estate professionals</h3>
-        <p>Add a TerraValue report to your listings. Properties with mature canopy sell for more — now you can show exactly how much more.</p>
+        <h3>Real Estate Professionals</h3>
+        <p>Add a TerraValue report to listings. Properties with mature canopy sell for more — now you can show exactly how much.</p>
       </div>
       <div class="persona-card">
-        <h3>consulting arborists</h3>
-        <p>Generate ecosystem valuations for your clients instantly. Add credibility to your assessments with peer-reviewed data.</p>
+        <h3>Consulting Arborists</h3>
+        <p>Generate ecosystem valuations for clients instantly. Add credibility to assessments with peer-reviewed data.</p>
       </div>
       <div class="persona-card">
-        <h3>developers</h3>
-        <p>Understand what ecosystem value exists on a site before you break ground. Make preservation decisions with cost-benefit data.</p>
+        <h3>Developers</h3>
+        <p>Understand ecosystem value on a site before breaking ground. Preservation decisions backed by cost-benefit data.</p>
       </div>
     </div>
   </div>
 </section>
 
 <section class="jurisdictions-section">
-  <div class="section-inner">
+  <div class="container">
     <div class="jurisdictions-header">
-      <p class="eyebrow">connected jurisdictions</p>
-      <h2>live ArcGIS data from 10 Georgia jurisdictions</h2>
+      <p class="label">Connected Jurisdictions</p>
+      <h2>Live ArcGIS data from 10 Georgia jurisdictions</h2>
       <p>Parcel boundaries, assessed values, canopy coverage, and zoning — pulled in real time from public municipal endpoints.</p>
     </div>
     <div class="jurisdictions-pills">
@@ -582,13 +632,13 @@
 </section>
 
 <section class="cta-section">
-  <div class="section-inner">
-    <p class="eyebrow" style="color: var(--seafoam);">ready?</p>
-    <h2>find out what your land is worth.</h2>
-    <p>It takes 30 seconds. Enter your address and TerraValue does the rest.</p>
+  <div class="container cta-inner">
+    <p class="label" style="color: var(--gold-400);">Ready?</p>
+    <h2>Find out what your land is worth.</h2>
+    <p>It takes 30 seconds. Enter your address and TerraValue handles the rest.</p>
     <div class="cta-buttons">
-      <a href="https://terravalue.app" class="btn btn-coral" target="_blank">launch terravalue</a>
-      <a href="index.html#contact" class="btn btn-white">talk to P&X</a>
+      <a href="https://terravalue.app" class="btn btn-gold" target="_blank">Launch TerraValue</a>
+      <a href="index.html#contact" class="btn btn-white">Talk to P&X</a>
     </div>
   </div>
 </section>
@@ -596,24 +646,16 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <div class="name">P&X — Phloem & Xylem</div>
-      <div class="tagline">We start underground. Everything above grows from there.</div>
+      <div class="fname">P&X — Phloem & Xylem</div>
+      <div class="ftagline">Green is the new gold. We start underground and prove it with data.</div>
     </div>
     <div class="footer-links">
-      <a href="index.html">home</a>
-      <a href="index.html#services">services</a>
-      <a href="https://terravalue.app" target="_blank">terravalue app</a>
-      <a href="index.html#contact">contact</a>
+      <a href="index.html">Home</a>
+      <a href="index.html#services">Services</a>
+      <a href="https://terravalue.app" target="_blank">TerraValue App</a>
+      <a href="index.html#contact">Contact</a>
     </div>
-    <div class="footer-reggie">
-      <svg width="30" height="20" viewBox="0 0 30 20">
-        <ellipse cx="15" cy="12" rx="12" ry="6" fill="rgba(255,255,255,0.15)"/>
-        <circle cx="8" cy="10" r="4" fill="rgba(255,255,255,0.15)"/>
-        <ellipse cx="5" cy="9" rx="3" ry="3.5" fill="rgba(255,255,255,0.12)"/>
-        <circle cx="7" cy="10" r="0.8" fill="rgba(255,255,255,0.3)"/>
-      </svg>
-      reggie is napping. he earned it.
-    </div>
+    <div class="footer-reggie">Reggie is napping. He earned it.</div>
     <div class="footer-copy">
       &copy; 2026 P&X LLC — Phloem & Xylem. All rights reserved.
     </div>
@@ -667,7 +709,7 @@
 
     var posColor = '#27500A';
     var negColor = '#791F1F';
-    var neutralColor = '#7a7a7a';
+    var neutralColor = '#777';
     var c = scoreDelta > 0 ? posColor : scoreDelta < 0 ? negColor : neutralColor;
 
     propEl.style.color = c;
@@ -706,11 +748,10 @@
       }
     });
   }, { threshold: 0.1 });
-
-  document.querySelectorAll('.service-card, .persona-card, .pitch-step').forEach(function(el) {
+  document.querySelectorAll('.service-card, .persona-card, .how-step').forEach(function(el) {
     el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
     observer.observe(el);
   });
 </script>
