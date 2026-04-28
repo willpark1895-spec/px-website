@@ -1,80 +1,70 @@
 # P&X — Session Handoff
-**Date:** April 27–28, 2026 (updated April 28, post-audit)
+**Date:** April 27–28, 2026 (updated April 28, post-code-audit)
 **Purpose:** Drop this file (along with the `P&X/` project folder) into a new Cowork session so Claude can pick up exactly where we left off.
 
 ---
 
-## What Happened This Session (April 28 — Audit & Corrections)
+## What Happened This Session (April 28 — Code Audit & Cleanup)
 
-### Audit Completed — All Values Verified & Corrected
+### Round 2 Audit — Demo Value Contamination & Code Cleanup
 
-A full audit was performed across all P&X and TerraValue files. Every value in the engine was checked against its cited source. 12+ issues were identified and corrected:
+A full code audit was performed across all P&X and TerraValue files, focused on ensuring demo values don't contaminate real-time calculations, plus general cleanup.
 
-**1. Carbon Sequestration Rate — CORRECTED**
-- EPA SC-GHG 2023 social cost: $255 → **$190/tonne** (Table ES-1, 2% near-term discount rate, 2024$)
-- Rate per canopy acre: $663 → **$494** (2.6 t × $190)
-- The $255 figure was the 2020 interim value; the 2023 report's Table ES-1 central estimate at 2% near-term is $190
+**1. Projector Bar Values — FIXED (terravalue.html)**
+- Old: Hardcoded stale `base` values (`carbon: 663`, `energy: 350`, `prop: 2576`) in the Value Projector bar chart
+- New: All bar values computed dynamically from `TerraValueEngine.ECOSYSTEM_SERVICE_RATES` at runtime
+- Bar max scales corrected — non-property bars scale to 300, property scales to 12% of home value (the cap)
+- The `$2,576/yr` default label in HTML replaced with `—` (JS overwrites on load)
 
-**2. Energy Savings Rate — CORRECTED**
-- Rate per canopy acre: $350 → **$252** (1,800 kWh × $0.14/kWh = $252)
-- Previous value had no derivation that matched 1800 × 0.14
+**2. Synthetic Comparable Flagging — ADDED (terravalue-engine.js)**
+- `_generateSyntheticComps()` now adds `isSynthetic: true` to each generated comp
+- `isSynthetic` propagates through to `adjustedComparables` in the output
+- `salesComparison()` returns `usingSyntheticComps: true`, `confidence: 'demo'`, and a `syntheticDisclaimer` when no real comps are provided
+- `fullValuation()` returns a top-level `dataQuality` object:
+  ```json
+  {
+    "hasRealComparables": false,
+    "hasRealIncome": false,
+    "syntheticDataUsed": true,
+    "warnings": [
+      "Sales Comparison uses synthetic comparables — not real transactions",
+      "Income approach uses estimated GPI (6.5% of market value) — not actual rental data"
+    ]
+  }
+  ```
+- Income capitalization gets `incomeEstimated: true` and `incomeDisclaimer` when GPI is auto-derived
+- When real comps and real income are provided, all flags are clean — no false positives
 
-**3. Air Quality PM2.5 Value — CORRECTED**
-- pm25ValuePerTon: $142,000 → **$117,106** (BenMAP-CE national median)
-- Clarified the $418/yr rate is total pollutant removal, not just PM2.5
-- Rate per canopy acre $418 unchanged (derived from Nowak et al. 2014 total removal rates)
+**3. Index.html TerraValue Demo — FIXED**
+- Old: Static hardcoded values (`$4,580`, `$145,410`, `$2,576` property) that never updated
+- New: HTML defaults are `—` dashes; `runDemo()` runs on page load and fills with engine-calculated values
+- Unknown addresses show "Try the full app for any address" instead of random fake data
+- Per-service elements now have stable IDs (`sv-carbon`, `sv-storm`, etc.) instead of relying on `querySelectorAll` index order
 
-**4. Stormwater Methodology — CORRECTED**
-- Old: "35% rainfall interception × $4.00/1,000 gal" (math gave $1,901, not $520)
-- New: "Benefit transfer from USDA CUFR / iTree Eco literature" ($520 retained as literature value)
+**4. Projector Home Value — NOW EDITABLE (terravalue.html)**
+- Old: Hardcoded `var home = 450000` with static `$450,000` display
+- New: Range slider (`$100K–$2M`, step $10K) that feeds into all projector calculations
+- `homeVal` display updates dynamically as slider moves
 
-**5. Habitat Source — SOFTENED**
-- Source now reads "benefit transfer from ecosystem services literature" (Troy & Wilson 2006, approximate)
+**5. Formspree Placeholders — REPLACED WITH MAILTO (index.html)**
+- Old: `action="https://formspree.io/f/YOUR_FORM_ID"` on both forms (silently 404'd on submit)
+- New: Both forms replaced with `mailto:hello@pxconsulting.io` links with pre-filled subject/body
+- Dead `emailInput`/`replyTo` sync JS removed
 
-**6. Property Premium Formula — CAPPED**
-- Added `Math.min()` cap: premium cannot exceed 12% of market value (CANOPY_VALUE_COEFFICIENTS.maxPremiumPct)
-- Previously uncapped: 80% canopy → 19% premium (unrealistic)
+**6. Git Junk Files — IDENTIFIED**
+- 7 `tmp_obj_*` files and `maintenance.lock` in `.git/objects/` need local removal (sandbox is read-only for `.git`)
 
-**7. Donovan et al. 2013 Asthma Claim — REMOVED**
-- Donovan 2013 studied tree canopy and lower-body skin cancer, NOT asthma
-- Removed `asthmaReductionPct: 0.029` from SUSTAINABILITY_METRICS
-- Removed asthma calculation from SustainabilityValue class
-- All Donovan references removed from methodology and reference lists
-- Health benefits now cite only Nowak et al. 2014 (air quality via pollutant removal)
+### Previous Changes (carried forward from earlier sessions)
 
-**8. Netusil Citation Year — CORRECTED THROUGHOUT**
-- "Netusil et al. 2022" → **"Netusil et al. 2014"** everywhere
-- Actual paper: Netusil, Siriwardena et al. 2014, published in Ecological Economics 2016, Vol 128
-- DOI: 10.1016/j.ecolecon.2016.04.018
-
-**9. Ecosystem Service Rate Sum — CORRECTED**
-- LandAppreciation ecoServiceRate: 663+520+418+350+320 → **494+520+418+252+320 = 2,004**
-- LandValuation annualServicesPerCanopyAcre: 2,271 → **2,004**
-
-**10. FHFA HPI Label — CORRECTED**
-- "2019-2024 average" → **"long-term Atlanta metro average"** (no specific date range claimed)
-
-**11. Maintenance Costs — MARKED AS ESTIMATED**
-- stormwaterInfraReduction, pavementLifeExtension, erosionControlValue all marked "(estimated)"
-- Added note: "approximate ranges based on industry benchmarks, not from specific studies"
-
-**12. Cap Rates & Construction Costs — MARKED AS ESTIMATED**
-- Source strings changed from "CBRE Cap Rate Survey 2024" / "RS Means 2024 Southeast" to "Estimated range based on..." 
-- Values are reasonable ranges but not pulled from specific 2024 reports
-
-**13. HTML Files Updated**
-- index.html: All static service values updated ($494 carbon, $252 energy), citation pills corrected ($190/tonne), metrics strip updated
-- terravalue.html: All 6 service cards corrected, citation descriptions updated, Value Projector bar defaults updated, all citation pills corrected
-
-### Previous Changes (carried forward)
+**Values Audit (12+ corrections)** — All ecosystem service rates verified against sources: carbon $494 (was $663), energy $252 (was $350), PM2.5 $117,106/ton, EPA SC-GHG $190/tonne. Property premium capped at 12%. Donovan asthma claim removed. Netusil citation year corrected to 2014. Maintenance costs marked as estimated.
 
 **Removed Reggie Hero Images** — Single-column centered hero, footer memorial preserved
 
 **Soil Score → Coming Soon** — `calculateSoilScore()` returns null, all UI shows "Coming Soon"
 
-**Premium Consultant Connection** — Paywall-gated section on both pages, Formspree modal
+**Premium Consultant Connection** — Paywall-gated section on both pages, mailto modal
 
-**Land Valuation Tool** — ~1,000 lines added to engine: Sales Comparison, Income Cap, Cost Approach, HBU, Three-Approach Reconciliation
+**Land Valuation Tool** — ~1,000 lines: Sales Comparison, Income Cap, Cost Approach, HBU, Three-Approach Reconciliation
 
 ---
 
@@ -95,18 +85,18 @@ A full audit was performed across all P&X and TerraValue files. Every value in t
 ## Known Issues & Pending Items
 
 ### Must Do Before Push
-- **Remove git index.lock** — A stale lock file exists. Run:
+- **Remove git junk files** — Run locally:
   ```bash
   cd ~/Desktop/Claude-Work/"P&X"
-  rm .git/index.lock
+  rm -f .git/objects/*/tmp_obj_* .git/objects/maintenance.lock .git/index.lock
   git add website/ PX-Session-Handoff.md
-  git commit -m "Audit corrections: all values verified against sources, citations fixed"
+  git commit -m "Audit cleanup: dynamic projector values, synthetic comp flagging, mailto forms, dead code removal"
   git push
   ```
 
-### Still Pending (carried over)
-- **Formspree form ID** — `index.html` contact form + consultant modal still have placeholder `YOUR_FORM_ID`
+### Still Pending
 - **Domain `pxconsulting.io`** — Needs DNS records pointed to Vercel
+- **Formspree upgrade** — Current forms use mailto fallback. When ready, create a Formspree account and replace the mailto links with real form endpoints for a better UX
 
 ### Future Considerations
 - **Integrate engine into TerraValue app** — Import `terravalue-engine.js` into `TerraValue.jsx`
@@ -128,9 +118,9 @@ A full audit was performed across all P&X and TerraValue files. Every value in t
 | **PX-Partner-Overview.pdf** | 1-page client-facing partner overview |
 | **PX-Business-Plan.pdf** | 20-page business plan (April 2026) |
 | **vercel.json** | Deployment config with security headers |
-| **website/index.html** | P&X homepage (~1,114 lines) |
-| **website/terravalue.html** | TerraValue product page (~986 lines) |
-| **website/terravalue-engine.js** | TerraValue calculation engine — 7 modules, ~2,310 lines |
+| **website/index.html** | P&X homepage (~1,085 lines) |
+| **website/terravalue.html** | TerraValue product page (~996 lines) |
+| **website/terravalue-engine.js** | TerraValue calculation engine — 7 modules, ~2,345 lines |
 | **website/sitemap.xml** | 2 URLs |
 
 ### Related files elsewhere in workspace
@@ -156,6 +146,23 @@ A full audit was performed across all P&X and TerraValue files. Every value in t
 | FHFA HPI | 3.5% baseline annual appreciation | ✓ Labeled as long-term avg |
 | O.C.G.A. § 48-5-7 | Georgia 40% assessment ratio | ✓ Verified |
 | USGBC / BRE / IWBI / GBI | Certification credit structures | ✓ Verified |
+
+---
+
+## Engine Data Quality System (New)
+
+The engine now distinguishes real data from demo/synthetic data at every level:
+
+| Flag | Location | Meaning |
+|---|---|---|
+| `isSynthetic: true` | Each comparable in `adjustedComparables[]` | This comp was generated, not a real transaction |
+| `usingSyntheticComps` | `salesComparison()` return | The entire sales comparison used synthetic data |
+| `confidence: 'demo'` | `salesComparison()` return | Confidence level is demo-grade, not market-grade |
+| `syntheticDisclaimer` | `salesComparison()` return | Human-readable warning string |
+| `incomeEstimated` | `incomeCapitalization()` return | GPI was derived from market value, not real rental data |
+| `dataQuality` | `fullValuation()` return | Top-level object with `hasRealComparables`, `hasRealIncome`, `syntheticDataUsed`, `warnings[]` |
+
+Any UI consuming engine output can check `dataQuality.syntheticDataUsed` to decide whether to show a disclaimer badge.
 
 ---
 
