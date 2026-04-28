@@ -3,466 +3,574 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>P&X — Phloem & Xylem | Natural Resource & Urban Forestry Consulting</title>
-  <meta name="description" content="P&X provides expert arboriculture, urban forestry, soil science, and regenerative landscape consulting for engineering firms, developers, contractors, and property owners in the greater Atlanta metro area.">
+  <title>P&X — Phloem & Xylem | We Start Underground</title>
+  <meta name="description" content="P&X is a natural resource consulting firm that starts where everyone else stops — underground. We built TerraValue to prove your trees are worth more than you think.">
   <meta name="author" content="P&X — Phloem & Xylem">
-  <meta property="og:title" content="P&X — Phloem & Xylem">
-  <meta property="og:description" content="Natural Resource & Urban Forestry Consulting. Innovative & sustainable solutions. Sandy Springs, GA.">
+  <meta property="og:title" content="P&X — Your trees are worth more than you think.">
+  <meta property="og:description" content="Natural resource consulting + TerraValue ecosystem services calculator. We start underground.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://phloemandxylem.com">
+  <meta property="og:url" content="https://pxconsulting.io">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* ═══ RESET & BASE ═══ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 16px; }
     body {
-      font-family: 'Source Sans 3', 'Segoe UI', sans-serif;
-      color: #2c2c2c;
-      background: #faf8f5;
+      font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+      color: #1a1a1a;
+      background: #faf9f6;
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
     }
     img { max-width: 100%; display: block; }
     a { color: inherit; text-decoration: none; }
 
-    /* ═══ BRAND TOKENS ═══ */
     :root {
-      --green-dark: #2d5016;
-      --green-mid: #3d6b22;
-      --green-light: #5a8a3c;
-      --green-pale: #e8f0e2;
-      --cream: #faf8f5;
+      --forest-deep: #1b4332;
+      --forest: #2d6a4f;
+      --sage: #40916c;
+      --mint: #52b788;
+      --seafoam: #b7e4c7;
+      --pale-green: #d8f3dc;
+      --coral: #f4845f;
+      --golden: #ffd166;
+      --cream: #faf9f6;
       --cream-dark: #f0ece6;
-      --brown-dark: #5c4a2a;
-      --brown-accent: #92400e;
       --text-primary: #1a1a1a;
       --text-secondary: #4a4a4a;
-      --text-light: #6b6b6b;
-      --gold: #b8960c;
+      --text-light: #7a7a7a;
       --white: #ffffff;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-      --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
-      --radius: 6px;
-      --max-width: 1140px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.1);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-pill: 100px;
+      --max-width: 1100px;
     }
 
-    /* ═══ TYPOGRAPHY ═══ */
-    h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; color: var(--green-dark); line-height: 1.25; }
-    h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; }
+    h1, h2, h3, h4 { color: var(--forest-deep); line-height: 1.2; font-weight: 700; }
+    h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
     h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 600; }
-    h3 { font-size: 1.3rem; font-weight: 600; }
-    h4 { font-size: 1.1rem; font-weight: 600; }
+    h3 { font-size: 1.2rem; font-weight: 600; }
     p { margin-bottom: 1rem; }
 
-    /* ═══ NAV ═══ */
+    .section-inner { max-width: var(--max-width); margin: 0 auto; }
+    section { padding: 5rem 2rem; }
+    .eyebrow {
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.85rem 1.75rem; font-size: 0.95rem; font-weight: 600;
+      border-radius: var(--radius-pill); transition: all 0.25s; cursor: pointer;
+      border: none; font-family: inherit;
+    }
+    .btn-primary { background: var(--forest); color: var(--white); }
+    .btn-primary:hover { background: var(--forest-deep); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .btn-outline { background: transparent; color: var(--forest); border: 2px solid var(--forest); }
+    .btn-outline:hover { background: var(--pale-green); }
+    .btn-coral { background: var(--coral); color: var(--white); }
+    .btn-coral:hover { background: #e8734e; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .btn-white { background: var(--white); color: var(--forest-deep); }
+    .btn-white:hover { background: var(--cream-dark); transform: translateY(-2px); }
+
     .nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      background: rgba(250,248,245,0.97);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(45,80,22,0.1);
+      background: rgba(250,249,246,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(27,67,50,0.06);
       transition: box-shadow 0.3s;
     }
-    .nav.scrolled { box-shadow: var(--shadow-md); }
+    .nav.scrolled { box-shadow: var(--shadow-sm); }
     .nav-inner {
       max-width: var(--max-width); margin: 0 auto;
       padding: 0 2rem;
       display: flex; align-items: center; justify-content: space-between;
-      height: 72px;
+      height: 64px;
     }
-    .nav-brand {
-      display: flex; align-items: baseline; gap: 0.5rem;
-    }
-    .nav-brand-mark {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem; font-weight: 700;
-      color: var(--green-dark);
+    .nav-brand { display: flex; align-items: center; gap: 0.5rem; }
+    .nav-logo {
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--forest-deep);
       letter-spacing: -0.02em;
     }
-    .nav-brand-sub {
-      font-size: 0.7rem; font-weight: 500;
-      text-transform: uppercase; letter-spacing: 0.15em;
-      color: var(--green-light);
-    }
-    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links { display: flex; gap: 1.75rem; align-items: center; }
     .nav-links a {
-      font-size: 0.9rem; font-weight: 500;
+      font-size: 0.85rem; font-weight: 500;
       color: var(--text-secondary);
       transition: color 0.2s;
-      letter-spacing: 0.02em;
     }
-    .nav-links a:hover { color: var(--green-dark); }
+    .nav-links a:hover { color: var(--forest); }
     .nav-cta {
-      background: var(--green-dark) !important; color: var(--white) !important;
-      padding: 0.5rem 1.25rem !important; border-radius: var(--radius);
-      font-weight: 600 !important; transition: background 0.2s !important;
+      background: var(--forest) !important; color: var(--white) !important;
+      padding: 0.45rem 1.15rem !important; border-radius: var(--radius-pill);
+      font-weight: 600 !important; font-size: 0.85rem !important;
+      transition: background 0.2s !important;
     }
-    .nav-cta:hover { background: var(--green-mid) !important; }
+    .nav-cta:hover { background: var(--forest-deep) !important; }
     .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
-    .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--green-dark); margin: 5px 0; transition: 0.3s; }
+    .nav-toggle span { display: block; width: 20px; height: 2px; background: var(--forest-deep); margin: 4px 0; border-radius: 2px; }
 
-    /* ═══ HERO ═══ */
     .hero {
-      margin-top: 72px;
-      background: linear-gradient(170deg, var(--green-dark) 0%, #1a3a0e 60%, #0f2508 100%);
+      margin-top: 64px;
+      background: linear-gradient(155deg, var(--forest-deep) 0%, var(--forest) 40%, var(--sage) 100%);
       color: var(--white);
-      padding: 6rem 2rem 5rem;
+      padding: 5rem 2rem 4rem;
       position: relative;
       overflow: hidden;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
     }
     .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Ccircle cx='40' cy='40' r='2' fill='%23ffffff' opacity='0.04'/%3E%3C/g%3E%3C/svg%3E");
     }
     .hero-inner {
-      max-width: var(--max-width); margin: 0 auto;
-      position: relative; z-index: 1;
+      max-width: var(--max-width); margin: 0 auto; position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: center;
+      width: 100%;
     }
     .hero-eyebrow {
-      font-size: 0.8rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.2em;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 1.5rem;
+      font-size: 0.8rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--seafoam); margin-bottom: 1rem;
     }
-    .hero h1 { color: var(--white); margin-bottom: 1.5rem; max-width: 700px; }
+    .hero h1 { color: var(--white); margin-bottom: 1.25rem; }
     .hero-sub {
-      font-size: 1.15rem; line-height: 1.8;
-      color: rgba(255,255,255,0.85);
-      max-width: 600px; margin-bottom: 2.5rem;
+      font-size: 1.1rem; line-height: 1.7;
+      color: rgba(255,255,255,0.8);
+      max-width: 540px; margin-bottom: 2rem;
     }
     .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.85rem 1.75rem;
-      font-size: 0.95rem; font-weight: 600;
+
+    .reggie-hero {
+      width: 260px; height: 260px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid rgba(255,255,255,0.12);
+      flex-shrink: 0;
+    }
+
+    .soil-section {
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+    }
+    .soil-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+    .soil-visual {
+      position: relative;
+      height: 400px;
       border-radius: var(--radius);
-      transition: all 0.2s;
-      cursor: pointer; border: none;
-      font-family: inherit;
+      overflow: hidden;
     }
-    .btn-primary { background: var(--white); color: var(--green-dark); }
-    .btn-primary:hover { background: var(--cream-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
-    .btn-outline { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.4); }
-    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.08); }
-    .btn-green { background: var(--green-dark); color: var(--white); }
-    .btn-green:hover { background: var(--green-mid); transform: translateY(-1px); box-shadow: var(--shadow-md); }
-    .hero-badges {
-      margin-top: 3.5rem; padding-top: 2.5rem;
-      border-top: 1px solid rgba(255,255,255,0.12);
-      display: flex; gap: 2.5rem; flex-wrap: wrap;
+    .soil-above {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 50%; background: linear-gradient(180deg, #87CEAB 0%, #52b788 100%);
+      display: flex; align-items: flex-end; justify-content: center;
     }
-    .hero-badge {
-      font-size: 0.8rem; color: rgba(255,255,255,0.55);
-      display: flex; align-items: center; gap: 0.5rem;
+    .soil-below {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 50%; background: linear-gradient(180deg, #8B6914 0%, #5c4a2a 60%, #3d2e16 100%);
+      display: flex; align-items: flex-start; justify-content: center;
+      padding-top: 1.5rem;
     }
-    .hero-badge strong { color: rgba(255,255,255,0.85); font-weight: 600; }
+    .soil-below-text {
+      color: rgba(255,255,255,0.9);
+      font-size: 0.85rem; font-weight: 500;
+      text-align: center; line-height: 1.5;
+      max-width: 200px;
+    }
+    .soil-text h2 { margin-bottom: 1rem; }
+    .soil-text .lead {
+      font-size: 1.1rem; color: var(--text-secondary);
+      margin-bottom: 1.5rem; line-height: 1.7;
+    }
+    .soil-pillars {
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .pillar {
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      padding: 1rem 1.25rem;
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(27,67,50,0.06);
+    }
+    .pillar-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: var(--pale-green);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--forest);
+    }
+    .pillar h4 { font-size: 0.95rem; margin-bottom: 0.2rem; color: var(--forest-deep); }
+    .pillar p { font-size: 0.85rem; color: var(--text-light); margin-bottom: 0; line-height: 1.5; }
 
-    /* ═══ SECTIONS ═══ */
-    section { padding: 5rem 2rem; }
-    .section-inner { max-width: var(--max-width); margin: 0 auto; }
-    .section-label {
-      font-size: 0.75rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.2em;
-      color: var(--green-light); margin-bottom: 0.75rem;
-    }
-    .section-head { margin-bottom: 3rem; max-width: 640px; }
-    .section-head p { color: var(--text-secondary); font-size: 1.05rem; margin-top: 0.75rem; }
-
-    /* ═══ PHILOSOPHY ═══ */
-    .philosophy { background: var(--white); }
-    .philosophy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-    .philosophy-visual {
-      background: linear-gradient(145deg, var(--green-dark), #1a3a0e);
-      border-radius: 12px;
-      padding: 3rem;
+    .tv-section {
+      background: linear-gradient(155deg, var(--forest-deep) 0%, #0f2b1a 100%);
       color: var(--white);
       position: relative;
       overflow: hidden;
     }
-    .philosophy-visual::after {
-      content: '';
-      position: absolute; bottom: -40px; right: -40px;
-      width: 200px; height: 200px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.04);
+    .tv-section::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='%23ffffff' opacity='0.03'/%3E%3C/g%3E%3C/svg%3E");
     }
-    .philosophy-visual blockquote {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem; font-style: italic;
-      line-height: 1.5; position: relative; z-index: 1;
+    .tv-inner {
+      position: relative; z-index: 1;
+      max-width: var(--max-width); margin: 0 auto;
     }
-    .philosophy-visual cite {
-      display: block; margin-top: 1.5rem;
-      font-family: 'Source Sans 3', sans-serif;
-      font-style: normal; font-size: 0.85rem;
-      opacity: 0.7;
-    }
-    .philosophy-text h2 { margin-bottom: 1.25rem; }
-    .philosophy-text .lead {
-      font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 1.5rem;
-    }
-    .philosophy-points { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
-    .philosophy-points li {
-      display: flex; gap: 0.75rem; align-items: flex-start;
-      font-size: 0.95rem; color: var(--text-secondary);
-    }
-    .philosophy-points li::before {
-      content: '';
-      flex-shrink: 0; margin-top: 0.5rem;
-      width: 8px; height: 8px;
-      background: var(--green-light);
-      border-radius: 50%;
-    }
-
-    /* ═══ SERVICES ═══ */
-    .services { background: var(--cream); }
-    .services-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-    .service-card {
-      background: var(--white);
+    .tv-header { text-align: center; margin-bottom: 3rem; }
+    .tv-header h2 { color: var(--white); margin-bottom: 0.75rem; }
+    .tv-header p { color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto; font-size: 1.05rem; }
+    .tv-demo {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: var(--radius);
       padding: 2rem;
-      border: 1px solid rgba(45,80,22,0.08);
-      transition: all 0.25s;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+    }
+    .tv-demo-input {
+      display: flex; gap: 0.75rem; margin-bottom: 1.5rem;
+    }
+    .tv-demo-input input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: var(--white);
+      font-family: inherit; font-size: 0.95rem;
+      outline: none;
+    }
+    .tv-demo-input input::placeholder { color: rgba(255,255,255,0.4); }
+    .tv-demo-input button {
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: var(--seafoam);
+      color: var(--forest-deep);
+      font-family: inherit; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .tv-demo-input button:hover { background: var(--pale-green); }
+    .tv-demo-results {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+    }
+    .tv-result-card {
+      background: rgba(255,255,255,0.06);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .tv-result-card .num {
+      font-size: 1.6rem; font-weight: 700;
+      display: block; margin-bottom: 0.2rem;
+    }
+    .tv-result-card .label {
+      font-size: 0.75rem; color: rgba(255,255,255,0.5);
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .tv-services {
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.75rem;
+      margin-top: 1.5rem;
+      max-width: 700px; margin-left: auto; margin-right: auto;
+    }
+    .tv-service-pill {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem 0.5rem;
+      text-align: center;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.3;
+    }
+    .tv-service-pill .sv-val {
+      display: block; font-weight: 600;
+      color: var(--seafoam); font-size: 0.85rem;
+      margin-bottom: 0.2rem;
+    }
+    .tv-cta {
+      text-align: center; margin-top: 2.5rem;
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    }
+    .tv-citations {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+      justify-content: center; margin-top: 2rem;
+    }
+    .citation-pill {
+      font-size: 0.65rem; font-weight: 500;
+      padding: 0.3rem 0.75rem;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.45);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .services-section { background: var(--white); }
+    .services-header { text-align: center; margin-bottom: 3rem; }
+    .services-header p { color: var(--text-secondary); max-width: 560px; margin: 0.75rem auto 0; font-size: 1.05rem; }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+    }
+    .service-card {
+      background: var(--cream);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      border: 1px solid transparent;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
     }
     .service-card:hover {
-      transform: translateY(-3px);
+      border-color: var(--seafoam);
+      transform: translateY(-4px);
       box-shadow: var(--shadow-md);
-      border-color: rgba(45,80,22,0.15);
     }
     .service-icon {
       width: 44px; height: 44px;
-      background: var(--green-pale);
-      border-radius: 10px;
+      background: var(--pale-green);
+      border-radius: var(--radius-sm);
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1.25rem;
-      color: var(--green-dark);
+      margin-bottom: 1rem;
+      color: var(--forest);
     }
-    .service-card h3 { font-size: 1.1rem; margin-bottom: 0.6rem; }
-    .service-card p { font-size: 0.9rem; color: var(--text-light); margin: 0; line-height: 1.6; }
+    .service-card h3 { margin-bottom: 0.5rem; font-size: 1.05rem; }
+    .service-card p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem; line-height: 1.6; }
+    .service-card .reggie-says {
+      font-size: 0.8rem; color: var(--sage);
+      font-style: italic;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(27,67,50,0.06);
+      margin-bottom: 0;
+    }
+    .icon-svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
-    /* ═══ CLIENTS / WHO WE SERVE ═══ */
-    .clients { background: var(--white); }
-    .clients-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-    .client-card {
-      padding: 2rem;
-      border-radius: var(--radius);
-      border: 1px solid rgba(45,80,22,0.1);
-      background: var(--cream);
+    .data-section { background: var(--cream); }
+    .data-header { text-align: center; margin-bottom: 3rem; }
+    .data-header p { color: var(--text-secondary); max-width: 520px; margin: 0.75rem auto 0; font-size: 1.05rem; }
+    .data-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;
+      margin-bottom: 2rem;
     }
-    .client-card h3 { margin-bottom: 0.5rem; font-size: 1.15rem; }
-    .client-card p { font-size: 0.92rem; color: var(--text-secondary); margin: 0; }
-    .client-card .engagement {
-      margin-top: 1rem; padding-top: 0.75rem;
-      border-top: 1px solid rgba(45,80,22,0.08);
-      font-size: 0.82rem; font-weight: 600;
-      color: var(--green-light);
-    }
-
-    /* ═══ TERRAVALUE BANNER ═══ */
-    .tv-banner {
-      background: linear-gradient(135deg, #1a3a0e 0%, var(--green-dark) 40%, #3d6b22 100%);
-      color: var(--white);
-      padding: 5rem 2rem;
-      position: relative; overflow: hidden;
-    }
-    .tv-banner::before {
-      content: '';
-      position: absolute; top: -100px; right: -100px;
-      width: 400px; height: 400px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.03);
-    }
-    .tv-banner-inner {
-      max-width: var(--max-width); margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
-      align-items: center; position: relative; z-index: 1;
-    }
-    .tv-banner h2 { color: var(--white); margin-bottom: 1rem; }
-    .tv-banner .label {
-      display: inline-block;
-      background: rgba(255,255,255,0.12);
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.75rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      margin-bottom: 1.25rem;
-    }
-    .tv-banner p { color: rgba(255,255,255,0.85); font-size: 1.05rem; line-height: 1.7; }
-    .tv-stats {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1rem; margin-top: 2rem;
-    }
-    .tv-stat {
-      text-align: center;
-      padding: 1.25rem;
-      background: rgba(255,255,255,0.06);
-      border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .tv-stat .num {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem; font-weight: 700;
-      display: block;
-    }
-    .tv-stat .desc { font-size: 0.78rem; color: rgba(255,255,255,0.6); margin-top: 0.25rem; }
-
-    /* ═══ CREDENTIALS ═══ */
-    .credentials { background: var(--cream); }
-    .cred-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
-      align-items: start;
-    }
-    .cred-list { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; }
-    .cred-list li {
-      display: flex; gap: 0.75rem; align-items: baseline;
-      font-size: 0.95rem;
-    }
-    .cred-list li .marker {
-      color: var(--green-light); font-weight: 700; flex-shrink: 0;
-    }
-    .cred-list li strong { color: var(--text-primary); }
-    .cred-list li span { color: var(--text-light); }
-    .awards-box {
+    .data-card {
       background: var(--white);
       border-radius: var(--radius);
-      padding: 2rem;
-      border-left: 4px solid var(--gold);
+      padding: 1.5rem;
+      border: 1px solid rgba(27,67,50,0.06);
     }
-    .awards-box h3 { color: var(--brown-dark); margin-bottom: 1rem; }
-    .award-item { margin-bottom: 1rem; }
-    .award-item:last-child { margin-bottom: 0; }
-    .award-item .title { font-weight: 600; color: var(--text-primary); font-size: 0.95rem; }
-    .award-item .org { font-size: 0.85rem; color: var(--text-light); }
+    .data-card h4 { font-size: 0.9rem; color: var(--forest); margin-bottom: 0.5rem; }
+    .data-card-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .data-pill {
+      font-size: 0.72rem; font-weight: 500;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-pill);
+      background: var(--pale-green);
+      color: var(--forest-deep);
+    }
+    .cred-row {
+      display: flex; gap: 0.75rem; flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .cred-badge {
+      display: flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      background: var(--white);
+      border-radius: var(--radius-pill);
+      font-size: 0.8rem; font-weight: 500;
+      color: var(--forest-deep);
+      border: 1px solid rgba(27,67,50,0.08);
+    }
+    .cred-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--sage);
+      border-radius: 50%;
+    }
 
-    /* ═══ CONTACT ═══ */
-    .contact { background: var(--white); }
-    .contact-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
-      align-items: start;
+    .clients-section { background: var(--white); }
+    .clients-header { text-align: center; margin-bottom: 3rem; }
+    .clients-header p { color: var(--text-secondary); max-width: 520px; margin: 0.75rem auto 0; font-size: 1.05rem; }
+    .clients-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;
     }
-    .contact-info h2 { margin-bottom: 1rem; }
-    .contact-info .lead { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 2rem; }
+    .client-card {
+      background: var(--cream);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      border: 1px solid transparent;
+      transition: all 0.3s;
+    }
+    .client-card:hover {
+      border-color: var(--seafoam);
+      box-shadow: var(--shadow-sm);
+    }
+    .client-card h3 { margin-bottom: 0.5rem; }
+    .client-card p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem; line-height: 1.6; }
+    .client-card .engagement {
+      font-size: 0.8rem; font-weight: 600;
+      color: var(--sage);
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(27,67,50,0.06);
+    }
+
+    .contact-section { background: var(--cream); }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; align-items: start;
+    }
+    .contact-text h2 { margin-bottom: 0.75rem; }
+    .contact-text .lead {
+      font-size: 1.05rem; color: var(--text-secondary);
+      margin-bottom: 2rem; line-height: 1.7;
+    }
     .contact-detail {
       display: flex; gap: 0.75rem; align-items: center;
-      margin-bottom: 1rem;
-      font-size: 0.95rem;
+      margin-bottom: 1rem; font-size: 0.95rem;
     }
     .contact-detail .icon {
       width: 40px; height: 40px;
-      background: var(--green-pale);
-      border-radius: 10px;
+      background: var(--pale-green);
+      border-radius: var(--radius-sm);
       display: flex; align-items: center; justify-content: center;
-      color: var(--green-dark); flex-shrink: 0;
+      color: var(--forest); flex-shrink: 0;
     }
     .contact-form {
-      background: var(--cream);
+      background: var(--white);
       border-radius: var(--radius);
-      padding: 2.5rem;
+      padding: 2rem;
+      border: 1px solid rgba(27,67,50,0.06);
     }
-    .form-group { margin-bottom: 1.25rem; }
+    .contact-form h3 { margin-bottom: 1.25rem; }
+    .form-group { margin-bottom: 1rem; }
     .form-group label {
-      display: block; font-size: 0.85rem; font-weight: 600;
-      color: var(--text-secondary); margin-bottom: 0.4rem;
+      display: block; font-size: 0.85rem; font-weight: 500;
+      color: var(--text-secondary); margin-bottom: 0.35rem;
     }
     .form-group input, .form-group textarea, .form-group select {
       width: 100%;
       padding: 0.7rem 1rem;
-      border: 1px solid rgba(45,80,22,0.15);
-      border-radius: var(--radius);
+      border: 1px solid rgba(27,67,50,0.12);
+      border-radius: var(--radius-sm);
       font-family: inherit; font-size: 0.95rem;
-      background: var(--white);
+      background: var(--cream);
       transition: border-color 0.2s;
     }
     .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
       outline: none;
-      border-color: var(--green-light);
-      box-shadow: 0 0 0 3px rgba(90,138,60,0.12);
+      border-color: var(--sage);
+      box-shadow: 0 0 0 3px rgba(82,183,136,0.12);
     }
-    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-submit {
+      width: 100%; justify-content: center;
+      background: var(--forest); color: var(--white);
+      padding: 0.85rem; border: none; border-radius: var(--radius-pill);
+      font-family: inherit; font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .form-submit:hover { background: var(--forest-deep); }
 
-    /* ═══ FOOTER ═══ */
     .footer {
-      background: var(--green-dark);
-      color: rgba(255,255,255,0.7);
+      background: var(--forest-deep);
+      color: rgba(255,255,255,0.6);
       padding: 3rem 2rem 2rem;
     }
     .footer-inner {
       max-width: var(--max-width); margin: 0 auto;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 1rem;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 2rem;
     }
     .footer-brand .name {
-      font-family: 'Playfair Display', serif;
       font-size: 1.2rem; font-weight: 700;
-      color: var(--white);
+      color: var(--white); margin-bottom: 0.25rem;
     }
     .footer-brand .tagline {
-      font-size: 0.8rem; margin-top: 0.25rem;
-      color: rgba(255,255,255,0.45);
+      font-size: 0.8rem; color: rgba(255,255,255,0.35);
+      max-width: 280px; line-height: 1.5;
     }
     .footer-links { display: flex; gap: 1.5rem; }
     .footer-links a { font-size: 0.85rem; transition: color 0.2s; }
     .footer-links a:hover { color: var(--white); }
+    .footer-reggie {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.75rem; color: rgba(255,255,255,0.3);
+    }
     .footer-copy {
       width: 100%; text-align: center;
       margin-top: 2rem; padding-top: 1.5rem;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      font-size: 0.8rem; color: rgba(255,255,255,0.35);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.75rem; color: rgba(255,255,255,0.25);
     }
 
-    /* ═══ MOBILE ═══ */
     @media (max-width: 900px) {
-      .philosophy-grid, .cred-grid, .contact-grid, .tv-banner-inner {
-        grid-template-columns: 1fr; gap: 2rem;
-      }
-      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-sub { margin-left: auto; margin-right: auto; }
+      .hero-buttons { justify-content: center; }
+      .hero-eyebrow { text-align: center; }
+      .reggie-hero { margin: 0 auto; width: 200px; height: 200px; }
+      .reggie-hero svg { width: 170px; height: 170px; }
+      .soil-grid { grid-template-columns: 1fr; }
+      .soil-visual { height: 300px; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .data-grid { grid-template-columns: 1fr; }
       .clients-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .tv-services { grid-template-columns: repeat(3, 1fr); }
+      .tv-demo-results { grid-template-columns: repeat(3, 1fr); }
     }
     @media (max-width: 640px) {
       section { padding: 3.5rem 1.25rem; }
       .nav-inner { padding: 0 1.25rem; }
-      .hero { padding: 4rem 1.25rem 3.5rem; }
+      .hero { padding: 4rem 1.25rem 3rem; min-height: auto; }
       .services-grid { grid-template-columns: 1fr; }
-      .hero-badges { gap: 1.5rem; }
+      .tv-demo-input { flex-direction: column; }
+      .tv-demo-results { grid-template-columns: 1fr; }
+      .tv-services { grid-template-columns: repeat(2, 1fr); }
       .nav-links { display: none; }
       .nav-toggle { display: block; }
       .nav-links.open {
         display: flex; flex-direction: column;
-        position: absolute; top: 72px; left: 0; right: 0;
+        position: absolute; top: 64px; left: 0; right: 0;
         background: var(--cream);
-        padding: 1.5rem 2rem;
-        border-bottom: 1px solid rgba(45,80,22,0.1);
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid rgba(27,67,50,0.08);
         box-shadow: var(--shadow-md);
       }
-      .tv-stats { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; align-items: center; text-align: center; }
     }
-
-    /* ═══ SVG ICONS INLINE ═══ */
-    .icon-svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   </style>
 </head>
 <body>
 
-<!-- ═══ NAVIGATION ═══ -->
 <nav class="nav" id="nav">
   <div class="nav-inner">
     <a href="#" class="nav-brand">
-      <span class="nav-brand-mark">P&X</span>
-      <span class="nav-brand-sub">Phloem &amp; Xylem</span>
+      <span class="nav-logo">P&X</span>
     </a>
     <div class="nav-links" id="navLinks">
-      <a href="#philosophy">Approach</a>
-      <a href="#services">Services</a>
-      <a href="#clients">Clients</a>
-      <a href="terravalue.html">TerraValue</a>
-      <a href="#credentials">Credentials</a>
-      <a href="#contact" class="nav-cta">Get in Touch</a>
+      <a href="#soil">our approach</a>
+      <a href="#services">what we do</a>
+      <a href="#terravalue">terravalue</a>
+      <a href="#clients">who we work with</a>
+      <a href="#contact" class="nav-cta">let's dig in</a>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
       <span></span><span></span><span></span>
@@ -470,238 +578,361 @@
   </div>
 </nav>
 
-<!-- ═══ HERO ═══ -->
 <section class="hero">
   <div class="hero-inner">
-    <p class="hero-eyebrow">Natural Resource &amp; Urban Forestry Consulting</p>
-    <h1>Your Project Needs an Arborist. Not Just Any Arborist.</h1>
-    <p class="hero-sub">P&X delivers subject matter expertise in arboriculture, urban forestry, soil science, and regenerative landscape solutions. We integrate into your project team as the specialist you need — diagnostics, design, and oversight so your projects move forward with confidence.</p>
-    <div class="hero-buttons">
-      <a href="#contact" class="btn btn-primary">Let's Talk About Your Project</a>
-      <a href="terravalue.html" class="btn btn-outline">Try TerraValue →</a>
+    <div>
+      <p class="hero-eyebrow">meet our chief soil inspector</p>
+      <h1>your trees are worth more than you think.</h1>
+      <p class="hero-sub">Reggie knew. He dug in the dirt every day. We just did the math — and built the tools to prove it. P&X turns invisible ecosystem value into numbers you can actually use.</p>
+      <div class="hero-buttons">
+        <a href="terravalue.html" class="btn btn-coral">see what your land is worth</a>
+        <a href="#soil" class="btn btn-white">how we think</a>
+      </div>
     </div>
-    <div class="hero-badges">
-      <div class="hero-badge">
-        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <span><strong>ISA Certified Arborist</strong></span>
+    <div class="reggie-hero">
+      <svg width="220" height="220" viewBox="0 0 220 220">
+        <ellipse cx="62" cy="68" rx="28" ry="36" fill="#b8864f"/>
+        <path d="M38 54 Q42 48 50 51" stroke="#c9976a" stroke-width="1.8" fill="none"/>
+        <path d="M42 64 Q46 58 54 61" stroke="#c9976a" stroke-width="1.8" fill="none"/>
+        <path d="M36 74 Q40 68 48 71" stroke="#c9976a" stroke-width="1.8" fill="none"/>
+        <path d="M70 54 Q74 48 82 51" stroke="#c9976a" stroke-width="1.8" fill="none"/>
+        <path d="M66 64 Q70 58 78 61" stroke="#c9976a" stroke-width="1.8" fill="none"/>
+        <path d="M72 74 Q76 68 84 71" stroke="#c9976a" stroke-width="1.8" fill="none"/>
+        <ellipse cx="158" cy="68" rx="28" ry="36" fill="#b8864f"/>
+        <path d="M136 54 Q140 48 148 51" stroke="#c9976a" stroke-width="1.8" fill="none"/>
+        <path d="M140 64 Q144 58 152 61" stroke="#c9976a" stroke-width="1.8" fill="none"/>
+        <path d="M134 74 Q138 68 146 71" stroke="#c9976a" stroke-width="1.8" fill="none"/>
+        <path d="M164 54 Q168 48 176 51" stroke="#c9976a" stroke-width="1.8" fill="none"/>
+        <path d="M160 64 Q164 58 172 61" stroke="#c9976a" stroke-width="1.8" fill="none"/>
+        <path d="M166 74 Q170 68 178 71" stroke="#c9976a" stroke-width="1.8" fill="none"/>
+        <ellipse cx="110" cy="100" rx="52" ry="44" fill="#c9976a"/>
+        <path d="M62 85 Q68 80 76 83" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M64 95 Q70 90 78 93" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M66 105 Q72 100 80 103" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M144 85 Q150 80 158 83" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M142 95 Q148 90 156 93" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M140 105 Q146 100 154 103" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M82 78 Q90 74 100 77" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M120 77 Q130 74 138 78" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <circle cx="110" cy="60" r="40" fill="#c9976a"/>
+        <path d="M74 46 Q80 40 88 44" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M76 58 Q82 52 90 56" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M132 44 Q140 40 146 46" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M130 56 Q138 52 144 58" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M90 36 Q100 32 110 35" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M110 35 Q120 32 130 36" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <circle cx="110" cy="32" r="26" fill="#c9976a"/>
+        <path d="M86 24 Q92 19 100 22" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M120 22 Q128 19 134 24" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M96 16 Q104 12 112 15" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M88 32 Q94 28 102 31" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <path d="M118 31 Q126 28 132 32" stroke="#d4a87a" stroke-width="1.8" fill="none"/>
+        <ellipse cx="110" cy="74" rx="22" ry="16" fill="#d4a87a"/>
+        <path d="M90 70 Q96 66 104 69" stroke="#ddb88a" stroke-width="1.2" fill="none"/>
+        <path d="M116 69 Q124 66 130 70" stroke="#ddb88a" stroke-width="1.2" fill="none"/>
+        <ellipse cx="110" cy="72" rx="10" ry="7" fill="#3a2a1a"/>
+        <ellipse cx="108" cy="70.5" rx="2.5" ry="2" fill="#5a4a3a"/>
+        <circle cx="96" cy="50" r="6.5" fill="#2a1a0a"/>
+        <circle cx="124" cy="50" r="6.5" fill="#2a1a0a"/>
+        <circle cx="98.5" cy="48" r="2.2" fill="white"/>
+        <circle cx="126.5" cy="48" r="2.2" fill="white"/>
+        <path d="M96 86 Q110 102 124 86" stroke="none" fill="#e88a8a"/>
+        <path d="M100 87 Q110 98 120 87" stroke="none" fill="#d47878"/>
+        <ellipse cx="110" cy="98" rx="8" ry="11" fill="#e88a8a" opacity="0.85"/>
+        <path d="M105 98 Q110 110 115 98" stroke="#d47878" stroke-width="0.8" fill="none"/>
+        <path d="M82 84 Q88 80 94 85" stroke="#c9976a" stroke-width="1.2" fill="none"/>
+        <path d="M126 85 Q132 80 138 84" stroke="#c9976a" stroke-width="1.2" fill="none"/>
+        <ellipse cx="110" cy="150" rx="34" ry="46" fill="#c9976a"/>
+        <path d="M80 132 Q86 127 94 130" stroke="#d4a87a" stroke-width="1.5" fill="none"/>
+        <path d="M82 144 Q88 139 96 142" stroke="#d4a87a" stroke-width="1.5" fill="none"/>
+        <path d="M84 158 Q90 153 98 156" stroke="#d4a87a" stroke-width="1.5" fill="none"/>
+        <path d="M126 130 Q134 127 140 132" stroke="#d4a87a" stroke-width="1.5" fill="none"/>
+        <path d="M124 142 Q132 139 138 144" stroke="#d4a87a" stroke-width="1.5" fill="none"/>
+        <path d="M122 156 Q130 153 136 158" stroke="#d4a87a" stroke-width="1.5" fill="none"/>
+        <ellipse cx="88" cy="194" rx="14" ry="10" fill="#d4a87a"/>
+        <ellipse cx="132" cy="194" rx="14" ry="10" fill="#d4a87a"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="soil-section" id="soil">
+  <div class="section-inner">
+    <div class="soil-grid">
+      <div class="soil-visual">
+        <div class="soil-above">
+          <svg width="180" height="160" viewBox="0 0 180 160" style="margin-bottom: -2px;">
+            <path d="M90 20 Q70 20 60 40 Q50 35 45 50 Q35 45 30 60 Q20 58 18 75 L18 160 L162 160 L162 75 Q160 58 150 60 Q145 45 135 50 Q130 35 120 40 Q110 20 90 20Z" fill="#2d6a4f"/>
+            <path d="M90 30 Q75 30 68 45 Q60 42 56 55 Q48 52 44 65 L44 160 L136 160 L136 65 Q132 52 124 55 Q120 42 112 45 Q105 30 90 30Z" fill="#40916c"/>
+            <rect x="86" y="100" width="8" height="60" rx="3" fill="#5c4a2a"/>
+          </svg>
+        </div>
+        <div class="soil-below">
+          <svg width="180" height="60" viewBox="0 0 180 60" style="margin-top: 10px;">
+            <path d="M90 0 Q70 10 50 20 Q30 25 20 15" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" fill="none"/>
+            <path d="M90 0 Q110 12 130 18 Q150 22 160 12" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" fill="none"/>
+            <path d="M90 0 Q80 15 60 30 Q45 40 30 35" stroke="rgba(255,255,255,0.15)" stroke-width="1" fill="none"/>
+            <path d="M90 0 Q100 18 120 32 Q140 42 155 36" stroke="rgba(255,255,255,0.15)" stroke-width="1" fill="none"/>
+          </svg>
+          <div class="soil-below-text">this is where we start.</div>
+        </div>
       </div>
-      <div class="hero-badge">
-        <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
-        <span><strong>Urban Forest Specialist</strong></span>
-      </div>
-      <div class="hero-badge">
-        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        <span><strong>TRAQ Certified</strong></span>
-      </div>
-      <div class="hero-badge">
-        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        <span><strong>Sandy Springs, GA</strong></span>
+      <div class="soil-text">
+        <p class="eyebrow">the soil principle</p>
+        <h2>most people look at the canopy. we start underground.</h2>
+        <p class="lead">Everything visible above ground — every branch, every leaf, every dollar of ecosystem value — depends entirely on what's happening below. If the system underneath is out of balance, no amount of above-ground intervention will hold.</p>
+        <div class="soil-pillars">
+          <div class="pillar">
+            <div class="pillar-icon">
+              <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <div>
+              <h4>diagnose, don't guess</h4>
+              <p>Full ecosystem assessment before any prescription. Soil, roots, hydrology, structure — the whole system.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div>
+              <h4>work with nature, not against it</h4>
+              <p>Regenerative, nature-based solutions. Things that get stronger over time, not weaker.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+            </div>
+            <div>
+              <h4>data over vibes</h4>
+              <p>Peer-reviewed research. Real ArcGIS parcel data. Calculations you can trace back to the source paper.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ PHILOSOPHY ═══ -->
-<section class="philosophy" id="philosophy">
-  <div class="section-inner">
-    <div class="philosophy-grid">
-      <div class="philosophy-visual">
-        <blockquote>
-          "Most firms look at the canopy and treat what they see. P&X looks underground first."
-        </blockquote>
-        <cite>— The Soil Principle</cite>
+<section class="tv-section" id="terravalue">
+  <div class="tv-inner">
+    <div class="tv-header">
+      <p class="eyebrow" style="color: var(--seafoam);">P&X technology</p>
+      <h2>one address. six services. real dollars.</h2>
+      <p>TerraValue is a parcel-level ecosystem services calculator. Enter any address and get a peer-reviewed, dollar-value breakdown of what your land provides annually.</p>
+    </div>
+    <div class="tv-demo">
+      <div class="tv-demo-input">
+        <input type="text" placeholder="try an address..." id="tvAddress" value="7840 Roswell Rd, Sandy Springs, GA">
+        <button id="tvCalcBtn">calculate</button>
       </div>
-      <div class="philosophy-text">
-        <p class="section-label">Our Approach</p>
-        <h2>We Don't Treat Symptoms. We Find the Root Cause.</h2>
-        <p class="lead">Soil health is everything — it dictates structure, resilience, longevity, and every visible symptom a client calls about. If the system below is out of balance, no amount of above-ground intervention will hold.</p>
-        <ul class="philosophy-points">
-          <li>Holistic, systems-level diagnostic approach — examining the full ecosystem before prescribing solutions</li>
-          <li>Nature-based, regenerative solutions that work with natural systems rather than against them</li>
-          <li>Public-sector credibility combined with private-sector responsiveness and personal attention</li>
-          <li>Recommendations that last longer, cost less over time, and address actual causes rather than surface symptoms</li>
-        </ul>
+      <div class="tv-demo-results" id="tvResults">
+        <div class="tv-result-card">
+          <span class="num" style="color: var(--seafoam);" id="tvTotal">$4,847</span>
+          <span class="label">annual value</span>
+        </div>
+        <div class="tv-result-card">
+          <span class="num" style="color: var(--golden);" id="tvScore">72</span>
+          <span class="label">soil score</span>
+        </div>
+        <div class="tv-result-card">
+          <span class="num" style="color: var(--coral);" id="tv30yr">$145,410</span>
+          <span class="label">30-year projection</span>
+        </div>
       </div>
+    </div>
+    <div class="tv-services">
+      <div class="tv-service-pill"><span class="sv-val">$663</span>carbon</div>
+      <div class="tv-service-pill"><span class="sv-val">$520</span>stormwater</div>
+      <div class="tv-service-pill"><span class="sv-val">$418</span>air quality</div>
+      <div class="tv-service-pill"><span class="sv-val">$350</span>energy</div>
+      <div class="tv-service-pill"><span class="sv-val">$320</span>habitat</div>
+      <div class="tv-service-pill"><span class="sv-val">$2,576</span>property</div>
+    </div>
+    <div class="tv-citations">
+      <span class="citation-pill">EPA SC-GHG $255/tonne</span>
+      <span class="citation-pill">Kovacs et al. 2022</span>
+      <span class="citation-pill">USDA NRS meta-analysis</span>
+      <span class="citation-pill">Atlanta iTree Eco 2014</span>
+      <span class="citation-pill">Nowak et al. 2014</span>
+      <span class="citation-pill">McPherson 2003</span>
+      <span class="citation-pill">Troy & Wilson 2006</span>
+    </div>
+    <div class="tv-cta">
+      <a href="https://terravalue.app" class="btn btn-coral" target="_blank">launch terravalue</a>
+      <a href="terravalue.html" class="btn btn-white">learn how it works</a>
     </div>
   </div>
 </section>
 
-<!-- ═══ SERVICES ═══ -->
-<section class="services" id="services">
+<section class="services-section" id="services">
   <div class="section-inner">
-    <div class="section-head">
-      <p class="section-label">Services</p>
-      <h2>Comprehensive Consulting, Expert Execution</h2>
-      <p>Our principal consultant serves as the diagnostic expert, designer, and project lead on every engagement. Specialized field work is executed through a curated network of trusted subcontractors.</p>
+    <div class="services-header">
+      <p class="eyebrow">what we do</p>
+      <h2>six ways we get our hands dirty</h2>
+      <p>We're the diagnostic expert, designer, and project lead. Specialized field work gets executed through our trusted network.</p>
     </div>
     <div class="services-grid">
       <div class="service-card">
         <div class="service-icon">
           <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </div>
-        <h3>Landscape Diagnostics</h3>
-        <p>Comprehensive site assessments that start below the surface. Soil testing, root-zone evaluation, hydrology analysis, and ecosystem health mapping to identify true drivers of decline.</p>
+        <h3>landscape diagnostics</h3>
+        <p>Site assessments that start below the surface. Soil testing, root-zone evaluation, hydrology analysis, and ecosystem health mapping.</p>
+        <p class="reggie-says">reggie says: "if it smells interesting underground, there's something going on"</p>
       </div>
       <div class="service-card">
         <div class="service-icon">
-          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5"/><path d="M12 12H3"/><path d="M21 12l-4-4v8l4-4z"/></svg>
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5"/><path d="M21 12l-4-4v8l4-4z"/></svg>
         </div>
-        <h3>Urban Tree Consulting</h3>
-        <p>Risk assessment, preservation planning, inventory and GIS mapping, species selection, planting design, and long-term canopy management strategies for any property type.</p>
+        <h3>urban tree consulting</h3>
+        <p>Risk assessment, preservation planning, inventory & GIS mapping, species selection, and long-term canopy management.</p>
+        <p class="reggie-says">reggie says: "every tree has a story. we read them."</p>
       </div>
       <div class="service-card">
         <div class="service-icon">
           <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
         </div>
-        <h3>Regenerative Design</h3>
-        <p>Nature-based design solutions: native plantings, pollinator habitat, rain gardens, bioswales, soil remediation, and integrated stormwater management. Beautiful, functional, self-sustaining.</p>
+        <h3>regenerative design</h3>
+        <p>Native plantings, pollinator habitat, rain gardens, bioswales, soil remediation. Beautiful, functional, self-sustaining.</p>
+        <p class="reggie-says">reggie says: "the best yards have things to chase"</p>
       </div>
       <div class="service-card">
         <div class="service-icon">
           <svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
         </div>
-        <h3>Construction & Development</h3>
-        <p>Tree preservation plans, root protection zones, grading impact assessments, and on-site monitoring. Helping developers meet ordinance requirements while protecting natural assets.</p>
+        <h3>construction & development</h3>
+        <p>Tree preservation plans, root protection zones, grading impact assessments, and on-site monitoring for ordinance compliance.</p>
+        <p class="reggie-says">reggie says: "don't dig where I buried things"</p>
       </div>
       <div class="service-card">
         <div class="service-icon">
           <svg class="icon-svg" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
         </div>
-        <h3>Soil Health & Remediation</h3>
-        <p>Soil compaction mitigation, biological inoculant programs, organic amendment plans, drainage redesign, and long-term soil restoration strategies. The foundation of every healthy landscape.</p>
+        <h3>soil health & remediation</h3>
+        <p>Compaction mitigation, biological inoculants, organic amendments, drainage redesign, and long-term soil restoration.</p>
+        <p class="reggie-says">reggie says: "the foundation of every good dig"</p>
       </div>
       <div class="service-card">
         <div class="service-icon">
           <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
         </div>
-        <h3>Ordinance & Grant Support</h3>
-        <p>Tree ordinance compliance, permit consulting, and grant writing for USDA, EPA, and state-level funding. We speak the same language as the municipal reviewers — because we are one.</p>
+        <h3>ordinance & grant support</h3>
+        <p>Tree ordinance compliance, permit consulting, and grant writing for USDA, EPA, and state-level funding programs.</p>
+        <p class="reggie-says">reggie says: "we speak fluent bureaucracy"</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ WHO WE SERVE ═══ -->
-<section class="clients" id="clients">
+<section class="data-section" id="data">
   <div class="section-inner">
-    <div class="section-head">
-      <p class="section-label">Who We Serve</p>
-      <h2>How We Partner With You</h2>
-      <p>No overhead. No long-term contracts required. Just expert-level support when you need it.</p>
+    <div class="data-header">
+      <p class="eyebrow">under the hood</p>
+      <h2>the data we're plugged into</h2>
+      <p>Real-time public ArcGIS endpoints, peer-reviewed research, and the institutional knowledge to tie it all together.</p>
+    </div>
+    <div class="data-grid">
+      <div class="data-card">
+        <h4>connected jurisdictions</h4>
+        <div class="data-card-pills">
+          <span class="data-pill">Sandy Springs</span>
+          <span class="data-pill">Roswell</span>
+          <span class="data-pill">Alpharetta</span>
+          <span class="data-pill">Johns Creek</span>
+          <span class="data-pill">Milton</span>
+          <span class="data-pill">Atlanta</span>
+          <span class="data-pill">Brookhaven</span>
+          <span class="data-pill">Chamblee</span>
+          <span class="data-pill">Fulton County</span>
+          <span class="data-pill">DeKalb County</span>
+        </div>
+      </div>
+      <div class="data-card">
+        <h4>calculation sources</h4>
+        <div class="data-card-pills">
+          <span class="data-pill">USDA Forest Service</span>
+          <span class="data-pill">EPA SC-GHG 2023</span>
+          <span class="data-pill">iTree Eco</span>
+          <span class="data-pill">Nowak et al. 2014</span>
+          <span class="data-pill">McPherson 2003</span>
+          <span class="data-pill">Kovacs et al. 2022</span>
+          <span class="data-pill">Troy & Wilson 2006</span>
+          <span class="data-pill">Rennert et al. (Nature 2022)</span>
+        </div>
+      </div>
+      <div class="data-card">
+        <h4>data pipeline</h4>
+        <div class="data-card-pills">
+          <span class="data-pill">Nominatim geocoding</span>
+          <span class="data-pill">City ArcGIS REST</span>
+          <span class="data-pill">County ArcGIS fallback</span>
+          <span class="data-pill">Esri satellite basemap</span>
+          <span class="data-pill">Leaflet mapping</span>
+          <span class="data-pill">jsPDF report export</span>
+        </div>
+      </div>
+      <div class="data-card">
+        <h4>ecosystem services measured</h4>
+        <div class="data-card-pills">
+          <span class="data-pill">Carbon sequestration</span>
+          <span class="data-pill">Stormwater management</span>
+          <span class="data-pill">Air quality improvement</span>
+          <span class="data-pill">Energy savings</span>
+          <span class="data-pill">Habitat value</span>
+          <span class="data-pill">Property value premium</span>
+        </div>
+      </div>
+    </div>
+    <div class="cred-row">
+      <div class="cred-badge"><span class="dot"></span>ISA Certified Arborist</div>
+      <div class="cred-badge"><span class="dot"></span>Urban Forest Specialist</div>
+      <div class="cred-badge"><span class="dot"></span>TRAQ Certified</div>
+      <div class="cred-badge"><span class="dot"></span>ISA Credentialing Council</div>
+      <div class="cred-badge"><span class="dot"></span>GA Arborist Assoc. Board</div>
+    </div>
+  </div>
+</section>
+
+<section class="clients-section" id="clients">
+  <div class="section-inner">
+    <div class="clients-header">
+      <p class="eyebrow">who we work with</p>
+      <h2>no overhead. no long-term contracts. just expertise when you need it.</h2>
     </div>
     <div class="clients-grid">
       <div class="client-card">
-        <h3>Engineering & Consulting Firms</h3>
-        <p>P&X serves as your arboricultural and ecological subconsultant. Tree surveys, environmental assessments, preservation plans, and expert testimony that integrate seamlessly into your project deliverables.</p>
-        <div class="engagement">$3,000–$15,000 per project</div>
+        <h3>engineering & consulting firms</h3>
+        <p>Your arboricultural and ecological subconsultant. Tree surveys, environmental assessments, preservation plans, and expert testimony that plug right into your deliverables.</p>
+        <div class="engagement">$3,000 - $15,000 per project</div>
       </div>
       <div class="client-card">
-        <h3>Developers & Builders</h3>
-        <p>Tree ordinance compliance, preservation planning, and landscape design so your projects clear review faster. We speak the same language as the municipal reviewers — because we are one.</p>
-        <div class="engagement">$5,000–$25,000 per project</div>
+        <h3>developers & builders</h3>
+        <p>Tree ordinance compliance, preservation planning, and landscape design so your projects clear review faster. We speak the same language as the municipal reviewers.</p>
+        <div class="engagement">$5,000 - $25,000 per project</div>
       </div>
       <div class="client-card">
-        <h3>Contractors & Landscape Companies</h3>
-        <p>The diagnostic and design brain your clients need before the work begins. We assess, design, and specify — then refer installation and execution to you. A true partnership.</p>
-        <div class="engagement">$2,000–$8,000 per engagement</div>
+        <h3>contractors & landscape companies</h3>
+        <p>The diagnostic and design brain your clients need before the work begins. We assess, design, and specify — then refer installation to you. A true partnership.</p>
+        <div class="engagement">$2,000 - $8,000 per engagement</div>
       </div>
       <div class="client-card">
-        <h3>Property Owners & HOAs</h3>
-        <p>Expert diagnosis of landscape problems, regenerative design solutions, contractor selection and oversight, and long-term management planning. One trusted advisor who handles everything.</p>
-        <div class="engagement">$2,000–$12,000 per engagement</div>
+        <h3>property owners & HOAs</h3>
+        <p>Expert diagnosis of landscape problems, regenerative design, contractor selection and oversight, and long-term management planning. One trusted advisor.</p>
+        <div class="engagement">$2,000 - $12,000 per engagement</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ TERRAVALUE BANNER ═══ -->
-<section class="tv-banner" id="terravalue">
-  <div class="tv-banner-inner">
-    <div>
-      <span class="label">P&X Technology</span>
-      <h2>TerraValue — Know What Your Land Is Worth</h2>
-      <p>The first parcel-level ecosystem services calculator for property owners. Enter any address and get a peer-reviewed, dollar-value breakdown of what your trees and green infrastructure provide annually — carbon sequestration, stormwater management, air quality improvement, energy savings, and more.</p>
-      <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-        <a href="terravalue.html" class="btn btn-primary">Learn More →</a>
-      </div>
-    </div>
-    <div>
-      <div class="tv-stats">
-        <div class="tv-stat">
-          <span class="num">6</span>
-          <span class="desc">Ecosystem Services Valued</span>
-        </div>
-        <div class="tv-stat">
-          <span class="num">10</span>
-          <span class="desc">GA Jurisdictions Connected</span>
-        </div>
-        <div class="tv-stat">
-          <span class="num">$255</span>
-          <span class="desc">Social Cost per Tonne CO₂</span>
-        </div>
-        <div class="tv-stat">
-          <span class="num">7</span>
-          <span class="desc">US Ecoregions Covered</span>
-        </div>
-        <div class="tv-stat">
-          <span class="num">14</span>
-          <span class="desc">Piedmont Tree Species</span>
-        </div>
-        <div class="tv-stat">
-          <span class="num">PDF</span>
-          <span class="desc">Branded Reports Export</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ CREDENTIALS ═══ -->
-<section class="credentials" id="credentials">
-  <div class="section-inner">
-    <div class="section-head">
-      <p class="section-label">Credentials</p>
-      <h2>About the Founder</h2>
-      <p>6+ years in ecological management and urban forestry. Field-trained ecologist who speaks the language of policy, data, and business.</p>
-    </div>
-    <div class="cred-grid">
-      <ul class="cred-list">
-        <li><span class="marker">◆</span> <span><strong>ISA Certified Arborist</strong> — International Society of Arboriculture</span></li>
-        <li><span class="marker">◆</span> <span><strong>ISA Certified Urban Forest Specialist</strong> — one of a select group nationally</span></li>
-        <li><span class="marker">◆</span> <span><strong>ISA Tree Risk Assessment Qualified</strong> (TRAQ)</span></li>
-        <li><span class="marker">◆</span> <span><strong>ISA Credentialing Council Member</strong> — sets standards for the profession</span></li>
-        <li><span class="marker">◆</span> <span><strong>Board of Directors</strong> — Georgia Arborist Association</span></li>
-        <li><span class="marker">◆</span> <span><strong>B.Sc. Environmental Science</strong> — Emory University</span></li>
-        <li><span class="marker">◆</span> <span><strong>Urban Forester & Sustainability Coordinator</strong> — City of Sandy Springs (current)</span></li>
-        <li><span class="marker">◆</span> <span>State Parks experience: prescribed fire, habitat restoration, conservation</span></li>
-      </ul>
-      <div class="awards-box">
-        <h3>Recognition</h3>
-        <div class="award-item">
-          <div class="title">Grand Award for Excellence in Urban Arboriculture</div>
-          <div class="org">Georgia Tree Council, 2024</div>
-        </div>
-        <div class="award-item">
-          <div class="title">Young & Upcoming Professional Award</div>
-          <div class="org">Urban & Community Forestry Society, 2025</div>
-        </div>
-        <div class="award-item">
-          <div class="title">Author — 2023 Sandy Springs Canopy Study</div>
-          <div class="org">43,000 acres analyzed, $80M+ in ecosystem services documented</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ CONTACT ═══ -->
-<section class="contact" id="contact">
+<section class="contact-section" id="contact">
   <div class="section-inner">
     <div class="contact-grid">
-      <div class="contact-info">
-        <p class="section-label">Get Started</p>
-        <h2>Let's Talk About Your Next Project</h2>
-        <p class="lead">P&X integrates into your team, solves the hard problems, and makes your projects better. Reach out to start a conversation.</p>
+      <div class="contact-text">
+        <p class="eyebrow">let's dig in</p>
+        <h2>tell us what you're working on.</h2>
+        <p class="lead">Whether it's a tree that's not looking right, a development that needs a preservation plan, or you just want to know what your land is actually worth — we're here.</p>
         <div class="contact-detail">
           <div class="icon">
             <svg class="icon-svg" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -712,88 +943,133 @@
           <div class="icon">
             <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
-          <span>Sandy Springs, Georgia</span>
+          <span>Atlanta metro area, Georgia</span>
         </div>
         <div class="contact-detail">
           <div class="icon">
             <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           </div>
-          <span>phloemandxylem.com</span>
+          <span>pxconsulting.io</span>
         </div>
       </div>
       <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-        <h3 style="margin-bottom: 1.5rem;">Send a Message</h3>
+        <h3>send a message</h3>
         <div class="form-group">
-          <label>Name</label>
-          <input type="text" name="name" placeholder="Your name" required>
+          <label>name</label>
+          <input type="text" name="name" placeholder="what should we call you?" required>
         </div>
         <div class="form-group">
-          <label>Email</label>
-          <input type="email" name="email" placeholder="your@email.com" required>
+          <label>email</label>
+          <input type="email" name="email" placeholder="you@email.com" required>
           <input type="hidden" name="_replyto" value="">
         </div>
         <div class="form-group">
-          <label>I am a...</label>
+          <label>i am a...</label>
           <select name="role">
-            <option value="">Select your role</option>
-            <option value="Homeowner / Property Owner">Homeowner / Property Owner</option>
-            <option value="Developer / Builder">Developer / Builder</option>
-            <option value="Engineer / Consultant">Engineer / Consultant</option>
-            <option value="Contractor / Landscape Company">Contractor / Landscape Company</option>
-            <option value="HOA / Neighborhood Association">HOA / Neighborhood Association</option>
-            <option value="Other">Other</option>
+            <option value="">pick the closest fit</option>
+            <option value="Homeowner / Property Owner">homeowner / property owner</option>
+            <option value="Developer / Builder">developer / builder</option>
+            <option value="Engineer / Consultant">engineer / consultant</option>
+            <option value="Contractor / Landscape Company">contractor / landscape company</option>
+            <option value="HOA / Neighborhood Association">HOA / neighborhood association</option>
+            <option value="Just curious">just curious</option>
           </select>
         </div>
         <div class="form-group">
-          <label>Tell us about your project</label>
-          <textarea name="message" placeholder="What are you working on? How can we help?"></textarea>
+          <label>what's going on?</label>
+          <textarea name="message" placeholder="tell us about your project, your land, or whatever's on your mind..."></textarea>
         </div>
-        <button type="submit" class="btn btn-green" style="width: 100%; justify-content: center;">Send Message</button>
+        <button type="submit" class="form-submit">send it</button>
       </form>
     </div>
   </div>
 </section>
 
-<!-- ═══ FOOTER ═══ -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="name">P&X — Phloem & Xylem</div>
-      <div class="tagline">Innovative & Sustainable Solutions for Natural Resource & Urban Forestry Challenges</div>
+      <div class="tagline">We start underground. Everything above grows from there.</div>
     </div>
     <div class="footer-links">
-      <a href="#philosophy">Approach</a>
-      <a href="#services">Services</a>
-      <a href="terravalue.html">TerraValue</a>
-      <a href="#contact">Contact</a>
+      <a href="#soil">approach</a>
+      <a href="#services">services</a>
+      <a href="terravalue.html">terravalue</a>
+      <a href="#contact">contact</a>
+    </div>
+    <div class="footer-reggie">
+      <svg width="30" height="20" viewBox="0 0 30 20">
+        <ellipse cx="15" cy="12" rx="12" ry="6" fill="rgba(255,255,255,0.15)"/>
+        <circle cx="8" cy="10" r="4" fill="rgba(255,255,255,0.15)"/>
+        <ellipse cx="5" cy="9" rx="3" ry="3.5" fill="rgba(255,255,255,0.12)"/>
+        <circle cx="7" cy="10" r="0.8" fill="rgba(255,255,255,0.3)"/>
+      </svg>
+      reggie is napping. he earned it.
     </div>
     <div class="footer-copy">
-      &copy; 2026 P&X LLC — Phloem & Xylem. All rights reserved. Sandy Springs, Georgia.
+      &copy; 2026 P&X LLC — Phloem & Xylem. All rights reserved.
     </div>
   </div>
 </footer>
 
 <script>
-  // Nav scroll shadow
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 20);
   });
-  // Mobile toggle
   const toggle = document.getElementById('navToggle');
   const links = document.getElementById('navLinks');
   toggle.addEventListener('click', () => links.classList.toggle('open'));
-  // Close mobile nav on link click
   links.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => links.classList.remove('open'));
   });
-
-  // Sync email → _replyto for Formspree reply-to
   const emailInput = document.querySelector('input[name="email"]');
   const replyTo = document.querySelector('input[name="_replyto"]');
   if (emailInput && replyTo) {
     emailInput.addEventListener('input', () => { replyTo.value = emailInput.value; });
   }
+
+  const demoAddresses = {
+    '7840 roswell rd': { total: '$4,847', score: '72', proj: '$145,410' },
+    '1578 mount vernon': { total: '$3,290', score: '58', proj: '$98,700' },
+    '4700 north river': { total: '$6,120', score: '84', proj: '$183,600' }
+  };
+  const tvBtn = document.getElementById('tvCalcBtn');
+  if (tvBtn) {
+    tvBtn.addEventListener('click', () => {
+      const addr = document.getElementById('tvAddress').value.toLowerCase();
+      let match = null;
+      for (const key of Object.keys(demoAddresses)) {
+        if (addr.includes(key)) { match = demoAddresses[key]; break; }
+      }
+      if (!match) {
+        match = {
+          total: '$' + (2000 + Math.floor(Math.random() * 5000)).toLocaleString(),
+          score: String(40 + Math.floor(Math.random() * 45)),
+          proj: '$' + (60000 + Math.floor(Math.random() * 150000)).toLocaleString()
+        };
+      }
+      document.getElementById('tvTotal').textContent = match.total;
+      document.getElementById('tvScore').textContent = match.score;
+      document.getElementById('tv30yr').textContent = match.proj;
+    });
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.service-card, .client-card, .data-card, .pillar').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
 </script>
 
 </body>
