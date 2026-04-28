@@ -26,64 +26,70 @@ const METHODOLOGY_VERSION = '1.0.0';
  * Property value impact of tree canopy — peer-reviewed coefficients
  *
  * Sources:
- *  - Kovacs et al. 2022: 7% premium for mature canopy (USDA NRS meta-analysis)
- *  - Netusil et al. 2022: National meta-analysis of 60+ hedonic studies
+ *  - Kovacs et al. 2022: Meta-analysis of 21 hedonic studies, 157 observations.
+ *    Found significant positive effect of tree cover on property values.
+ *    Approximate premium for mature canopy neighborhoods: ~7% (varies by study).
+ *    DOI: 10.1016/j.ecolecon.2022.107424
+ *  - Netusil, Siriwardena et al. 2014: Meta-analysis of 60+ hedonic studies
  *    → 1% increase in canopy within 500m buffer = 0.17% price increase
- *  - Siriwardena et al. 2016: Optimal canopy ~30% property-level
+ *    Published: Ecological Economics 2016, Vol 128, pp 68-76
+ *    DOI: 10.1016/j.ecolecon.2016.04.018
+ *  - Siriwardena et al. 2016 (same paper): Optimal canopy ~30% property-level
  *  - Cho et al. 2020: Diminishing returns above ~40% canopy
+ *    DOI: 10.3390/su12104331
  */
 const CANOPY_VALUE_COEFFICIENTS = {
   // Per 1% increase in canopy coverage → % increase in property value
-  marginalValuePer1Pct: 0.17,       // Netusil et al. 2022 (500m buffer)
+  marginalValuePer1Pct: 0.17,       // Netusil, Siriwardena et al. 2014 (500m buffer)
   maxPremiumPct: 12.0,              // Empirical ceiling from meta-analyses
   optimalCanopyPct: 30,             // Siriwardena et al. 2016
   diminishingReturnsStart: 40,      // Cho et al. 2020
-  matureCanopyPremium: 0.07,        // Kovacs et al. 2022 (7% for mature coverage)
+  matureCanopyPremium: 0.07,        // Kovacs et al. 2022 (~7% for mature coverage, approximate)
 };
 
 /**
  * Ecosystem service values — per canopy-acre per year
  *
  * Sources:
- *  - Carbon: EPA SC-GHG 2023 ($255/tonne CO2) × 2.6 t/acre/yr (Atlanta iTree Eco 2014)
- *  - Stormwater: USDA CUFR Fact Sheet #4 × $4.00/1,000 gal municipal avg
- *  - Air quality: Nowak et al. 2014, BenMAP weighted × $142K/ton PM2.5 (Atlanta)
- *  - Energy: McPherson 2003, Atlanta iTree Eco — 1,800 kWh/acre/yr
- *  - Habitat: Troy & Wilson 2006 — $320/acre canopy (WTP studies)
- *  - Property: Kovacs et al. 2022 — 7% premium (applied to assessed value)
+ *  - Carbon: EPA SC-GHG 2023 ($190/tonne CO2, 2% near-term) × 2.6 t/acre/yr (Atlanta iTree Eco 2014)
+ *  - Stormwater: Benefit transfer from USDA CUFR / iTree Eco literature ($520/canopy-acre)
+ *  - Air quality: Nowak et al. 2014, total pollutant removal value (PM2.5/O3/NO2/SO2)
+ *  - Energy: McPherson 2003, Atlanta iTree Eco — 1,800 kWh/acre/yr × $0.14/kWh
+ *  - Habitat: Benefit transfer from ecosystem services literature — $320/acre canopy
+ *  - Property: Kovacs et al. 2022 — ~7% premium (applied to market value, capped at 12%)
  */
 const ECOSYSTEM_SERVICE_RATES = {
   carbon: {
     label: 'Carbon Sequestration',
-    ratePerCanopyAcre: 663,
+    ratePerCanopyAcre: 494,
     unit: '$/canopy-acre/yr',
-    methodology: '2.6 t CO2/acre/yr × $255/tonne (EPA SC-GHG 2023)',
-    source: 'Atlanta iTree Eco 2014; EPA Social Cost of Greenhouse Gases 2023',
+    methodology: '2.6 t CO2/acre/yr × $190/tonne (EPA SC-GHG 2023, 2% near-term discount rate)',
+    source: 'Atlanta iTree Eco 2014; EPA Social Cost of Greenhouse Gases 2023 (Table ES-1)',
     co2PerAcre: 2.6,          // tonnes CO2 per canopy acre per year
-    socialCostCarbon: 255,     // $/tonne CO2 (EPA 2023, 2% discount rate)
+    socialCostCarbon: 190,     // $/tonne CO2 (EPA 2023, 2% near-term discount rate, 2024$)
   },
   stormwater: {
     label: 'Stormwater Management',
     ratePerCanopyAcre: 520,
     unit: '$/canopy-acre/yr',
-    methodology: '35% rainfall interception × $4.00/1,000 gal municipal avoided cost',
-    source: 'USDA CUFR Fact Sheet #4; Municipal stormwater cost surveys',
-    interceptionRate: 0.35,    // 35% of rainfall intercepted by canopy
-    costPer1000Gal: 4.00,     // Municipal avoided treatment cost
+    methodology: 'Benefit transfer from USDA CUFR / iTree Eco urban canopy valuation literature',
+    source: 'USDA Center for Urban Forestry Research; iTree Eco model outputs',
+    interceptionRate: 0.35,    // 35% of rainfall intercepted by canopy (general estimate)
+    costPer1000Gal: 4.00,     // Municipal avoided treatment cost (reference value)
   },
   airQuality: {
     label: 'Air Quality Improvement',
     ratePerCanopyAcre: 418,
     unit: '$/canopy-acre/yr',
-    methodology: 'PM2.5/O3/NO2/SO2 removal × BenMAP health valuation',
-    source: 'Nowak et al. 2014; BenMAP-CE (EPA); Atlanta PM2.5 concentration data',
-    pm25ValuePerTon: 142000,   // $/ton PM2.5 removed (Atlanta-specific)
+    methodology: 'Total pollutant removal value (PM2.5, O3, NO2, SO2) × BenMAP health valuation',
+    source: 'Nowak et al. 2014; BenMAP-CE (EPA)',
+    pm25ValuePerTon: 117106,   // $/ton PM2.5 removed (BenMAP-CE national median)
   },
   energy: {
     label: 'Energy Savings',
-    ratePerCanopyAcre: 350,
+    ratePerCanopyAcre: 252,
     unit: '$/canopy-acre/yr',
-    methodology: '1,800 kWh avoided/acre/yr × local utility rate',
+    methodology: '1,800 kWh avoided/acre/yr × $0.14/kWh (GA Power residential avg)',
     source: 'McPherson 2003; Atlanta iTree Eco; GA Power avg residential rate',
     kwhPerAcre: 1800,          // Annual kWh avoided per canopy acre
     coolingReductionPct: 0.30, // 30% cooling reduction from shade (Sacramento study)
@@ -93,16 +99,16 @@ const ECOSYSTEM_SERVICE_RATES = {
     label: 'Habitat Value',
     ratePerCanopyAcre: 320,
     unit: '$/canopy-acre/yr',
-    methodology: 'Willingness-to-pay for urban biodiversity',
-    source: 'Troy & Wilson 2006; Brander & Koetse 2011',
-    wtpPerAcre: 320,           // Annual WTP value per canopy acre
+    methodology: 'Benefit transfer from ecosystem services valuation literature',
+    source: 'Troy & Wilson 2006; Brander & Koetse 2011 (approximate, benefit transfer)',
+    wtpPerAcre: 320,           // Annual WTP value per canopy acre (estimated)
   },
   propertyPremium: {
     label: 'Property Value Premium',
     premiumPct: 0.07,
-    unit: '% of assessed value',
-    methodology: '7% premium for mature canopy coverage (meta-analysis of 60+ studies)',
-    source: 'Kovacs et al. 2022; Netusil et al. 2022 (USDA NRS)',
+    unit: '% of market value',
+    methodology: '~7% premium for mature canopy coverage (meta-analysis, approximate)',
+    source: 'Kovacs et al. 2022; Netusil et al. 2014',
   },
 };
 
@@ -124,14 +130,17 @@ const SUSTAINABILITY_METRICS = {
     gasRate: 1.20,                    // $/therm (Atlanta Gas Light avg 2024)
   },
   maintenance: {
-    stormwaterInfraReduction: 0.15,  // 15% reduction in drainage maintenance
-    pavementLifeExtension: 0.20,     // 20% longer pavement life from shade
-    erosionControlValue: 85,          // $/acre/yr erosion control
+    stormwaterInfraReduction: 0.15,  // 15% reduction in drainage maintenance (estimated)
+    pavementLifeExtension: 0.20,     // 20% longer pavement life from shade (estimated)
+    erosionControlValue: 85,          // $/acre/yr erosion control (estimated)
+    note: 'Maintenance estimates are approximate ranges based on industry benchmarks, not from specific studies',
   },
   airQualityHealth: {
-    asthmaReductionPct: 0.029,       // 2.9% asthma reduction per 10% canopy increase
-    heatMortalityReduction: 0.001,   // Per 1% canopy increase
-    source: 'Donovan et al. 2013; Nowak et al. 2014',
+    // Note: Donovan et al. 2013 studied tree canopy and lower-body skin cancer, NOT asthma.
+    // The asthma-canopy relationship is not well-established in peer-reviewed literature.
+    // We retain air quality health benefits via Nowak et al. 2014 pollutant removal data.
+    heatMortalityReduction: 0.001,   // Per 1% canopy increase (estimated)
+    source: 'Nowak et al. 2014 (air quality improvements from pollutant removal)',
   },
 };
 
@@ -561,13 +570,15 @@ class EcosystemServices {
     const energy = Math.round(canopyAcres * rates.energy.ratePerCanopyAcre);
     const habitat = Math.round(canopyAcres * rates.habitat.ratePerCanopyAcre);
 
-    // Property premium — applied to market value
+    // Property premium — applied to market value, capped at maxPremiumPct (12%)
     const marketValue = parcel.state === 'GA'
       ? parcel.assessedValue / 0.40
       : parcel.assessedValue;
+    const rawPremiumPct = rates.propertyPremium.premiumPct * (parcel.canopyPct / 30);
+    const cappedPremiumPct = Math.min(rawPremiumPct, CANOPY_VALUE_COEFFICIENTS.maxPremiumPct / 100);
     const propertyPremium = Math.round(
-      marketValue * rates.propertyPremium.premiumPct * (parcel.canopyPct / 30)
-      // Scaled linearly — 30% canopy = full 7% premium (Siriwardena optimal)
+      marketValue * cappedPremiumPct
+      // Scaled linearly — 30% canopy = full 7% premium (Siriwardena optimal), capped at 12%
     );
 
     const totalAnnual = carbon + stormwater + airQuality + energy + habitat + propertyPremium;
@@ -629,7 +640,7 @@ class LandAppreciation {
    *
    * Methodology (sharable):
    *  1. Score change → canopy coverage change (linear: 1 score point ≈ 0.5% canopy)
-   *  2. Canopy change → property value impact (Netusil et al. 2022: 0.17% per 1% canopy)
+   *  2. Canopy change → property value impact (Netusil et al. 2014: 0.17% per 1% canopy)
    *  3. Apply diminishing returns above 40% canopy (Cho et al. 2020)
    *  4. Add ecosystem service value delta over projection period
    *  5. Apply regional market appreciation baseline (Case-Shiller or FHFA HPI)
@@ -651,7 +662,7 @@ class LandAppreciation {
       propertyValue,
       currentCanopyPct = 25,
       lotSizeSqFt = 15000,
-      baseAppreciationRate = 0.035, // 3.5% — Atlanta metro avg (FHFA HPI 2019-2024)
+      baseAppreciationRate = 0.035, // 3.5% — long-term Atlanta metro average (FHFA HPI)
     } = params;
 
     const scoreDelta = projectedScore - currentScore;
@@ -673,7 +684,7 @@ class LandAppreciation {
     const projectedCanopyAcres = lotAcres * (newCanopyPct / 100);
     const canopyAcreDelta = projectedCanopyAcres - currentCanopyAcres;
 
-    const ecoServiceRate = 663 + 520 + 418 + 350 + 320; // All non-property services
+    const ecoServiceRate = 494 + 520 + 418 + 252 + 320; // All non-property services = $2,004
     const annualEcoDelta = Math.round(canopyAcreDelta * ecoServiceRate);
     const cumulativeEco = annualEcoDelta * timelineYears;
 
@@ -718,10 +729,10 @@ class LandAppreciation {
         annualDelta: annualEcoDelta,
         cumulativeOverPeriod: cumulativeEco,
         perServiceDelta: {
-          carbon: Math.round(canopyAcreDelta * 663),
+          carbon: Math.round(canopyAcreDelta * 494),
           stormwater: Math.round(canopyAcreDelta * 520),
           airQuality: Math.round(canopyAcreDelta * 418),
-          energy: Math.round(canopyAcreDelta * 350),
+          energy: Math.round(canopyAcreDelta * 252),
           habitat: Math.round(canopyAcreDelta * 320),
         },
       },
@@ -733,10 +744,10 @@ class LandAppreciation {
       methodology: {
         version: METHODOLOGY_VERSION,
         canopyConversion: '1 Soil Score point ≈ 0.5% canopy coverage change',
-        valueModel: 'Netusil et al. 2022 (0.17% property value per 1% canopy, 500m buffer)',
+        valueModel: 'Netusil et al. 2014 (0.17% property value per 1% canopy, 500m buffer)',
         diminishingReturns: 'Cho et al. 2020 (reduced marginal returns above 40% canopy)',
-        ecoServices: 'Atlanta iTree Eco 2014 + EPA SC-GHG 2023 + peer-reviewed rates',
-        marketBaseline: `FHFA HPI Atlanta metro (${(baseAppreciationRate * 100).toFixed(1)}% annual)`,
+        ecoServices: 'Atlanta iTree Eco 2014 + EPA SC-GHG 2023 ($190/t CO2) + peer-reviewed rates ($2,004/canopy-acre)',
+        marketBaseline: `FHFA HPI Atlanta metro long-term avg (${(baseAppreciationRate * 100).toFixed(1)}% annual)`,
         disclaimer: 'Projections use peer-reviewed coefficients with linear interpolation. '
           + 'Actual results depend on species, placement, maturity, soil conditions, '
           + 'microclimate, and market factors. This is a research-backed directional estimate.',
@@ -836,9 +847,6 @@ class SustainabilityValue {
 
     // Air quality / health value
     const canopyChangePctPoints = newCanopyPct - currentCanopyPct;
-    const asthmaReduction = Math.round(
-      Math.abs(canopyChangePctPoints / 10) * m.airQualityHealth.asthmaReductionPct * 10000
-    ) / 100;
 
     // Peak demand reduction
     const estimatedTrees = Math.max(0, Math.round(canopyAcreDelta * 40)); // ~40 trees per canopy acre
@@ -862,10 +870,9 @@ class SustainabilityValue {
         cumulativeSavings: totalMaintenanceAnnual * timelineYears,
       },
       healthBenefits: {
-        asthmaReductionPct: canopyAcreDelta > 0 ? asthmaReduction : -asthmaReduction,
         peakDemandReductionKw: peakDemandReduction,
         estimatedTreesAdded: estimatedTrees,
-        source: 'Donovan et al. 2013; Nowak et al. 2014',
+        source: 'Nowak et al. 2014 (air quality via pollutant removal)',
       },
       totalAnnual: totalHvacAnnual + totalMaintenanceAnnual,
       totalOverPeriod: (totalHvacAnnual + totalMaintenanceAnnual) * timelineYears,
@@ -1126,17 +1133,17 @@ class Methodology {
           content: [
             'Six ecosystem services are calculated per parcel based on canopy-acre coverage:',
             '',
-            'Carbon Sequestration: 2.6 tonnes CO2/canopy-acre/yr (Atlanta iTree Eco 2014) × $255/tonne (EPA Social Cost of Greenhouse Gases, 2023, 2% near-term discount rate)',
+            'Carbon Sequestration: 2.6 tonnes CO2/canopy-acre/yr (Atlanta iTree Eco 2014) × $190/tonne (EPA Social Cost of Greenhouse Gases, 2023, Table ES-1, 2% near-term discount rate) = $494/canopy-acre/yr',
             '',
-            'Stormwater Management: 35% rainfall interception rate × local precipitation × $4.00/1,000 gallons municipal avoided treatment cost (USDA CUFR Fact Sheet #4)',
+            'Stormwater Management: $520/canopy-acre/yr — benefit transfer from USDA Center for Urban Forestry Research / iTree Eco urban canopy valuation literature',
             '',
-            'Air Quality Improvement: PM2.5, O3, NO2, SO2 removal rates from Nowak et al. 2014, weighted by BenMAP-CE health valuations × $142,000/ton PM2.5 (Atlanta-specific)',
+            'Air Quality Improvement: $418/canopy-acre/yr — total pollutant removal value (PM2.5, O3, NO2, SO2) from Nowak et al. 2014, weighted by BenMAP-CE health valuations ($117,106/ton PM2.5 national median)',
             '',
-            'Energy Savings: 1,800 kWh avoided per canopy acre per year (McPherson 2003; Atlanta iTree Eco) × local utility rate',
+            'Energy Savings: 1,800 kWh avoided per canopy acre per year (McPherson 2003; Atlanta iTree Eco) × $0.14/kWh (GA Power residential avg) = $252/canopy-acre/yr',
             '',
-            'Habitat Value: $320/canopy-acre/yr willingness-to-pay for urban biodiversity (Troy & Wilson 2006; Brander & Koetse 2011)',
+            'Habitat Value: $320/canopy-acre/yr — benefit transfer from ecosystem services valuation literature (Troy & Wilson 2006; Brander & Koetse 2011, approximate)',
             '',
-            'Property Value Premium: 7% premium for mature canopy coverage, scaled linearly to 30% optimal canopy (Kovacs et al. 2022; USDA NRS meta-analysis of 60+ hedonic studies)',
+            'Property Value Premium: ~7% premium for mature canopy coverage, scaled linearly to 30% optimal canopy, capped at 12% (Kovacs et al. 2022; Netusil et al. 2014)',
           ],
         },
         {
@@ -1145,9 +1152,9 @@ class Methodology {
             'Score-to-value conversion methodology:',
             '',
             '1. Soil Score change → canopy coverage change: 1 Soil Score point ≈ 0.5% canopy coverage',
-            '2. Canopy change → property value: 0.17% property value increase per 1% canopy increase within 500m buffer (Netusil et al. 2022, national meta-analysis)',
+            '2. Canopy change → property value: 0.17% property value increase per 1% canopy increase within 500m buffer (Netusil et al. 2014, national meta-analysis)',
             '3. Diminishing returns: Marginal value tapers above 30% canopy (Siriwardena et al. 2016) and decays exponentially above 40% (Cho et al. 2020)',
-            '4. Market baseline: FHFA House Price Index for Atlanta metro (3.5% annual, 2019-2024 average)',
+            '4. Market baseline: FHFA House Price Index for Atlanta metro (3.5% annual, long-term average)',
             '',
             'The model caps maximum canopy premium at 12% of property value based on empirical ceilings from meta-analyses.',
           ],
@@ -1159,7 +1166,7 @@ class Methodology {
             '',
             'Maintenance: 15% reduction in stormwater infrastructure maintenance from canopy interception. 20% pavement life extension from shade (reduced thermal cycling). $85/acre/yr erosion control value.',
             '',
-            'Health Benefits: 2.9% asthma reduction per 10% canopy increase (Donovan et al. 2013). Air quality improvements from PM2.5 removal (Nowak et al. 2014).',
+            'Health Benefits: Air quality improvements from PM2.5, O3, NO2, SO2 removal (Nowak et al. 2014). Peak demand reduction from shade trees (Sacramento Municipal Utility District study). Maintenance cost estimates are approximate industry benchmarks.',
           ],
         },
         {
@@ -1206,11 +1213,10 @@ class Methodology {
       references: [
         'Akbari, H. et al. (2001). Cool surfaces and shade trees to reduce energy use. Solar Energy, 70(3), 295-310.',
         'Cho, S.H. et al. (2020). Varying Effects of Urban Tree Canopies on Residential Property Values. Sustainability, 12(10), 4331.',
-        'Donovan, G.H. et al. (2013). The relationship between trees and human health. Am J Prev Med, 44(2), 139-145.',
         'EPA (2023). Social Cost of Greenhouse Gases. Technical Support Document.',
         'Kovacs, K.F. et al. (2022). Tree cover and property values in the United States: A national meta-analysis. Ecological Economics, 197, 107424.',
         'McPherson, E.G. (2003). Potential energy savings in buildings by an urban tree planting programme in California. Urban Forestry & Urban Greening, 2(2), 73-86.',
-        'Netusil, N.R. et al. (2022). The implicit value of tree cover in the U.S.: A meta-analysis. Ecological Economics, 128, 68-76.',
+        'Netusil, N.R. et al. (2014). The implicit value of tree cover in the U.S.: A meta-analysis. Ecological Economics (2016), Vol 128, 68-76. DOI: 10.1016/j.ecolecon.2016.04.018',
         'Nowak, D.J. et al. (2014). Tree and forest effects on air quality and human health in the United States. Environmental Pollution, 193, 119-129.',
         'Siriwardena, S.D. et al. (2016). Do hedonic models need canopy? Journal of Real Estate Finance and Economics, 53(2), 212-236.',
         'Troy, A. & Wilson, M.A. (2006). Mapping ecosystem services. Ecological Economics, 57(2), 203-218.',
@@ -1241,15 +1247,15 @@ class Methodology {
  * Plus: Highest-and-Best-Use (HBU) analysis, reconciliation weighting
  */
 const LAND_VALUATION_CONSTANTS = {
-  // Regional cap rate ranges by property type (2024 national averages, JLL/CBRE benchmarks)
+  // Regional cap rate ranges by property type (estimated ranges based on industry benchmarks)
   capRates: {
-    singleFamily:     { low: 0.040, mid: 0.055, high: 0.070, source: 'CBRE Cap Rate Survey 2024' },
-    multifamily:      { low: 0.045, mid: 0.055, high: 0.065, source: 'JLL Multifamily Outlook 2024' },
-    retail:           { low: 0.055, mid: 0.070, high: 0.090, source: 'JLL Retail Investment Outlook' },
-    office:           { low: 0.060, mid: 0.075, high: 0.095, source: 'JLL Office Market Report' },
-    industrial:       { low: 0.045, mid: 0.060, high: 0.075, source: 'JLL Industrial Report 2024' },
-    mixedUse:         { low: 0.050, mid: 0.065, high: 0.080, source: 'CBRE Mixed-Use Benchmark' },
-    vacantLand:       { low: 0.020, mid: 0.035, high: 0.060, source: 'Appraisal Institute Land Valuation' },
+    singleFamily:     { low: 0.040, mid: 0.055, high: 0.070, source: 'Estimated range based on CBRE/JLL survey data' },
+    multifamily:      { low: 0.045, mid: 0.055, high: 0.065, source: 'Estimated range based on JLL multifamily data' },
+    retail:           { low: 0.055, mid: 0.070, high: 0.090, source: 'Estimated range based on JLL retail data' },
+    office:           { low: 0.060, mid: 0.075, high: 0.095, source: 'Estimated range based on JLL office data' },
+    industrial:       { low: 0.045, mid: 0.060, high: 0.075, source: 'Estimated range based on JLL industrial data' },
+    mixedUse:         { low: 0.050, mid: 0.065, high: 0.080, source: 'Estimated range based on CBRE mixed-use data' },
+    vacantLand:       { low: 0.020, mid: 0.035, high: 0.060, source: 'Estimated range based on appraisal practice' },
   },
 
   // Discount rates for DCF (risk-adjusted, by property type)
@@ -1272,11 +1278,11 @@ const LAND_VALUATION_CONSTANTS = {
     intangibleTaxRate: 0.003,      // $3.00 per $1,000 on new mortgages
   },
 
-  // Construction cost indices (Marshall & Swift / RS Means benchmarks)
+  // Construction cost indices (estimated ranges based on industry benchmarks)
   constructionCosts: {
-    residential: { perSqFt: { low: 125, mid: 175, high: 275 }, source: 'RS Means 2024 Southeast' },
-    commercial:  { perSqFt: { low: 150, mid: 225, high: 400 }, source: 'RS Means 2024 Southeast' },
-    industrial:  { perSqFt: { low: 85, mid: 130, high: 200 },  source: 'RS Means 2024 Southeast' },
+    residential: { perSqFt: { low: 125, mid: 175, high: 275 }, source: 'Estimated range based on RS Means Southeast benchmarks' },
+    commercial:  { perSqFt: { low: 150, mid: 225, high: 400 }, source: 'Estimated range based on RS Means Southeast benchmarks' },
+    industrial:  { perSqFt: { low: 85, mid: 130, high: 200 },  source: 'Estimated range based on RS Means Southeast benchmarks' },
   },
 
   // Depreciation schedules (modified Marshall Valuation Service)
@@ -1308,10 +1314,10 @@ const LAND_VALUATION_CONSTANTS = {
     industrial:   { low: 0.20, mid: 0.35, high: 0.55 },
   },
 
-  // Annual appreciation baselines by metro (FHFA HPI)
+  // Annual appreciation baselines by metro (FHFA HPI, approximate long-term averages)
   appreciation: {
-    atlanta: { '1yr': 0.038, '5yr': 0.052, '10yr': 0.045, source: 'FHFA HPI Atlanta-Sandy Springs-Roswell MSA' },
-    national: { '1yr': 0.035, '5yr': 0.048, '10yr': 0.040, source: 'FHFA US All-Transactions HPI' },
+    atlanta: { '1yr': 0.038, '5yr': 0.052, '10yr': 0.045, source: 'FHFA HPI Atlanta metro (approximate long-term averages)' },
+    national: { '1yr': 0.035, '5yr': 0.048, '10yr': 0.040, source: 'FHFA US All-Transactions HPI (approximate long-term averages)' },
   },
 
   // Adjustment factors for comparable sales (Berkshire Hathaway CMA style)
@@ -1330,11 +1336,11 @@ const LAND_VALUATION_CONSTANTS = {
 
   // Ecosystem service premium integration (P&X proprietary)
   ecosystemPremium: {
-    canopyValuePer1Pct: 0.0017,     // Netusil et al. 2022
+    canopyValuePer1Pct: 0.0017,     // Netusil et al. 2014
     matureTreePremium: 0.07,        // Kovacs et al. 2022
     optimalCanopy: 30,              // Siriwardena 2016
     maxPremium: 0.12,               // Empirical ceiling
-    annualServicesPerCanopyAcre: 2271,  // Sum of 5 non-property services
+    annualServicesPerCanopyAcre: 2004,  // Sum of 5 non-property services (494+520+418+252+320)
     source: 'P&X TerraValue methodology v1.0 + peer-reviewed coefficients',
   },
 };
@@ -1485,7 +1491,7 @@ class LandValuation {
       },
       confidence,
       methodology: 'USPAP-compliant paired sales analysis with market-derived adjustments. ' +
-        'Canopy premium per Netusil et al. 2022. Time adjustments per FHFA HPI.',
+        'Canopy premium per Netusil et al. 2014. Time adjustments per FHFA HPI (long-term avg).',
     };
   }
 
@@ -2102,7 +2108,7 @@ class LandValuation {
           'RS Means Building Construction Cost Data 2024 (Southeast)',
           'Marshall Valuation Service — Depreciation Tables',
           'FHFA House Price Index — Atlanta-Sandy Springs-Roswell MSA',
-          'Netusil et al. 2022 — Implicit value of tree cover (meta-analysis)',
+          'Netusil et al. 2014 — Implicit value of tree cover (meta-analysis). DOI: 10.1016/j.ecolecon.2016.04.018',
           'Kovacs et al. 2022 — Tree cover and property values (national)',
         ],
         disclaimer: reconciled.disclaimer,

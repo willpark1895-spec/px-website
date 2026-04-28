@@ -546,7 +546,7 @@
           <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">JLL Cap Rate Survey</span>
           <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">RS Means 2024</span>
           <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">FHFA HPI</span>
-          <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">Netusil et al. 2022</span>
+          <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">Netusil et al. 2014</span>
           <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">Kovacs et al. 2022</span>
           <span style="font-size:0.6rem;font-weight:500;padding:0.2rem 0.55rem;border-radius:var(--radius-pill);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.06);">Appraisal Institute 15th Ed.</span>
         </div>
@@ -565,40 +565,40 @@
     </div>
     <div class="services-grid">
       <div class="service-card">
-        <div class="sv-value">$663/yr</div>
+        <div class="sv-value">$494/yr</div>
         <h3>Carbon Sequestration</h3>
         <p>Trees absorb CO2 and store it as biomass. We calculate annual sequestration per canopy acre and price it at the EPA social cost of carbon.</p>
-        <p class="citation">2.6 t CO2/acre/yr (Atlanta iTree Eco) &times; $255/tonne (EPA SC-GHG 2023)</p>
+        <p class="citation">2.6 t CO2/acre/yr (Atlanta iTree Eco) &times; $190/tonne (EPA SC-GHG 2023, 2% near-term)</p>
       </div>
       <div class="service-card">
         <div class="sv-value">$520/yr</div>
         <h3>Stormwater Management</h3>
         <p>Canopy intercepts 35% of rainfall. We calculate gallons diverted from the storm system and price at municipal avoided treatment costs.</p>
-        <p class="citation">USDA CUFR Fact Sheet #4 &times; $4.00/1,000 gal municipal average</p>
+        <p class="citation">Benefit transfer from USDA CUFR / iTree Eco urban canopy valuation literature</p>
       </div>
       <div class="service-card">
         <div class="sv-value">$418/yr</div>
         <h3>Air Quality Improvement</h3>
         <p>Trees filter PM2.5, ozone, NO2, and SO2. Atlanta's PM2.5 concentration makes this one of the highest-value services.</p>
-        <p class="citation">Nowak et al. 2014, BenMAP weighted &times; $142K/ton PM2.5 (Atlanta)</p>
+        <p class="citation">Nowak et al. 2014, BenMAP-CE health valuation ($117K/ton PM2.5 national median)</p>
       </div>
       <div class="service-card">
-        <div class="sv-value">$350/yr</div>
+        <div class="sv-value">$252/yr</div>
         <h3>Energy Savings</h3>
         <p>Strategic canopy reduces cooling loads in summer and wind exposure in winter. Avoided kWh per canopy acre.</p>
-        <p class="citation">McPherson 2003, Atlanta iTree Eco: 1,800 kWh/acre/yr</p>
+        <p class="citation">McPherson 2003, Atlanta iTree Eco: 1,800 kWh/acre/yr &times; $0.14/kWh (GA Power avg)</p>
       </div>
       <div class="service-card">
         <div class="sv-value">$320/yr</div>
         <h3>Habitat Value</h3>
         <p>Canopy provides nesting, foraging, and corridor habitat. Priced using willingness-to-pay studies for urban biodiversity.</p>
-        <p class="citation">Troy & Wilson 2006: $320/acre canopy (WTP studies)</p>
+        <p class="citation">Troy & Wilson 2006; Brander & Koetse 2011 (benefit transfer, approximate)</p>
       </div>
       <div class="service-card">
         <div class="sv-value">+7%</div>
         <h3>Property Value Premium</h3>
         <p>Mature canopy coverage adds a measurable premium to assessed property values. Often the single largest dollar amount.</p>
-        <p class="citation">Kovacs et al. 2022, USDA NRS meta-analysis: 7% premium</p>
+        <p class="citation">Kovacs et al. 2022; Netusil et al. 2014: ~7% premium (capped at 12%)</p>
       </div>
     </div>
   </div>
@@ -654,7 +654,7 @@
         <div class="proj-bar-row">
           <span class="proj-bar-label">Carbon</span>
           <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-carbon" style="background: var(--green-800); width: 50%;"></div></div>
-          <span class="proj-bar-val" id="bv-carbon">$663/yr</span>
+          <span class="proj-bar-val" id="bv-carbon">$494/yr</span>
         </div>
         <div class="proj-bar-row">
           <span class="proj-bar-label">Stormwater</span>
@@ -669,7 +669,7 @@
         <div class="proj-bar-row">
           <span class="proj-bar-label">Energy</span>
           <div class="proj-bar-track"><div class="proj-bar-fill" id="bar-energy" style="background: var(--green-500); width: 50%;"></div></div>
-          <span class="proj-bar-val" id="bv-energy">$350/yr</span>
+          <span class="proj-bar-val" id="bv-energy">$252/yr</span>
         </div>
         <div class="proj-bar-row">
           <span class="proj-bar-label">Habitat</span>
@@ -684,8 +684,8 @@
       </div>
       <div class="proj-citations">
         <span class="proj-cite">Kovacs et al. 2022</span>
-        <span class="proj-cite">USDA NRS meta-analysis</span>
-        <span class="proj-cite">EPA SC-GHG $255/t</span>
+        <span class="proj-cite">Netusil et al. 2014</span>
+        <span class="proj-cite">EPA SC-GHG $190/t</span>
         <span class="proj-cite">Atlanta iTree Eco</span>
         <span class="proj-cite">Nowak et al. 2014</span>
         <span class="proj-cite">McPherson 2003</span>

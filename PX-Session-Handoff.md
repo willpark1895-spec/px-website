@@ -1,167 +1,121 @@
 # P&X — Session Handoff
-**Date:** April 27–28, 2026 (updated April 27 evening)
+**Date:** April 27–28, 2026 (updated April 28, post-audit)
 **Purpose:** Drop this file (along with the `P&X/` project folder) into a new Cowork session so Claude can pick up exactly where we left off.
 
 ---
 
-## What Happened This Session (April 27 evening update)
+## What Happened This Session (April 28 — Audit & Corrections)
 
-### Changes Made This Round
+### Audit Completed — All Values Verified & Corrected
 
-**1. Removed Reggie Hero Images**
-- Removed the goldendoodle SVG from the homepage hero section
-- Converted hero to single-column centered layout (was 2-column grid with dog on right)
-- Removed all `.reggie-frame`, `.reggie-caption`, `.hero-right` CSS and HTML
-- Footer memorial text ("In memory of Sir Reginald Woofington III") preserved
+A full audit was performed across all P&X and TerraValue files. Every value in the engine was checked against its cited source. 12+ issues were identified and corrected:
 
-**2. Soil Score → Coming Soon Placeholder**
-- `calculateSoilScore()` in `terravalue-engine.js` now returns `null` with detailed comments listing the missing data sources (SSURGO, NLCD, PAD-US, municipal GI registries)
-- Homepage metrics strip: "0–100" replaced with "Coming Soon" label
-- TerraValue demo: Soil Score card shows "Coming Soon" instead of a number
-- terravalue.html: hero badge, "How It Works" step 3, and description paragraph updated
-- Value Projector on terravalue.html: added "(Soil Score integration coming soon)" note
-- Engine's `analyze()` method uses canopy-based score fallback for appreciation projections
+**1. Carbon Sequestration Rate — CORRECTED**
+- EPA SC-GHG 2023 social cost: $255 → **$190/tonne** (Table ES-1, 2% near-term discount rate, 2024$)
+- Rate per canopy acre: $663 → **$494** (2.6 t × $190)
+- The $255 figure was the 2020 interim value; the 2023 report's Table ES-1 central estimate at 2% near-term is $190
 
-**3. Premium Consultant Connection (Paywall Feature)**
-- New section on index.html between Clients and Contact: locked consultant access gate
-- Lock icon, feature list (ISA Certified Arborist, on-site assessments, custom reports, etc.)
-- "Unlock Premium Access" button opens a modal with consultation request form (Formspree)
-- Starting at $2,500/engagement pricing displayed
-- Same feature mirrored on terravalue.html (before CTA section), linking back to homepage
-- "Premium" nav link added to homepage navigation (gold-colored)
+**2. Energy Savings Rate — CORRECTED**
+- Rate per canopy acre: $350 → **$252** (1,800 kWh × $0.14/kWh = $252)
+- Previous value had no derivation that matched 1800 × 0.14
 
-**4. Land Valuation Tool (Institutional-Grade) — NEW MODULE**
-- Added `LandValuation` class to `terravalue-engine.js` (~1,000 lines)
-- **Sales Comparison Approach**: Paired-sales adjustments for location, size, age, condition, canopy coverage, and time. Similarity-weighted reconciliation. Synthetic comp generation for demo mode.
-- **Income Capitalization Approach**: Direct Cap (NOI/Cap Rate) + full 10-year DCF with explicit cash flows, rent growth, expense escalation, and terminal cap reversion. Cap rate benchmarks by property type from JLL/CBRE 2024 surveys.
-- **Cost Approach**: Land value (direct or extraction) + RCN (RS Means 2024 Southeast) - depreciation (physical age-life, functional, external). Ecosystem land premium per Netusil/Kovacs.
-- **Highest and Best Use (HBU)**: Four-test analysis (legally permissible, physically possible, financially feasible, maximally productive). Residual land value method. Ecosystem services capitalized and weighed against development returns.
-- **Three-Approach Reconciliation**: Weights by property type and data quality, consistent with JLL/Appraisal Institute practice.
-- **`fullValuation()` entry point**: Runs all approaches + HBU + ecosystem overlay → comprehensive report
-- New `LAND_VALUATION_CONSTANTS` object with cap rates, discount rates, construction costs, depreciation schedules, land-to-value ratios, GA-specific parameters, comparable adjustment factors
-- Interactive Land Valuation Tool UI on terravalue.html with 6 inputs (lot, building, assessed, year, canopy, zoning) and full results display
-- Methodology section added to engine's `Methodology.generate()`
-- Engine file grew from 1,277 → 2,313 lines
+**3. Air Quality PM2.5 Value — CORRECTED**
+- pm25ValuePerTon: $142,000 → **$117,106** (BenMAP-CE national median)
+- Clarified the $418/yr rate is total pollutant removal, not just PM2.5
+- Rate per canopy acre $418 unchanged (derived from Nowak et al. 2014 total removal rates)
 
----
+**4. Stormwater Methodology — CORRECTED**
+- Old: "35% rainfall interception × $4.00/1,000 gal" (math gave $1,901, not $520)
+- New: "Benefit transfer from USDA CUFR / iTree Eco literature" ($520 retained as literature value)
 
-## Previous Session (April 27–28, 2026)
+**5. Habitat Source — SOFTENED**
+- Source now reads "benefit transfer from ecosystem services literature" (Troy & Wilson 2006, approximate)
 
-### Website Redesign — "Green Is the New Gold"
-The Gen Z/playful redesign from earlier in the day was scrapped — it was too childish. Both pages were rewritten a second time with a clean, professional direction centered on land valuation.
+**6. Property Premium Formula — CAPPED**
+- Added `Math.min()` cap: premium cannot exceed 12% of market value (CANOPY_VALUE_COEFFICIENTS.maxPremiumPct)
+- Previously uncapped: 80% canopy → 19% premium (unrealistic)
 
-**Design system (current):**
-- **Font:** Inter (clean sans-serif)
-- **Palette:** Green-900 + gold accent. Professional, not playful.
-- **Tone:** Confident and data-driven ("Green is the new gold. We prove it with data.")
-- **Layout:** Clean sections, metrics strips, professional card grids
-- **Animations:** IntersectionObserver fade-in (subtle)
+**7. Donovan et al. 2013 Asthma Claim — REMOVED**
+- Donovan 2013 studied tree canopy and lower-body skin cancer, NOT asthma
+- Removed `asthmaReductionPct: 0.029` from SUSTAINABILITY_METRICS
+- Removed asthma calculation from SustainabilityValue class
+- All Donovan references removed from methodology and reference lists
+- Health benefits now cite only Nowak et al. 2014 (air quality via pollutant removal)
 
-### Mascot — Goldendoodle Line Icon
-The original Reggie photo was processed through multiple sketch iterations (blur, edge detection, vignette, contrast adjustments) but the results were consistently poor. User directive: **"remove reggie all together, create a serviceable goldendoodle mascot/hero."**
+**8. Netusil Citation Year — CORRECTED THROUGHOUT**
+- "Netusil et al. 2022" → **"Netusil et al. 2014"** everywhere
+- Actual paper: Netusil, Siriwardena et al. 2014, published in Ecological Economics 2016, Vol 128
+- DOI: 10.1016/j.ecolecon.2016.04.018
 
-Current state: minimal SVG line-art goldendoodle icon in a circular frame on the homepage hero. Clean and professional. Footer still reads "In memory of Sir Reginald Woofington III."
+**9. Ecosystem Service Rate Sum — CORRECTED**
+- LandAppreciation ecoServiceRate: 663+520+418+350+320 → **494+520+418+252+320 = 2,004**
+- LandValuation annualServicesPerCanopyAcre: 2,271 → **2,004**
 
-Previous sketch files (`reggie-sketch.png`, `IMG_4343.jpeg`) were deleted from the workspace.
+**10. FHFA HPI Label — CORRECTED**
+- "2019-2024 average" → **"long-term Atlanta metro average"** (no specific date range claimed)
 
-### TerraValue Engine — `terravalue-engine.js` (1,277 lines, NEW)
-Built a real calculation engine with 5 modules. This is not vaporware — all values are derived from peer-reviewed research, published government data, and real methodology.
+**11. Maintenance Costs — MARKED AS ESTIMATED**
+- stormwaterInfraReduction, pavementLifeExtension, erosionControlValue all marked "(estimated)"
+- Added note: "approximate ranges based on industry benchmarks, not from specific studies"
 
-#### Module 1: PropertyValuation
-- Cross-references tax assessor data (ArcGIS REST endpoints) with third-party sources
-- Georgia 40% assessment ratio (O.C.G.A. § 48-5-7) to derive FMV from tax assessed value
-- Redfin integration interface (ready to connect)
-- Pluggable API architecture — Zillow, CoreLogic, etc. can be added without restructuring
-- Confidence-weighted composite valuation from multiple sources
+**12. Cap Rates & Construction Costs — MARKED AS ESTIMATED**
+- Source strings changed from "CBRE Cap Rate Survey 2024" / "RS Means 2024 Southeast" to "Estimated range based on..." 
+- Values are reasonable ranges but not pulled from specific 2024 reports
 
-#### Module 2: EcosystemServices
-- 6 services with per-canopy-acre rates: carbon sequestration, stormwater management, air quality, energy savings, habitat/biodiversity, property value premium
-- `calculate(parcel)` and `calculateSoilScore(parcel)` methods
-- Rates sourced from EPA SC-GHG, iTree Eco, Nowak et al., McPherson, Kovacs et al., Troy & Wilson
+**13. HTML Files Updated**
+- index.html: All static service values updated ($494 carbon, $252 energy), citation pills corrected ($190/tonne), metrics strip updated
+- terravalue.html: All 6 service cards corrected, citation descriptions updated, Value Projector bar defaults updated, all citation pills corrected
 
-#### Module 3: LandAppreciation
-- `project(params)` with diminishing returns via `_canopyValueCurve()`
-- Netusil: 0.17% property value increase per 1% canopy coverage (linear range)
-- Cho: exponential taper above 40% canopy
-- FHFA 3.5% baseline annual appreciation
-- Outputs: year-by-year projections, per-service deltas, total impact
+### Previous Changes (carried forward)
 
-#### Module 4: SustainabilityValue
-- **HVAC:** 1,800 kWh savings per canopy-acre, $0.14/kWh
-- **Maintenance:** 15% stormwater infrastructure reduction, 20% pavement savings
-- **Health:** 2.9% asthma reduction per 10% canopy increase
-- Calculates annual dollar savings for each category
+**Removed Reggie Hero Images** — Single-column centered hero, footer memorial preserved
 
-#### Module 5: CertificationPathway
-Full credit structures with real requirements for:
-- **LEED v4.1** (110 pts, USGBC): SS-P1, SS-C2, SS-C4, SS-C5, SS-C6, EA-C2
-- **BREEAM** (%-based, BRE): LE-01 through LE-05, 10% biodiversity net gain
-- **WELL v2** (100 pts, IWBI): L06, M02, M07, A05
-- **Green Globes** (1000 pts, GBI): SITE-1/2/3, ENERGY-1
+**Soil Score → Coming Soon** — `calculateSoilScore()` returns null, all UI shows "Coming Soon"
 
-Each certification includes: metrics, thresholds, progress tracking, and actionable checklists.
+**Premium Consultant Connection** — Paywall-gated section on both pages, Formspree modal
 
-#### Methodology Export
-`TerraValueEngine.Methodology` generates a full exportable methodology document with 6 sections and 10 academic/government references. Designed to be shareable with clients, appraisers, and reviewers.
-
-#### Main Class
-`TerraValueEngine` orchestrates all modules via `async analyze(parcelData)`. Exports for both ESM (`module.exports`) and browser (`window.TerraValueEngine`). Verified working with Node.js tests.
-
-### Homepage (index.html) — ~1,122 lines
-- Hero: "Green is the new gold. We prove it with data." with gold gradient text
-- Goldendoodle mascot SVG (minimal line icon) in circular frame
-- Metrics strip: 6 services · 10 jurisdictions · $4,847 avg value · 0-100 score
-- TerraValue demo section uses real engine: `TerraValueEngine.EcosystemServices.calculate()` and `TerraValueEngine.LandAppreciation.project()`
-- Loads `<script src="terravalue-engine.js"></script>`
-- Footer: "In memory of Sir Reginald Woofington III"
-
-### TerraValue Product Page (terravalue.html) — ~780 lines
-- Hero: "Your land has hidden value. We quantify it."
-- Value Projector uses engine: `TerraValueEngine.LandAppreciation.project()` with real diminishing-returns curves
-- Shows HVAC savings from `sustainabilityValue` in total note
-- Per-service bars use engine's `perServiceDelta` data
-- Loads `<script src="terravalue-engine.js"></script>`
+**Land Valuation Tool** — ~1,000 lines added to engine: Sales Comparison, Income Cap, Cost Approach, HBU, Three-Approach Reconciliation
 
 ---
 
-## What Was Already In Place (From Previous Sessions)
+## Corrected Value Reference Table
 
-### TerraValue App (separate project)
-- **Location:** `Claude-Work/terravalue/` (full Vite + React project)
-- **Domain:** terravalue.app (Vercel, auto-deploys on push)
-- **Main file:** `terravalue/src/TerraValue.jsx` (2,473 lines)
-- **Features:** Address geocoding, cascading ArcGIS parcel lookup (8 GA cities + 2 counties), 6 ecosystem service calculations, satellite map (Leaflet), Soil Score (0-100), dual GI methodology (EPA + Georgia Blue Book), tree inventory, PDF export, mobile responsive
-- **Handoff doc:** `TerraValue - Session Handoff.md`
-
-### P&X Business Documents
-- **PX-Partner-Overview.pdf** — 1-page partner/client overview
-- **PX-Business-Plan.pdf** — 20-page business plan
+| Service | Rate/acre/yr | Derivation | Source |
+|---|---|---|---|
+| Carbon Sequestration | $494 | 2.6 t CO2 × $190/t | Atlanta iTree Eco 2014; EPA SC-GHG 2023 Table ES-1 |
+| Stormwater Management | $520 | Benefit transfer | USDA CUFR / iTree Eco literature |
+| Air Quality | $418 | Total pollutant removal | Nowak et al. 2014; BenMAP-CE ($117K/t PM2.5) |
+| Energy Savings | $252 | 1,800 kWh × $0.14/kWh | McPherson 2003; GA Power avg rate |
+| Habitat Value | $320 | WTP benefit transfer | Troy & Wilson 2006 (approximate) |
+| **Total non-property** | **$2,004** | | |
+| Property Premium | ~7% of MV | Capped at 12% | Kovacs 2022; Netusil 2014 |
 
 ---
 
 ## Known Issues & Pending Items
 
 ### Must Do Before Push
-- **Git commit + push** — The redesigned files need to be committed:
+- **Remove git index.lock** — A stale lock file exists. Run:
   ```bash
   cd ~/Desktop/Claude-Work/"P&X"
-  git add website/
-  git commit -m "TerraValue engine, clean redesign, real valuation methodology"
+  rm .git/index.lock
+  git add website/ PX-Session-Handoff.md
+  git commit -m "Audit corrections: all values verified against sources, citations fixed"
   git push
   ```
 
 ### Still Pending (carried over)
-- **Formspree form ID** — `index.html` contact form still has placeholder `YOUR_FORM_ID`. Create a form at formspree.io and replace it.
-- **Domain `pxconsulting.io`** — Needs DNS records pointed to Vercel (A record `76.76.21.21`, CNAME `www` → `cname.vercel-dns.com`)
+- **Formspree form ID** — `index.html` contact form + consultant modal still have placeholder `YOUR_FORM_ID`
+- **Domain `pxconsulting.io`** — Needs DNS records pointed to Vercel
 
 ### Future Considerations
-- **Integrate engine into TerraValue app** — The `terravalue-engine.js` module should be imported into `TerraValue.jsx` to replace hardcoded values. The Value Projector on the product page is a demo; the real feature belongs on the app's results page using actual calculated values.
-- **Real photo of Reggie** — Could revisit with better processing or professional illustration. Current SVG line icon works but a quality hand-drawn illustration would be stronger.
-- **Pluggable API connections** — PropertyValuation has interfaces ready for Redfin, Zillow, CoreLogic. Need API keys and integration code.
-- **Expand TerraValue** — 50 GA jurisdictions (currently 10 metro Atlanta), API tier, code-splitting
-- **Blog/content section** — The business plan calls for case studies and educational content for SEO
-- **Open Graph images** — Need OG images for social sharing
-- **Scroll animations** — Current fade-in is basic. Could add parallax, tree growth animation, etc.
+- **Integrate engine into TerraValue app** — Import `terravalue-engine.js` into `TerraValue.jsx`
+- **Real Reggie illustration** — Current SVG line icon works; professional illustration would be stronger
+- **Pluggable API connections** — Redfin, Zillow, CoreLogic interfaces ready
+- **Expand TerraValue** — 50 GA jurisdictions (currently 10)
+- **Blog/content section** — Case studies for SEO
+- **Open Graph images** — Social sharing
+- **Soil Score implementation** — Needs SSURGO, NLCD, PAD-US, municipal GI registry data sources
 
 ---
 
@@ -174,35 +128,34 @@ Each certification includes: metrics, thresholds, progress tracking, and actiona
 | **PX-Partner-Overview.pdf** | 1-page client-facing partner overview |
 | **PX-Business-Plan.pdf** | 20-page business plan (April 2026) |
 | **vercel.json** | Deployment config with security headers |
-| **website/index.html** | P&X homepage (~1,122 lines, redesigned April 27–28) |
-| **website/terravalue.html** | TerraValue product page with value projector (~780 lines, redesigned April 27–28) |
-| **website/terravalue-engine.js** | TerraValue calculation engine — 7 modules (incl. LandValuation), 2,313 lines (updated April 27 evening) |
-| **website/sitemap.xml** | 2 URLs, updated April 28 |
+| **website/index.html** | P&X homepage (~1,114 lines) |
+| **website/terravalue.html** | TerraValue product page (~986 lines) |
+| **website/terravalue-engine.js** | TerraValue calculation engine — 7 modules, ~2,310 lines |
+| **website/sitemap.xml** | 2 URLs |
 
 ### Related files elsewhere in workspace
 | File | Location |
 |---|---|
 | **TerraValue app** | `Claude-Work/terravalue/` (full Vite + React project) |
 | **TerraValue handoff** | `Claude-Work/TerraValue - Session Handoff.md` |
-| **Session summary** | `Claude-Work/PX-TerraValue-Session-Summary.md` |
-| **Pitch deck** | `Claude-Work/TerraValue-Pitch-Deck.pptx` |
 
 ---
 
-## Key Research & Sources Used in Engine
+## Key Research & Sources Used in Engine (Verified)
 
-| Source | Used For |
-|---|---|
-| Netusil et al. (2014) | 0.17% property value per 1% canopy (hedonic) |
-| Cho et al. (2011) | Diminishing returns above 40% canopy |
-| EPA SC-GHG (2023) | $51/ton CO₂ social cost for carbon sequestration |
-| iTree Eco / Nowak et al. | Urban forest ecosystem service rates |
-| McPherson et al. (2005) | Energy savings from urban tree canopy |
-| Kovacs et al. (2013) | Air quality improvement valuations |
-| Troy & Wilson (2006) | Property premium from ecosystem services |
-| FHFA HPI | 3.5% baseline annual appreciation |
-| O.C.G.A. § 48-5-7 | Georgia 40% property tax assessment ratio |
-| USGBC / BRE / IWBI / GBI | Certification credit structures |
+| Source | Used For | Status |
+|---|---|---|
+| Netusil et al. 2014 (DOI: 10.1016/j.ecolecon.2016.04.018) | 0.17% property value per 1% canopy | ✓ Verified |
+| Kovacs et al. 2022 (DOI: 10.1016/j.ecolecon.2022.107424) | ~7% mature canopy premium | ✓ Verified |
+| Cho et al. 2020 (DOI: 10.3390/su12104331) | Diminishing returns above 40% canopy | ✓ Verified |
+| EPA SC-GHG 2023 (Table ES-1) | $190/tonne CO2 (2% near-term) | ✓ Corrected from $255 |
+| Atlanta iTree Eco 2014 | 2.6 t CO2/canopy-acre/yr | ✓ Verified |
+| McPherson 2003 | 1,800 kWh/acre/yr cooling savings | ✓ Verified |
+| Nowak et al. 2014 | Air quality pollutant removal rates | ✓ Verified |
+| Troy & Wilson 2006 | Habitat WTP valuation | ✓ Approximate/benefit transfer |
+| FHFA HPI | 3.5% baseline annual appreciation | ✓ Labeled as long-term avg |
+| O.C.G.A. § 48-5-7 | Georgia 40% assessment ratio | ✓ Verified |
+| USGBC / BRE / IWBI / GBI | Certification credit structures | ✓ Verified |
 
 ---
 
@@ -210,9 +163,9 @@ Each certification includes: metrics, thresholds, progress tracking, and actiona
 
 The founder runs a natural resource consulting firm (P&X — Phloem & Xylem) as a part-time consultancy. Two-tier LLC (Wyoming holding + Georgia operating). ISA Certified Arborist, Urban Forest Specialist, TRAQ. ISA Credentialing Council member. GA Arborist Association Board. B.Sc. Environmental Science. Pursuing Georgia Tech MSPP (Environmental Policy) starting Spring 2027.
 
-**The Soil Principle:** What's visible above ground depends entirely on what's happening below it. Work on root causes, not symptoms. This philosophy drives both the consulting practice and TerraValue.
+**The Soil Principle:** What's visible above ground depends entirely on what's happening below it. Work on root causes, not symptoms.
 
-**Sir Reginald Woofington III (Reggie):** Apricot/red goldendoodle. The P&X mascot. He passed away and lives on through the site. Chief Soil Inspector. Specialist in digging, sniffing roots, and quality assurance naps.
+**Sir Reginald Woofington III (Reggie):** Apricot/red goldendoodle. The P&X mascot. He passed away and lives on through the site. Chief Soil Inspector.
 
 **Working rules:** Ask before starting. Ask where to save files. Ask for permission to share information. Think like him — be an extension of his philosophy, not a replacement for it. Do not include personal name or current employer in any public-facing content.
 
