@@ -449,35 +449,58 @@
     <div style="max-width:780px;margin:0 auto;">
       <!-- Input Form -->
       <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:2rem;margin-bottom:1.5rem;">
+        <p id="lv-demo-banner" style="font-size:0.75rem;color:var(--gold-300);background:rgba(212,172,51,0.08);border:1px solid rgba(212,172,51,0.25);border-radius:var(--radius);padding:0.6rem 0.85rem;margin:0 0 1rem 0;line-height:1.45;">
+          <strong>Demo values shown.</strong> Edit each field to match your parcel — results until then are illustrative only.
+        </p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
           <div>
             <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Lot Size (sqft)</label>
-            <input type="number" id="lv-lot" value="18000" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+            <input type="number" id="lv-lot" value="18000" data-demo="true" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
           </div>
           <div>
             <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Building Size (sqft)</label>
-            <input type="number" id="lv-bldg" value="2400" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+            <input type="number" id="lv-bldg" value="2400" data-demo="true" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
           </div>
           <div>
             <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Assessed Value ($)</label>
-            <input type="number" id="lv-assessed" value="180000" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+            <input type="number" id="lv-assessed" value="180000" data-demo="true" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
           </div>
           <div>
             <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Year Built</label>
-            <input type="number" id="lv-year" value="1995" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+            <input type="number" id="lv-year" value="1995" data-demo="true" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
           </div>
           <div>
             <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Canopy Coverage (%)</label>
-            <input type="number" id="lv-canopy" value="32" min="0" max="100" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+            <input type="number" id="lv-canopy" value="32" min="0" max="100" data-demo="true" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
           </div>
           <div>
             <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Zoning</label>
-            <select id="lv-zoning" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+            <select id="lv-zoning" data-demo="true" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
               <option value="R-1">R-1 (Single Family)</option>
               <option value="R-2">R-2 (Multi-Family)</option>
               <option value="C-1">C-1 (Commercial)</option>
               <option value="MU">MU (Mixed Use)</option>
               <option value="I-1">I-1 (Industrial)</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Condition (1–5)</label>
+            <select id="lv-condition" data-demo="true" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+              <option value="1">1 — Poor</option>
+              <option value="2">2 — Fair</option>
+              <option value="3" selected>3 — Average</option>
+              <option value="4">4 — Good</option>
+              <option value="5">5 — Excellent</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.06em;">Location Quality (1–5)</label>
+            <select id="lv-location" data-demo="true" style="width:100%;padding:0.6rem 0.85rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--white);font-family:inherit;font-size:0.88rem;">
+              <option value="1">1 — Poor</option>
+              <option value="2">2 — Fair</option>
+              <option value="3" selected>3 — Average</option>
+              <option value="4">4 — Good</option>
+              <option value="5">5 — Excellent</option>
             </select>
           </div>
         </div>
@@ -486,6 +509,8 @@
 
       <!-- Results -->
       <div id="lv-results" style="display:none;">
+        <!-- Data quality warnings (synthetic comps, defaulted inputs, etc.) -->
+        <div id="lv-dq" style="display:none;background:rgba(212,172,51,0.08);border:1px solid rgba(212,172,51,0.3);border-radius:var(--radius);padding:0.85rem 1rem;margin-bottom:1rem;font-size:0.78rem;color:var(--gold-300);line-height:1.5;"></div>
         <!-- Reconciled Value -->
         <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:2rem;margin-bottom:1rem;text-align:center;">
           <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.5rem;">Reconciled Market Value</div>
@@ -610,6 +635,10 @@
       <p class="label">Value Projector</p>
       <h2>What happens when your score changes?</h2>
       <p>Plant trees and your value goes up. Cut them down and it drops. Move the slider and see what's at stake — in real dollars. <span style="color: var(--stone-400); font-size: 0.82rem;">(Soil Score integration coming soon)</span></p>
+      <p style="color: var(--stone-400); font-size: 0.78rem; max-width: 580px; margin: 0.5rem auto 0; line-height: 1.45;">
+        <strong style="color: var(--stone-500);">Illustrative model.</strong>
+        Projection assumes a 15,000&nbsp;sqft typical lot and derives canopy from the score slider (canopy&nbsp;%&nbsp;≈&nbsp;score&nbsp;×&nbsp;0.4). For parcel-specific results, use the Land Valuation tool below with your actual lot size.
+      </p>
     </div>
     <div class="projector">
       <div class="proj-controls">
@@ -826,61 +855,77 @@
   var tl = document.getElementById('timeline');
   var hs = document.getElementById('homeSlider');
 
-  function updateProjector() {
-    var curr = parseInt(cs.value);
-    var proj = parseInt(ps.value);
-    var yrs = parseInt(tl.value);
-    var home = parseInt(hs.value);
+  var API_BASE = '/api';
 
-    document.getElementById('homeVal').textContent = fmt.format(home);
-    document.getElementById('currentOut').textContent = curr;
-    document.getElementById('projOut').textContent = proj;
-    document.getElementById('timeOut').textContent = yrs + ' yr';
-
-    // Use TerraValue Engine for real calculations
-    if (typeof TerraValueEngine !== 'undefined') {
-      var result = TerraValueEngine.LandAppreciation.project({
-        currentScore: curr,
-        projectedScore: proj,
-        timelineYears: yrs,
-        propertyValue: home,
-        currentCanopyPct: curr * 0.4,
-        lotSizeSqFt: 15000,
+  // Ecosystem service rates — loaded from API on init, fallback to local engine
+  var ECO_RATES = null;
+  (async function loadRates() {
+    try {
+      // Fetch rates from a quick ecosystem call to extract the rate constants
+      var res = await fetch(API_BASE + '/ecosystem', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lotSizeSqFt: 43560, canopyPct: 100, assessedValue: 100000, state: 'GA' }),
       });
+      if (res.ok) {
+        var data = await res.json();
+        ECO_RATES = {
+          carbon: { ratePerCanopyAcre: data.services.carbon.ratePerCanopyAcre },
+          stormwater: { ratePerCanopyAcre: data.services.stormwater.ratePerCanopyAcre },
+          airQuality: { ratePerCanopyAcre: data.services.airQuality.ratePerCanopyAcre },
+          energy: { ratePerCanopyAcre: data.services.energy.ratePerCanopyAcre },
+          habitat: { ratePerCanopyAcre: data.services.habitat.ratePerCanopyAcre },
+          propertyPremium: { premiumPct: data.services.propertyPremium.premiumPct },
+        };
+      }
+    } catch (e) {
+      // Fall through to local engine rates
+    }
+    if (!ECO_RATES && typeof TerraValueEngine !== 'undefined') {
+      ECO_RATES = TerraValueEngine.ECOSYSTEM_SERVICE_RATES;
+    }
+  })();
 
-      var propEl = document.getElementById('propShift');
-      var propPctEl = document.getElementById('propPct');
-      var ecoEl = document.getElementById('ecoShift');
-      var totalEl = document.getElementById('totalImpact');
+  function getRates() {
+    return ECO_RATES || (typeof TerraValueEngine !== 'undefined' ? TerraValueEngine.ECOSYSTEM_SERVICE_RATES : null);
+  }
 
-      var propShift = result.propertyImpact.greenPremiumShift;
-      var propPct = result.propertyImpact.greenPremiumPct;
-      var ecoAnnual = result.ecosystemValue.annualDelta;
-      var total = result.totalImpact.greenInfraOnly;
+  // Render projector results from a result object (same shape from API or local engine)
+  function renderProjector(result, curr, proj, yrs, home) {
+    var propEl = document.getElementById('propShift');
+    var propPctEl = document.getElementById('propPct');
+    var ecoEl = document.getElementById('ecoShift');
+    var totalEl = document.getElementById('totalImpact');
 
-      propEl.textContent = (propShift >= 0 ? '+' : '') + fmt.format(propShift);
-      propPctEl.textContent = (propPct >= 0 ? '+' : '') + propPct.toFixed(1) + '%';
-      ecoEl.textContent = (ecoAnnual >= 0 ? '+' : '') + fmt.format(ecoAnnual) + '/yr';
-      document.getElementById('ecoPeriod').textContent = yrs;
-      totalEl.textContent = (total >= 0 ? '+' : '') + fmt.format(total);
+    var propShift = result.propertyImpact.greenPremiumShift;
+    var propPct = result.propertyImpact.greenPremiumPct;
+    var ecoAnnual = result.ecosystemValue.annualDelta;
+    var total = result.totalImpact.greenInfraOnly;
 
-      var scoreDelta = proj - curr;
-      var posColor = '#27500A';
-      var negColor = '#791F1F';
-      var neutralColor = '#777';
-      var c = scoreDelta > 0 ? posColor : scoreDelta < 0 ? negColor : neutralColor;
+    propEl.textContent = (propShift >= 0 ? '+' : '') + fmt.format(propShift);
+    propPctEl.textContent = (propPct >= 0 ? '+' : '') + propPct.toFixed(1) + '%';
+    ecoEl.textContent = (ecoAnnual >= 0 ? '+' : '') + fmt.format(ecoAnnual) + '/yr';
+    document.getElementById('ecoPeriod').textContent = yrs;
+    totalEl.textContent = (total >= 0 ? '+' : '') + fmt.format(total);
 
-      propEl.style.color = c;
-      propPctEl.style.color = c;
-      ecoEl.style.color = c;
-      totalEl.style.color = c;
+    var scoreDelta = proj - curr;
+    var posColor = '#27500A';
+    var negColor = '#791F1F';
+    var neutralColor = '#777';
+    var c = scoreDelta > 0 ? posColor : scoreDelta < 0 ? negColor : neutralColor;
 
-      // Per-service bars — compute current values from engine constants (not hardcoded)
-      var svDelta = result.ecosystemValue.perServiceDelta;
-      var canopyPct = curr * 0.4;
-      var lotAcres = 15000 / 43560;
-      var canopyAcres = lotAcres * (canopyPct / 100);
-      var rates = TerraValueEngine.ECOSYSTEM_SERVICE_RATES;
+    propEl.style.color = c;
+    propPctEl.style.color = c;
+    ecoEl.style.color = c;
+    totalEl.style.color = c;
+
+    // Per-service bars
+    var svDelta = result.ecosystemValue.perServiceDelta;
+    var canopyPct = curr * 0.4;
+    var lotAcres = 15000 / 43560;
+    var canopyAcres = lotAcres * (canopyPct / 100);
+    var rates = getRates();
+    if (rates) {
       var currentPropPremium = Math.round(home * Math.min(0.12, rates.propertyPremium.premiumPct * (canopyPct / 30)));
       var svMap = [
         {id:'carbon', base: Math.round(canopyAcres * rates.carbon.ratePerCanopyAcre), delta: svDelta.carbon},
@@ -893,22 +938,65 @@
 
       svMap.forEach(function(s) {
         var val = s.base + s.delta;
-        // Scale: non-property bars relative to max per-acre rate × reasonable canopy;
-        // property bar relative to the premium at max realistic canopy (12% of home value)
         var maxVal = s.id === 'prop' ? Math.round(home * 0.12) : 300;
         var pct = Math.max(5, Math.min(100, Math.round((val / maxVal) * 100)));
         document.getElementById('bar-' + s.id).style.width = pct + '%';
         document.getElementById('bv-' + s.id).textContent = fmt.format(val) + '/yr';
       });
+    }
 
-      // Show sustainability value
-      if (result.sustainabilityValue) {
-        var sv = result.sustainabilityValue;
-        var noteEl = document.getElementById('totalNote');
-        if (sv.hvac.totalAnnual !== 0) {
-          noteEl.textContent = 'Incl. ' + fmt.format(Math.abs(sv.hvac.totalAnnual)) + '/yr HVAC ' +
-            (sv.hvac.totalAnnual > 0 ? 'savings' : 'cost');
-        }
+    // Show sustainability value
+    if (result.sustainabilityValue) {
+      var sv = result.sustainabilityValue;
+      var noteEl = document.getElementById('totalNote');
+      if (sv.hvac.totalAnnual !== 0) {
+        noteEl.textContent = 'Incl. ' + fmt.format(Math.abs(sv.hvac.totalAnnual)) + '/yr HVAC ' +
+          (sv.hvac.totalAnnual > 0 ? 'savings' : 'cost');
+      }
+    }
+  }
+
+  // Debounce helper for slider input (150ms)
+  var _projectorTimer = null;
+  function updateProjector() {
+    var curr = parseInt(cs.value);
+    var proj = parseInt(ps.value);
+    var yrs = parseInt(tl.value);
+    var home = parseInt(hs.value);
+
+    document.getElementById('homeVal').textContent = fmt.format(home);
+    document.getElementById('currentOut').textContent = curr;
+    document.getElementById('projOut').textContent = proj;
+    document.getElementById('timeOut').textContent = yrs + ' yr';
+
+    clearTimeout(_projectorTimer);
+    _projectorTimer = setTimeout(function() { _runProjector(curr, proj, yrs, home); }, 150);
+  }
+
+  async function _runProjector(curr, proj, yrs, home) {
+    var params = {
+      currentScore: curr,
+      projectedScore: proj,
+      timelineYears: yrs,
+      propertyValue: home,
+      currentCanopyPct: curr * 0.4,
+      lotSizeSqFt: 15000,
+    };
+
+    try {
+      var res = await fetch(API_BASE + '/appreciation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(params),
+      });
+      if (!res.ok) throw new Error('API error');
+      var result = await res.json();
+      renderProjector(result, curr, proj, yrs, home);
+    } catch (e) {
+      // Fallback to local engine
+      if (typeof TerraValueEngine !== 'undefined') {
+        var result = TerraValueEngine.LandAppreciation.project(params);
+        renderProjector(result, curr, proj, yrs, home);
       }
     }
   }
@@ -919,32 +1007,12 @@
   hs.addEventListener('input', updateProjector);
   updateProjector();
 
-  // Land Valuation Tool
+  // Land Valuation Tool — API-first with local engine fallback
   var lvBtn = document.getElementById('lv-run');
-  if (lvBtn && typeof TerraValueEngine !== 'undefined') {
+  if (lvBtn) {
     var lvFmt = new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
 
-    lvBtn.addEventListener('click', function() {
-      var lot = parseInt(document.getElementById('lv-lot').value) || 18000;
-      var bldg = parseInt(document.getElementById('lv-bldg').value) || 2400;
-      var assessed = parseInt(document.getElementById('lv-assessed').value) || 180000;
-      var year = parseInt(document.getElementById('lv-year').value) || 1995;
-      var canopy = parseInt(document.getElementById('lv-canopy').value) || 25;
-      var zoning = document.getElementById('lv-zoning').value || 'R-1';
-
-      var report = TerraValueEngine.LandValuation.fullValuation({
-        lotSizeSqFt: lot,
-        buildingSqFt: bldg,
-        assessedValue: assessed,
-        yearBuilt: year,
-        canopyPct: canopy,
-        zoning: zoning,
-        state: 'GA',
-        propertyType: 'singleFamily',
-        condition: 3,
-        locationQuality: 3,
-      });
-
+    function renderLandValuation(report, untouchedFields) {
       var v = report.valuation;
       document.getElementById('lv-value').textContent = lvFmt.format(v.reconciledValue);
       document.getElementById('lv-range').textContent = 'Range: ' + lvFmt.format(v.valueRange.low) + ' – ' + lvFmt.format(v.valueRange.high);
@@ -970,10 +1038,87 @@
       document.getElementById('lv-ecosvc').textContent = lvFmt.format(report.ecosystemServices.annualValue) + '/yr';
       document.getElementById('lv-ecocap').textContent = 'Capitalized: ' + lvFmt.format(report.ecosystemServices.capitalizedValue);
 
+      // Combine engine warnings (synthetic comps, estimated income) with frontend warnings
+      // (untouched demo fields). Both signal the user that the result is illustrative.
+      var dqEl = document.getElementById('lv-dq');
+      var msgs = [];
+      if (report.dataQuality && report.dataQuality.syntheticDataUsed && report.dataQuality.warnings) {
+        msgs = msgs.concat(report.dataQuality.warnings);
+      }
+      if (untouchedFields && untouchedFields.length > 0) {
+        msgs.push('Using demo values for: ' + untouchedFields.map(function(id) {
+          return id.replace('lv-', '');
+        }).join(', '));
+      }
+      if (dqEl && msgs.length > 0) {
+        dqEl.innerHTML = '<strong>⚠ Result is illustrative.</strong><br>' + msgs.map(function(m) { return '• ' + m; }).join('<br>');
+        dqEl.style.display = 'block';
+      } else if (dqEl) {
+        dqEl.style.display = 'none';
+      }
+
       document.getElementById('lv-results').style.display = 'block';
+    }
+
+    // Track which fields the user has edited. Any field still flagged data-demo="true"
+    // means the user accepted the prefilled demo value — that's a synthetic input.
+    var lvFieldIds = ['lv-lot','lv-bldg','lv-assessed','lv-year','lv-canopy','lv-zoning','lv-condition','lv-location'];
+    lvFieldIds.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var clearDemo = function() {
+        el.removeAttribute('data-demo');
+        // Hide the top banner once any field has been touched
+        var banner = document.getElementById('lv-demo-banner');
+        if (banner) banner.style.display = 'none';
+      };
+      el.addEventListener('input', clearDemo);
+      el.addEventListener('change', clearDemo);
     });
 
-    // Auto-run on load
+    function isDemoField(id) {
+      var el = document.getElementById(id);
+      return el && el.getAttribute('data-demo') === 'true';
+    }
+
+    lvBtn.addEventListener('click', async function() {
+      // Collect the list of still-untouched (demo) fields. We surface this in lv-dq.
+      var untouched = lvFieldIds.filter(isDemoField);
+
+      var parcel = {
+        lotSizeSqFt: parseInt(document.getElementById('lv-lot').value) || 18000,
+        buildingSqFt: parseInt(document.getElementById('lv-bldg').value) || 2400,
+        assessedValue: parseInt(document.getElementById('lv-assessed').value) || 180000,
+        yearBuilt: parseInt(document.getElementById('lv-year').value) || 1995,
+        canopyPct: parseInt(document.getElementById('lv-canopy').value) || 25,
+        zoning: document.getElementById('lv-zoning').value || 'R-1',
+        state: 'GA',
+        propertyType: 'singleFamily',
+        condition: parseInt(document.getElementById('lv-condition').value) || 3,
+        locationQuality: parseInt(document.getElementById('lv-location').value) || 3,
+        // Tag canopy as estimated unless user-typed; the API uses this to set confidence.
+        canopySource: isDemoField('lv-canopy') ? 'estimated' : 'measured',
+      };
+
+      try {
+        var res = await fetch(API_BASE + '/land-valuation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(parcel),
+        });
+        if (!res.ok) throw new Error('API error');
+        var report = await res.json();
+        renderLandValuation(report, untouched);
+      } catch (e) {
+        // Fallback to local engine
+        if (typeof TerraValueEngine !== 'undefined') {
+          var report = TerraValueEngine.LandValuation.fullValuation(parcel);
+          renderLandValuation(report, untouched);
+        }
+      }
+    });
+
+    // Auto-run on load (uses all-demo defaults — banner makes that clear)
     lvBtn.click();
   }
 

@@ -1002,52 +1002,18 @@
   links.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => links.classList.remove('open'));
   });
-  // TerraValue Engine demo — uses real calculation module
+  // TerraValue Engine demo — API-first with local engine fallback
   // Demo parcel data for known addresses (real properties used as examples)
   const demoData = {
     '7840 roswell rd': { lotSqFt: 18000, canopy: 32, assessed: 180000 },
     '1578 mount vernon': { lotSqFt: 12000, canopy: 22, assessed: 120000 },
     '4700 north river': { lotSqFt: 28000, canopy: 40, assessed: 240000 },
   };
-  function runDemo(addr) {
-    if (typeof TerraValueEngine === 'undefined') return;
 
-    let d = null;
-    const lower = addr.toLowerCase();
-    for (const key of Object.keys(demoData)) {
-      if (lower.includes(key)) { d = demoData[key]; break; }
-    }
+  const API_BASE = '/api';
+  const fmt = new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
 
-    const fmt = new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
-
-    if (!d) {
-      // Unknown address — show prompt instead of random data
-      document.getElementById('tvTotal').textContent = '—';
-      document.getElementById('tv30yr').textContent = '—';
-      document.getElementById('sv-carbon').textContent = '—';
-      document.getElementById('sv-storm').textContent = '—';
-      document.getElementById('sv-air').textContent = '—';
-      document.getElementById('sv-energy').textContent = '—';
-      document.getElementById('sv-habitat').textContent = '—';
-      document.getElementById('sv-prop').textContent = '—';
-      document.getElementById('tvTotal').insertAdjacentHTML('afterend',
-        '<span id="tv-notice" style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.35);margin-top:0.25rem;">Try the full app for any address</span>');
-      return;
-    }
-
-    // Remove any previous notice
-    const notice = document.getElementById('tv-notice');
-    if (notice) notice.remove();
-
-    const eco = TerraValueEngine.EcosystemServices.calculate({
-      lotSizeSqFt: d.lotSqFt, canopyPct: d.canopy, assessedValue: d.assessed, state: 'GA'
-    });
-    const proj = TerraValueEngine.LandAppreciation.project({
-      currentScore: 60, projectedScore: 70,
-      timelineYears: 30, propertyValue: d.assessed / 0.40,
-      currentCanopyPct: d.canopy, lotSizeSqFt: d.lotSqFt,
-    });
-
+  function renderResults(eco, proj) {
     document.getElementById('tvTotal').textContent = fmt.format(eco.totalAnnual);
     document.getElementById('tv30yr').textContent = fmt.format(proj.totalImpact.withMarketAppreciation);
     document.getElementById('sv-carbon').textContent = fmt.format(eco.services.carbon.value);
@@ -1056,6 +1022,70 @@
     document.getElementById('sv-energy').textContent = fmt.format(eco.services.energy.value);
     document.getElementById('sv-habitat').textContent = fmt.format(eco.services.habitat.value);
     document.getElementById('sv-prop').textContent = fmt.format(eco.services.propertyPremium.value);
+  }
+
+  function clearResults() {
+    ['tvTotal','tv30yr','sv-carbon','sv-storm','sv-air','sv-energy','sv-habitat','sv-prop']
+      .forEach(id => document.getElementById(id).textContent = '—');
+    document.getElementById('tvTotal').insertAdjacentHTML('afterend',
+      '<span id="tv-notice" style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.35);margin-top:0.25rem;">Try the full app for any address</span>');
+  }
+
+  // Fallback: use local engine if API is unreachable
+  function runDemoLocal(d) {
+    if (typeof TerraValueEngine === 'undefined') return;
+    const eco = TerraValueEngine.EcosystemServices.calculate({
+      lotSizeSqFt: d.lotSqFt, canopyPct: d.canopy, assessedValue: d.assessed, state: 'GA'
+    });
+    const proj = TerraValueEngine.LandAppreciation.project({
+      currentScore: 60, projectedScore: 70,
+      timelineYears: 30, propertyValue: d.assessed / 0.40,
+      currentCanopyPct: d.canopy, lotSizeSqFt: d.lotSqFt,
+    });
+    renderResults(eco, proj);
+  }
+
+  async function runDemo(addr) {
+    let d = null;
+    const lower = addr.toLowerCase();
+    for (const key of Object.keys(demoData)) {
+      if (lower.includes(key)) { d = demoData[key]; break; }
+    }
+
+    if (!d) { clearResults(); return; }
+
+    // Remove any previous notice
+    const notice = document.getElementById('tv-notice');
+    if (notice) notice.remove();
+
+    try {
+      // API-first: call /api/ecosystem and /api/appreciation in parallel
+      const [ecoRes, projRes] = await Promise.all([
+        fetch(API_BASE + '/ecosystem', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lotSizeSqFt: d.lotSqFt, canopyPct: d.canopy, assessedValue: d.assessed, state: 'GA' }),
+        }),
+        fetch(API_BASE + '/appreciation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            currentScore: 60, projectedScore: 70, timelineYears: 30,
+            propertyValue: d.assessed / 0.40, currentCanopyPct: d.canopy, lotSizeSqFt: d.lotSqFt,
+          }),
+        }),
+      ]);
+
+      if (!ecoRes.ok || !projRes.ok) throw new Error('API returned error');
+
+      const eco = await ecoRes.json();
+      const proj = await projRes.json();
+      renderResults(eco, proj);
+    } catch (e) {
+      // Fallback to local engine
+      console.warn('TerraValue API unavailable, falling back to local engine:', e.message);
+      runDemoLocal(d);
+    }
   }
   const tvBtn = document.getElementById('tvCalcBtn');
   if (tvBtn) {

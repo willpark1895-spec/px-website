@@ -1,0 +1,16 @@
+{
+  "name": "px-terravalue",
+  "version": "1.0.0",
+  "description": "TerraValue — parcel-level ecosystem services & land valuation API",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "test": "node --test tests/golden-parity.test.js",
+    "test:parity": "node tests/golden-parity.test.js",
+    "test:e2e": "node tests/e2e-validate.js",
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel"
+  }
+}
