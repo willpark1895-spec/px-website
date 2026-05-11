@@ -354,7 +354,7 @@
 
 <nav class="nav" id="nav">
   <div class="nav-inner">
-    <a href="terravalue.html" class="nav-brand">
+    <a href="/" class="nav-brand">
       <span class="nav-logo">TerraValue</span>
       <span class="nav-divider"></span>
       <span class="nav-tagline">Ecosystem-Aware AVM</span>
@@ -967,7 +967,7 @@
         <div class="cred-badge" style="display:flex;align-items:center;gap:0.35rem;padding:0.4rem 0.85rem;background:var(--gold-100);border-radius:var(--radius-pill);font-size:0.75rem;font-weight:500;color:var(--green-800);border:1px solid var(--gold-200);"><span style="width:5px;height:5px;background:var(--gold-500);border-radius:50%;"></span>2024 GA Tree Council Grand Award</div>
       </div>
       <div style="text-align:center;">
-        <a href="../TerraValue-Audit-Report.md" class="btn btn-secondary">Read the methodology audit &rarr;</a>
+        <a href="methodology-audit.md" class="btn btn-secondary">Read the methodology audit &rarr;</a>
       </div>
     </div>
   </div>
@@ -1023,7 +1023,9 @@
   var tl = document.getElementById('timeline');
   var hs = document.getElementById('homeSlider');
 
-  var API_BASE = '/api';
+  // Cross-origin: standalone deploys to terravalue.app; API lives on pxconsulting.io.
+  // The P&X API sets Access-Control-Allow-Origin: * in root vercel.json.
+  var API_BASE = 'https://pxconsulting.io/api';
 
   // Ecosystem service rates — loaded from API on init, fallback to local engine
   var ECO_RATES = null;
