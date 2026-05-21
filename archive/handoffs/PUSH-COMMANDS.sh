@@ -1,3 +1,11 @@
+# STATUS: Archived 2026-05-20.
+# These are the paste-into-terminal commands for the May 4 two-commit push
+# (API migration + phantom-data audit fixes). That push shipped. Future
+# pushes generate fresh commands inline in the session. Kept for reference only.
+
+
+---
+
 #!/bin/bash
 # TerraValue API migration + audit fixes — two-commit push
 # Generated 2026-05-04

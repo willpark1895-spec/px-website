@@ -1,3 +1,7 @@
+> **STATUS: Archived 2026-05-20.** Superseded by SESSION-HANDOFF-2026-05-10.md. Records the brand-split + AVM-voice rewrite. Kept for historical context only.
+
+---
+
 # Session Handoff — May 5, 2026
 
 **Session theme:** Strategic sharpening + brand split + AVM positioning rewrite.

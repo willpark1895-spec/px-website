@@ -1,3 +1,7 @@
+> **STATUS: Archived 2026-05-20.** This is the April 27–28, 2026 handoff. Superseded by every later SESSION-HANDOFF-* doc; the most recent is SESSION-HANDOFF-2026-05-10.md. Kept for historical context only.
+
+---
+
 # P&X — Session Handoff
 **Date:** April 27–28, 2026 (updated April 28, post-code-audit)
 **Purpose:** Drop this file (along with the `P&X/` project folder) into a new Cowork session so Claude can pick up exactly where we left off.

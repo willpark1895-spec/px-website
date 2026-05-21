@@ -1,3 +1,7 @@
+> **STATUS: Archived 2026-05-20.** April 28, 2026 full audit of the original `terravalue-engine.js` v1.0. The substantive content was copied to `terravalue-standalone/methodology-audit.md` and is served live from terravalue.app under the "Read the methodology audit" link. This file is the original source; future methodology edits should go to the standalone copy. Kept for historical context only.
+
+---
+
 # TerraValue Engine — Full Audit Report
 
 **Date:** April 28, 2026  

@@ -1,3 +1,7 @@
+> **STATUS: Archived 2026-05-20.** April 29, 2026 planning doc for the API extraction. The migration shipped May 4 (see SESSION-HANDOFF-2026-05-04.md). Kept for historical context only.
+
+---
+
 # TerraValue API Migration — Session Handoff
 **Date:** April 29, 2026
 **Purpose:** Drop this file (along with the `P&X/` project folder) into a new Cowork session to resume the API extraction work.

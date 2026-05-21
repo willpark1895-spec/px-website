@@ -1,3 +1,7 @@
+> **STATUS: Archived 2026-05-20.** Superseded by SESSION-HANDOFF-2026-05-10.md. Records value corrections, parcel-data refactor adoption, and the original CORS roadblock that the May 10 cutover ultimately bypassed. Kept for historical context only.
+
+---
+
 # P&X + TerraValue — Session Handoff
 **Date:** May 9, 2026
 **Supersedes:** SESSION-HANDOFF-2026-05-04.md (still accurate for the P&X API migration, but pre-dates today's TerraValue work)

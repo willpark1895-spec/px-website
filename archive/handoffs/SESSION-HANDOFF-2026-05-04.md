@@ -1,3 +1,7 @@
+> **STATUS: Archived 2026-05-20.** Superseded by SESSION-HANDOFF-2026-05-10.md. Still useful as the canonical record of the May 4 API migration + audit work. Kept for historical context only.
+
+---
+
 # P&X / TerraValue — Session Handoff
 **Date:** May 4, 2026
 **Session focus:** Resume API migration push + audit + phantom-data fixes

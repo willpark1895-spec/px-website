@@ -1,44 +1,42 @@
-# TerraValue Frontend Cutover Checklist
+# TerraValue Frontend Cutover Checklist — CLOSED
 
-**When:** After 1+ week of stable API operation on Vercel with zero errors in logs.
+**Last updated:** 2026-05-20
+**Status:** Closed. All actions complete.
 
-**Pre-cutover validation:**
-1. Run `node tests/e2e-validate.js https://your-project.vercel.app` — all 23 checks must pass
-2. Check Vercel function logs for any 500 errors in the past 7 days
-3. Verify both index.html and terravalue.html work correctly with API calls (not fallback)
+This runbook described the post-API-migration cleanup of the original monolithic `terravalue-engine.js`. As of May 20, 2026 there is nothing left to do here. Kept at root (not archived) because it's referenced from older handoffs as a known-open task — anyone who lands here should know it's done.
 
-## Changes to Make
+---
 
-### 1. `website/index.html`
+## What this checklist covered
 
-**Remove** line 993:
-```html
-<script src="terravalue-engine.js"></script>
-```
+After the May 4 API migration, the pxconsulting.io frontend was wired API-first with a local-engine fallback via `<script src="terravalue-engine.js">`. The plan was to wait 1+ week for stable API logs, then remove the script-tag fallback and delete the 2,345-line monolith.
 
-**Remove** the `runDemoLocal()` function (the fallback that references `TerraValueEngine`).
+## Completion record
 
-**Remove** the `catch` block's call to `runDemoLocal(d)` — replace with a user-facing error message or silent no-op.
+| Action | Status | Notes |
+|---|---|---|
+| Remove `<script src="terravalue-engine.js">` from `website/index.html` | ✅ Done (in a prior commit; date not recorded — confirmed by grep on 2026-05-20) | `website/index.html` has zero references to `terravalue-engine.js` or `TerraValueEngine`. |
+| Remove `<script src="terravalue-engine.js">` from `website/terravalue.html` | ✅ N/A (file deleted 2026-05-20) | The file was deleted as part of the duplication cleanup. `pxconsulting.io/terravalue` and `/terravalue.html` now 301-redirect to https://www.terravalue.app. |
+| Delete `website/terravalue-engine.js` | ✅ Done 2026-05-20 | 2,345 lines / ~155 KB removed. No remaining consumers in `website/`. |
+| 1-week API stability window | ✅ Closed 2026-05-11 | No incidents during the window. |
 
-### 2. `website/terravalue.html`
+---
 
-**Remove** line 814:
-```html
-<script src="terravalue-engine.js"></script>
-```
+## What was NOT touched
 
-**Remove** all `typeof TerraValueEngine !== 'undefined'` fallback branches in:
-- `getEcoRates()` — remove the fallback to `TerraValueEngine.ECOSYSTEM_SERVICE_RATES`
-- `_runProjector()` catch block — remove the `TerraValueEngine.LandAppreciation.project()` fallback
-- Land valuation button catch block — remove the `TerraValueEngine.LandValuation.fullValuation()` fallback
+`terravalue-standalone/terravalue-engine.js` is **still in place** and is intentionally kept as a client-side fallback for `www.terravalue.app`. Because terravalue.app fetches the API cross-origin from `pxconsulting.io`, a bundled fallback is defensible — it keeps the page functional if the cross-origin call fails. This is by design, not an oversight.
 
-**Replace** fallback code with user-facing error messages (e.g., "Calculation service temporarily unavailable. Please try again.").
+If you ever decide to remove that fallback too, the work is:
 
-### 3. Optional cleanup
+1. Remove the `<script src="terravalue-engine.js">` tag from `terravalue-standalone/index.html` (line ~1011).
+2. Remove the three `typeof TerraValueEngine !== 'undefined'` branches around lines 1054, 1060, 1167, 1284.
+3. Replace each with a user-facing error message.
+4. Delete `terravalue-standalone/terravalue-engine.js`.
 
-- `website/terravalue-engine.js` can be archived or deleted once both pages are cutover
-- The file is ~155 KB and will no longer be loaded by any page
+Don't do this casually — it removes terravalue.app's last line of defense against an API outage.
 
-## Rollback
+---
 
-If issues arise after cutover, re-add the script tags. The fallback code can be restored from git history.
+## Rollback (for historical reference)
+
+If issues had arisen after the cutover, the script tag and fallback code could have been restored from Git history. No rollback was needed.

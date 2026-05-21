@@ -1,6 +1,17 @@
 # TerraValue — Feature Prioritization Matrix
-**Date:** April 29, 2026
-**Status:** Working prioritization, v0.1
+
+**Last updated:** 2026-05-20
+**Original draft:** 2026-04-29 (v0.1)
+**Status:** Working prioritization, v0.2 — incorporates the 2026-05-05 strategic sharpening (see `archive/handoffs/SESSION-HANDOFF-2026-05-05.md`).
+
+---
+
+## What changed in v0.2
+
+- **Strategic spine of the next 90 days** is now #8 (validation study) + #4 (listing badge / broker design partner), with #6 (patent provisional) as the only other true P0.
+- **Tax appeal (#3) demoted from P0 to P1**, gated on the validation-study data pipeline. Estimated 3–4 founder-weeks for an MVP, but only ~2 weeks once the broker / MLS infrastructure for #4 + #8 exists.
+- **Retail features (Canopy Score, Stormwater calc, tax appeal) are now framed as case-study production**, not primary revenue. They feed paired-sales data and field testimonials into #8.
+- **dataQuality flag surfacing (#5)** stays P0 — it's an audit finding, not a revenue lever.
 
 ---
 
@@ -22,7 +33,7 @@ Scores are deliberately rough. Treat as relative ranking, not absolute.
 |---|---|---|---|---|---|---|
 | 1 | 0–100 Canopy Score (single-number summary) | 4 | 1 | 5 | Quick | **P0** |
 | 2 | Stormwater fee credit calculator (Atlanta metro) | 4 | 2 | 4 | Quick | **P0** |
-| 3 | Tax assessment appeal report (Georgia) | 4 | 3 | 3 | Medium | **P0** |
+| 3 | Tax assessment appeal report (Georgia) | 4 | 3 | 3 | Medium | **P1** (demoted 2026-05-05; gated on #4 + #8 infra) |
 | 4 | Listing-level Green Premium Badge + broker co-branding | 5 | 3 | 5 | Medium | **P0** |
 | 5 | Surface dataQuality flags in UI (audit Finding 6) | n/a | 1 | 5 | Quick | **P0** |
 | 6 | Provisional patent filing | n/a | 1 | 5 | Quick | **P0** |
@@ -71,23 +82,31 @@ LOW EFFORT  ----------------+----------------  HIGH EFFORT
 
 ---
 
-## P0 — next 90 days
+## P0 — next 90 days (v0.2)
 
-The 90-day plan optimizes for two things: maximum signal in a seed pitch, and minimum first revenue.
+The strategic spine: **#8 validation study + #4 broker design partner**, defended by **#6 patent provisional**. Retail features below the spine ship as case-study production — they exist to feed paired-sales data and credibility, not first revenue.
 
-1. **Patent provisional filed** (#6) — week 1, $3–5K
-2. **dataQuality flags surfaced in UI** (#5) — week 1–2, closes audit Finding 6
-3. **Canopy Score** (#1) — public widget on landing page, week 2–3
-4. **Stormwale fee credit calculator** (#2) — first paying product, $99–199/report
-5. **Tax appeal report MVP** (#3) — second paying product, $299–499/report
-6. **Listing badge + 1 broker design partner** (#4) — Atlanta intown brokerage
-7. **API v1 in private beta** (#7) — limited concurrency, manual onboarding
-8. **Validation study underway** (#8) — Atlanta sales pulled, model running
+**Spine (must ship):**
+1. **Patent provisional filed** (#6) — week 1, $3–5K. The only IP defense before public claims.
+2. **Validation study underway** (#8) — Atlanta paired-sales pulled, model running. This is the asset everything else points at.
+3. **Listing badge + 1 broker design partner** (#4) — Atlanta intown brokerage. Generates the MLS / paired-sales pipeline that #8 needs.
 
-**Revenue target end of P0:** 50–100 paid reports, 1 broker partner contract, 1 institutional pilot LOI.
+**Case-study production layer (ship as throughput allows):**
+4. **dataQuality flags surfaced in UI** (#5) — week 1–2, closes audit Finding 6.
+5. **Canopy Score** (#1) — public widget on landing page, week 2–3. Lead-gen and credibility, not revenue.
+6. **Stormwater fee credit calculator** (#2) — first paying retail product, $99–199/report. Treated as case-study throughput.
+7. **API v1 in private beta** (#7) — limited concurrency, manual onboarding. Pre-seeds institutional pilot conversations.
+
+**P0 deliverables (end of window):**
+- Patent provisional on file
+- Validation study pipeline operational, first lift number directionally available
+- 1 broker design partner under contract, listings flowing
+- Audit finding 6 closed
+- ~25–50 case-study reports generated through retail surfaces (not a revenue target — a data target)
 
 ## P1 — next 90–180 days (build for seed close)
 
+8. **Tax assessment appeal report (#3)** — demoted from P0 on 2026-05-05; build once #4 + #8 infrastructure exists (~2 founder-weeks once dependencies land)
 9. Species awareness (#9)
 10. Canopy time-series (#10)
 11. Climate-risk overlay (#11)

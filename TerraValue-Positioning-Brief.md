@@ -1,11 +1,20 @@
 # TerraValue — Positioning Brief
-**Date:** April 29, 2026
-**Status:** Working draft, v0.1
+
+**Last updated:** 2026-05-20
+**Original draft:** 2026-04-29 (v0.1)
+**Status:** Working draft, v0.2 — incorporates the 2026-05-05 strategic sharpening (see `archive/handoffs/SESSION-HANDOFF-2026-05-05.md`).
 
 ---
 
 ## One-line positioning
 TerraValue is the first **ecosystem-aware AVM** — automated property valuation that prices canopy, soil, and natural assets with USPAP-grade rigor.
+
+## Strategic posture (sharpened 2026-05-05)
+
+- **TerraValue is the company.** It is the ecosystem-aware AVM. Everything else exists to support that product.
+- **P&X (Phloem & Xylem) is the consulting practice TerraValue was founded out of.** P&X is the credibility halo and case-study source; not the commercial vehicle.
+- **The institutional surface (AVM vendors, lenders, GSEs, REITs) is the primary revenue line.**
+- **The retail surface (homeowner / broker / tax-appeal) is a case-study production layer**, not a primary revenue line. It generates paired-sales data and field testimonials for the institutional validation study. Minimal income by design.
 
 ## Category
 Automated Valuation Model (AVM) / Real Estate Data Infrastructure.
@@ -70,7 +79,7 @@ Property valuations today are blind to natural assets. A $1M home with mature ca
 - Methodology cites Atlanta iTree Eco 2014, EPA SC-GHG 2023, Kovacs 2022, Netusil 2014, Cho 2020, McPherson 2003, Nowak 2014 — all operationalized
 - Three-approach USPAP framework correctly implemented per ASB standards
 - O.C.G.A. § 48-5-7 (Georgia 40% assessment ratio) correctly coded
-- Public methodology audit document — see `TerraValue-Audit-Report.md`
+- Public methodology audit document — served live at https://www.terravalue.app via the "Read the methodology audit" link (sourced from `terravalue-standalone/methodology-audit.md`; original at `archive/audits/TerraValue-Audit-Report.md`)
 
 ---
 

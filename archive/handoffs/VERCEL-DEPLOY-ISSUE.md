@@ -1,3 +1,7 @@
+> **STATUS: Archived 2026-05-20. RESOLVED.** This was the May 5 deploy routing issue (terravalue.app pointing at the wrong Vercel project). Resolved by the May 10 Reading 3 cutover (see SESSION-HANDOFF-2026-05-10.md), which repointed the terravalue.app Vercel project to px-website/terravalue-standalone/. Kept for historical context only.
+
+---
+
 # Open Issue — Vercel deploy routing for terravalue.app
 
 **Status:** Diagnosis started May 5, 2026. Not resolved. Top priority for next session.

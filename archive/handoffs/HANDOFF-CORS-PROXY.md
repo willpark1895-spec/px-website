@@ -1,3 +1,7 @@
+> **STATUS: Archived 2026-05-20. OBSOLETE.** This was the planned task for May 11 — adding CORS proxy routes to pxconsulting.io/api/proxy/* so the React app's federal-data integrations could call Census/NRCS/NLCD/NOAA/PRISM/AirNow from the browser. It is no longer needed because terravalue.app no longer serves the React app (Reading 3 cutover, May 10, 2026 — see SESSION-HANDOFF-2026-05-10.md). The standalone HTML now serves terravalue.app and uses a form-driven flow that doesn't auto-populate from federal data. If federal-data auto-populate is ever wanted on the standalone form, the proxy approach in this doc still applies as a v2 feature. Kept for reference only.
+
+---
+
 # Next Session — CORS Proxy for TerraValue Integrations
 **Date opened:** May 9, 2026
 **Status:** Ready for a fresh session to execute. All discovery is done.
