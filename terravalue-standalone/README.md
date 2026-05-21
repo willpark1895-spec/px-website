@@ -1,37 +1,28 @@
-# TerraValue — Standalone deploy candidate
+# TerraValue — Standalone deploy (canonical)
 
-This folder is the **Reading 3** lift-and-shift target for the TerraValue brand split.
+**Last updated:** 2026-05-20
+
+This folder is the **canonical TerraValue surface**. It deploys to https://www.terravalue.app via the `px-website` Vercel project (Root Directory = `terravalue-standalone`).
 
 ## What's in here
 
-- `index.html` — The TerraValue marketing surface. Currently a copy of `../website/terravalue.html`. Under Reading 2 (May 2026) this file lives in two places; under Reading 3 the canonical copy moves here and the duplicate at `../website/terravalue.html` is deleted.
-- `terravalue-engine.js` — Calculation engine. Same file as `../website/terravalue-engine.js`. Eventually moves to its own package or stays vendored here.
-- `methodology-audit.md` — Copy of `../TerraValue-Audit-Report.md`, served from this folder so the "Read the methodology audit" link works under standalone deploy.
+- `index.html` — The TerraValue marketing surface (AVM-voice page: hero, Inside the Engine, Integration Surface, Sensitivity Analysis, Under the Hood, validation band, founder section, P&X footer). Calls the P&X API at `https://pxconsulting.io/api/*` cross-origin via `Access-Control-Allow-Origin: *`.
+- `terravalue-engine.js` — Calculation engine, vendored locally for client-side fallback. Identical to the engine bundled by the (now retired) duplicate at `../website/terravalue.html` once was.
+- `methodology-audit.md` — Methodology audit, served from this folder so the "Read the methodology audit" link works under the standalone deploy.
+- `vercel.json` — Security headers matching the main site.
 
-## Reading 2 vs Reading 3 — current state
+## State as of May 20, 2026
 
-**Reading 2 (current, May 2026):** TerraValue marketing lives at `../website/terravalue.html`. Branding, nav, footer, meta tags, and contact CTAs are fully separated from P&X. Both pages still deploy together to pxconsulting.io. This folder exists but is not yet wired to a deploy.
+- **Reading 3 cutover (May 10, 2026):** terravalue.app's Vercel project was repointed from `willpark1895-spec/terravalue` (the React app) to this folder in the `px-website` repo. The React app is preserved in Git but no longer deploys.
+- **Duplicate resolution (May 20, 2026):** the previous duplicate at `../website/terravalue.html` was deleted. `pxconsulting.io/terravalue` and `pxconsulting.io/terravalue.html` now 301-redirect to `https://www.terravalue.app` via root `vercel.json`.
 
-**Reading 3 (next):** This folder becomes the canonical TerraValue surface. Steps:
-1. Stand up Vercel project pointed at this folder
-2. Point `terravalue.app` (or `terravalue.io`) DNS at the new project
-3. Delete `../website/terravalue.html` and `../website/terravalue-engine.js`
-4. Update the small TerraValue methodology-credit section on `../website/index.html` to link to the new TerraValue domain (already pointing at `https://terravalue.app` — should still work)
-5. Update the API base in `terravalue-engine.js` and `index.html` if the API moves with it
+## Cross-folder relationship
 
-## Why two copies for now
+There is no longer a sync requirement between this folder and `../website/`. The only remaining shared dependency is the API at `pxconsulting.io/api/*`, which is consumed cross-origin.
 
-Single source of truth would be cleaner, but Reading 2 explicitly avoids touching DNS or deploys. Keeping a duplicate here lets you preview what the standalone deploy will look like (open `index.html` in a browser) without disturbing the live pxconsulting.io site.
+The previously duplicated `terravalue-engine.js` at `../website/terravalue-engine.js` was deleted on 2026-05-20 (the script-tag cutover is closed — see `../CUTOVER-CHECKLIST.md`). This folder's copy of `terravalue-engine.js` is the only one that remains, and it is intentionally retained as the client-side fallback for `terravalue.app`.
 
-If you change one, sync the other until Reading 3 is executed. There are exactly three files to keep in sync:
-- `index.html` ↔ `../website/terravalue.html`
-- `terravalue-engine.js` ↔ `../website/terravalue-engine.js`
-- `methodology-audit.md` ↔ `../TerraValue-Audit-Report.md`
+## Still open
 
-## Reading 3 trigger
-
-Per the kickoff doc, the operational sequence before Reading 3 is:
-1. Run `node tests/e2e-validate.js` against the live Vercel deploy
-2. Set `TERRAVALUE_API_KEY` env var on Vercel + DNS for pxconsulting.io
-3. After 1+ week stable, execute the script-tag cutover per `CUTOVER-CHECKLIST.md`
-4. Then Reading 3: stand up TerraValue at its own domain
+- Set `TERRAVALUE_API_KEY` on the `px-website` Vercel project to gate the API. If set, the calculator's `fetch` calls in `index.html` will need an `X-API-Key` header (or whitelist the terravalue.app origin in API auth).
+- Three sourcing items from the May 4 audit (stormwater $520/canopy-acre, 5% ecosystem cap rate, habitat $320).

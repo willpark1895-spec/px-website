@@ -6,6 +6,10 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index" }
   ],
+  "redirects": [
+    { "source": "/terravalue", "destination": "https://www.terravalue.app", "permanent": true },
+    { "source": "/terravalue.html", "destination": "https://www.terravalue.app", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",
