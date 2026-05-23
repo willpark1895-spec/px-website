@@ -113,13 +113,164 @@ function error(res, statusCode, message, details = null) {
 
 // ─── Input Validation ────────────────────────────────────────
 
-function requireFields(body, fields) {
-  const missing = fields.filter(f => body[f] == null);
-  if (missing.length > 0) {
-    return `Missing required fields: ${missing.join(', ')}`;
+/**
+ * Validate and coerce a single field.
+ *
+ * Coercion rules (per audit AUDIT-2026-05-20.md, finding F2):
+ *   - Accepts numbers and clean numeric strings ("43560" -> 43560).
+ *   - Rejects NaN, Infinity, mixed strings ("43560abc"), empty strings, booleans.
+ *   - Range-checks against {min, max}; out-of-range returns 400.
+ *
+ * @param {*} value       — raw value from body
+ * @param {Object} spec   — { name, min, max, required, integer, allowedValues }
+ * @returns {{ ok: true, value: number|string } | { ok: false, error: string }}
+ */
+function validateField(value, spec) {
+  const { name, min, max, required = false, integer = false, allowedValues, type = 'number' } = spec;
+
+  // Missing value handling
+  if (value == null || value === '') {
+    if (required) return { ok: false, error: `${name} is required` };
+    return { ok: true, value: undefined };
   }
-  return null;
+
+  // String-allowed values (enums like state, propertyType)
+  if (type === 'string') {
+    if (typeof value !== 'string') {
+      return { ok: false, error: `${name} must be a string` };
+    }
+    if (allowedValues && !allowedValues.includes(value)) {
+      return { ok: false, error: `${name} must be one of: ${allowedValues.join(', ')}` };
+    }
+    return { ok: true, value };
+  }
+
+  // Numeric coercion: accept numbers and clean numeric strings only.
+  // Reject booleans (Number(true) === 1, which would silently coerce to a valid number).
+  if (typeof value === 'boolean') {
+    return { ok: false, error: `${name} must be a number (got boolean)` };
+  }
+
+  let n;
+  if (typeof value === 'number') {
+    n = value;
+  } else if (typeof value === 'string') {
+    // Trim whitespace, then require the string to be a complete numeric literal.
+    // Number("43560") === 43560 OK
+    // Number("43560abc") === NaN (caught below)
+    // Number("") === 0 (caught: trim then check length)
+    // Number(" ") === 0 (caught: trim then check length)
+    const trimmed = value.trim();
+    if (trimmed === '') {
+      return { ok: false, error: `${name} must be a number (got empty string)` };
+    }
+    n = Number(trimmed);
+  } else {
+    return { ok: false, error: `${name} must be a number` };
+  }
+
+  if (!Number.isFinite(n)) {
+    return { ok: false, error: `${name} must be a finite number (got ${JSON.stringify(value)})` };
+  }
+
+  if (integer && !Number.isInteger(n)) {
+    return { ok: false, error: `${name} must be an integer (got ${n})` };
+  }
+
+  if (min != null && n < min) {
+    return { ok: false, error: `${name} must be >= ${min} (got ${n})` };
+  }
+  if (max != null && n > max) {
+    return { ok: false, error: `${name} must be <= ${max} (got ${n})` };
+  }
+
+  return { ok: true, value: n };
 }
+
+/**
+ * Validate a whole body against a schema. Returns { ok, errors[], values{} }.
+ * Collects ALL errors before returning (rather than short-circuiting), so the
+ * caller sees every problem in one round-trip.
+ */
+function validateBody(body, schema) {
+  const errors = [];
+  const values = {};
+  for (const [field, spec] of Object.entries(schema)) {
+    const result = validateField(body[field], { ...spec, name: field });
+    if (!result.ok) {
+      errors.push(result.error);
+    } else if (result.value !== undefined) {
+      values[field] = result.value;
+    }
+  }
+  return { ok: errors.length === 0, errors, values };
+}
+
+/**
+ * Build a validation-error response body. Returns the structure the API uses
+ * for 400s.
+ */
+function validationErrorResponse(errors) {
+  return {
+    status: 400,
+    body: {
+      error: true,
+      message: 'Validation failed',
+      validationErrors: errors,
+    },
+  };
+}
+
+// ─── Field Schemas ───────────────────────────────────────────
+//
+// Centralized so the validation rules are visible in one place. Each handler
+// references its schema below. Ranges are deliberately wide enough to cover
+// realistic inputs and narrow enough to catch obvious errors (negative canopy,
+// out-of-100% canopy, negative lot size, etc.).
+//
+// Ranges sourced from:
+//   - lotSizeSqFt: 1 sqft to 10M sqft (~230 acres). Larger usually means unit error.
+//   - canopyPct: 0-100 inclusive. No such thing as negative or >100% canopy.
+//   - assessedValue: 0 to $1B. Zero is legitimate for vacant land.
+//   - currentScore/projectedScore: 0-100 (Soil Score range).
+//   - timelineYears: 1-100. Longer projections are unreliable.
+//   - canopySource: enum, optional.
+//   - state: 2-letter string, optional (defaults to 'GA' in handlers).
+//   - condition/locationQuality: 1-5 (engine's 1-5 ordinal scale).
+//   - yearBuilt: 1700-current. Older usually means data error.
+
+const NUMERIC = {
+  lotSizeSqFt:     { min: 1, max: 10_000_000, required: true },
+  canopyPct:       { min: 0, max: 100,         required: true },
+  assessedValue:   { min: 0, max: 1_000_000_000, required: true },
+  // Land-valuation optional numerics:
+  buildingSqFt:    { min: 0, max: 1_000_000 },
+  yearBuilt:       { min: 1700, max: new Date().getFullYear() + 5, integer: true },
+  condition:       { min: 1, max: 5, integer: true },
+  locationQuality: { min: 1, max: 5, integer: true },
+  grossPotentialIncome: { min: 0, max: 100_000_000 },
+  // Appreciation:
+  currentScore:    { min: 0, max: 100, required: true },
+  projectedScore:  { min: 0, max: 100, required: true },
+  timelineYears:   { min: 1, max: 100, required: true, integer: true },
+  propertyValue:   { min: 0, max: 1_000_000_000, required: true },
+  currentCanopyPct: { min: 0, max: 100 },
+  baseAppreciationRate: { min: -0.5, max: 0.5 },  // -50% to +50% annual is the realistic envelope
+  // Valuation:
+  taxYear:         { min: 1900, max: new Date().getFullYear() + 5, integer: true },
+  assessmentRatio: { min: 0.01, max: 1.0 },
+  // Certifications:
+  biodiversityNetGainPct: { min: 0, max: 100 },
+  plantWallPct:    { min: 0, max: 100 },
+  pottedPlantPct:  { min: 0, max: 100 },
+};
+
+const STRING = {
+  state:          { type: 'string' },  // not strictly validated; engine handles 'GA' specially
+  propertyType:   { type: 'string', allowedValues: ['singleFamily', 'multifamily', 'retail', 'office', 'industrial', 'mixedUse', 'vacantLand'] },
+  canopySource:   { type: 'string', allowedValues: ['measured', 'estimated'] },
+  zoning:         { type: 'string' },  // free-form; engine's _getZoningUses parses prefix
+};
 
 function parseBody(req) {
   return new Promise((resolve, reject) => {
@@ -188,20 +339,26 @@ function buildDataQuality({
 }
 
 async function handleEcosystem(body) {
-  const err = requireFields(body, ['lotSizeSqFt', 'canopyPct', 'assessedValue']);
-  if (err) return { status: 400, body: { error: true, message: err } };
+  const v = validateBody(body, {
+    lotSizeSqFt:  NUMERIC.lotSizeSqFt,
+    canopyPct:    NUMERIC.canopyPct,
+    assessedValue: NUMERIC.assessedValue,
+    state:        STRING.state,
+    canopySource: STRING.canopySource,
+  });
+  if (!v.ok) return validationErrorResponse(v.errors);
 
   const result = TerraValueEngine.EcosystemServices.calculate({
-    lotSizeSqFt: Number(body.lotSizeSqFt),
-    canopyPct: Number(body.canopyPct),
-    assessedValue: Number(body.assessedValue),
-    state: body.state || 'GA',
+    lotSizeSqFt: v.values.lotSizeSqFt,
+    canopyPct: v.values.canopyPct,
+    assessedValue: v.values.assessedValue,
+    state: v.values.state || 'GA',
   });
 
   return { status: 200, body: {
     ...result,
     dataQuality: buildDataQuality({
-      canopySource: body.canopySource,
+      canopySource: v.values.canopySource,
       baseNote: 'Calculation uses peer-reviewed rates from config',
     }),
     route: '/api/ecosystem',
@@ -209,17 +366,29 @@ async function handleEcosystem(body) {
 }
 
 async function handleCertifications(body) {
+  // canopyPct is optional here (engine accepts undefined for sites without canopy data)
+  // but if supplied, it must be in range.
+  const v = validateBody(body, {
+    canopyPct:              { ...NUMERIC.canopyPct, required: false },
+    biodiversityNetGainPct: NUMERIC.biodiversityNetGainPct,
+    plantWallPct:           NUMERIC.plantWallPct,
+    pottedPlantPct:         NUMERIC.pottedPlantPct,
+  });
+  if (!v.ok) return validationErrorResponse(v.errors);
+
   const siteData = {
-    canopyPct: body.canopyPct != null ? Number(body.canopyPct) : undefined,
-    hasGreenInfrastructure: body.hasGreenInfrastructure,
-    biodiversityNetGainPct: body.biodiversityNetGainPct != null ? Number(body.biodiversityNetGainPct) : undefined,
-    plantWallPct: body.plantWallPct != null ? Number(body.plantWallPct) : 0,
-    pottedPlantPct: body.pottedPlantPct != null ? Number(body.pottedPlantPct) : 0,
-    hasErosionPlan: body.hasErosionPlan || false,
-    hasBiophiliaPlan: body.hasBiophiliaPlan || false,
+    canopyPct: v.values.canopyPct,
+    hasGreenInfrastructure: body.hasGreenInfrastructure === true,  // strict bool
+    biodiversityNetGainPct: v.values.biodiversityNetGainPct,
+    plantWallPct: v.values.plantWallPct != null ? v.values.plantWallPct : 0,
+    pottedPlantPct: v.values.pottedPlantPct != null ? v.values.pottedPlantPct : 0,
+    hasErosionPlan: body.hasErosionPlan === true,
+    hasBiophiliaPlan: body.hasBiophiliaPlan === true,
   };
 
-  const targets = body.targetCertifications || ['leed', 'breeam', 'well', 'greenGlobes'];
+  const targets = Array.isArray(body.targetCertifications)
+    ? body.targetCertifications
+    : ['leed', 'breeam', 'well', 'greenGlobes'];
   const result = TerraValueEngine.CertificationPathway.assess(siteData, targets);
 
   return { status: 200, body: {
@@ -230,19 +399,29 @@ async function handleCertifications(body) {
 }
 
 async function handleValuation(body) {
-  const err = requireFields(body, ['assessedValue']);
-  if (err) return { status: 400, body: { error: true, message: err } };
+  const v = validateBody(body, {
+    assessedValue:   NUMERIC.assessedValue,
+    taxYear:         NUMERIC.taxYear,
+    assessmentRatio: NUMERIC.assessmentRatio,
+    state:           STRING.state,
+  });
+  if (!v.ok) return validationErrorResponse(v.errors);
+
+  // address is free-form string; no range check, but require string if present
+  if (body.address != null && typeof body.address !== 'string') {
+    return validationErrorResponse(['address must be a string']);
+  }
 
   const parcelData = {
-    assessedValue: Number(body.assessedValue),
-    state: body.state || 'GA',
+    assessedValue: v.values.assessedValue,
+    state: v.values.state || 'GA',
     address: body.address,
-    taxYear: body.taxYear,
+    taxYear: v.values.taxYear,
   };
 
   const options = {
     enableRedfin: body.enableRedfin !== false,
-    assessmentRatio: body.assessmentRatio ? Number(body.assessmentRatio) : undefined,
+    assessmentRatio: v.values.assessmentRatio,
   };
 
   const result = await TerraValueEngine.PropertyValuation.getCompositeValue(parcelData, options);
@@ -261,39 +440,36 @@ async function handleValuation(body) {
 }
 
 async function handleAppreciation(body) {
-  const err = requireFields(body, ['currentScore', 'projectedScore', 'timelineYears', 'propertyValue']);
-  if (err) return { status: 400, body: { error: true, message: err } };
+  const v = validateBody(body, {
+    currentScore:    NUMERIC.currentScore,
+    projectedScore:  NUMERIC.projectedScore,
+    timelineYears:   NUMERIC.timelineYears,
+    propertyValue:   NUMERIC.propertyValue,
+    currentCanopyPct: NUMERIC.currentCanopyPct,
+    lotSizeSqFt:     { ...NUMERIC.lotSizeSqFt, required: false },
+    baseAppreciationRate: NUMERIC.baseAppreciationRate,
+    canopySource:    STRING.canopySource,
+  });
+  if (!v.ok) return validationErrorResponse(v.errors);
 
   // Track which optional inputs fall through to server-side defaults.
   // These get surfaced in dataQuality.assumptionsApplied so the caller knows.
   const assumptionsApplied = [];
-  let currentCanopyPct;
-  if (body.currentCanopyPct != null) {
-    currentCanopyPct = Number(body.currentCanopyPct);
-  } else {
-    currentCanopyPct = 25;
-    assumptionsApplied.push('currentCanopyPct=25 (US suburban median)');
-  }
-  let lotSizeSqFt;
-  if (body.lotSizeSqFt != null) {
-    lotSizeSqFt = Number(body.lotSizeSqFt);
-  } else {
-    lotSizeSqFt = 15000;
-    assumptionsApplied.push('lotSizeSqFt=15000 (typical SFR lot)');
-  }
-  let baseAppreciationRate;
-  if (body.baseAppreciationRate != null) {
-    baseAppreciationRate = Number(body.baseAppreciationRate);
-  } else {
-    baseAppreciationRate = 0.035;
-    assumptionsApplied.push('baseAppreciationRate=0.035 (FHFA HPI long-term avg)');
-  }
+  const currentCanopyPct = v.values.currentCanopyPct != null
+    ? v.values.currentCanopyPct
+    : (assumptionsApplied.push('currentCanopyPct=25 (US suburban median)'), 25);
+  const lotSizeSqFt = v.values.lotSizeSqFt != null
+    ? v.values.lotSizeSqFt
+    : (assumptionsApplied.push('lotSizeSqFt=15000 (typical SFR lot)'), 15000);
+  const baseAppreciationRate = v.values.baseAppreciationRate != null
+    ? v.values.baseAppreciationRate
+    : (assumptionsApplied.push('baseAppreciationRate=0.035 (FHFA HPI long-term avg)'), 0.035);
 
   const result = TerraValueEngine.LandAppreciation.project({
-    currentScore: Number(body.currentScore),
-    projectedScore: Number(body.projectedScore),
-    timelineYears: Number(body.timelineYears),
-    propertyValue: Number(body.propertyValue),
+    currentScore: v.values.currentScore,
+    projectedScore: v.values.projectedScore,
+    timelineYears: v.values.timelineYears,
+    propertyValue: v.values.propertyValue,
     currentCanopyPct,
     lotSizeSqFt,
     baseAppreciationRate,
@@ -303,7 +479,7 @@ async function handleAppreciation(body) {
     ...result,
     dataQuality: buildDataQuality({
       assumptionsApplied,
-      canopySource: body.canopySource,
+      canopySource: v.values.canopySource,
       baseNote: 'Projection uses peer-reviewed coefficients with linear interpolation — directional estimate',
     }),
     route: '/api/appreciation',
@@ -311,31 +487,48 @@ async function handleAppreciation(body) {
 }
 
 async function handleLandValuation(body) {
-  const err = requireFields(body, ['lotSizeSqFt', 'assessedValue']);
-  if (err) return { status: 400, body: { error: true, message: err } };
+  const v = validateBody(body, {
+    lotSizeSqFt:     NUMERIC.lotSizeSqFt,
+    assessedValue:   NUMERIC.assessedValue,
+    canopyPct:       { ...NUMERIC.canopyPct, required: false },
+    buildingSqFt:    NUMERIC.buildingSqFt,
+    yearBuilt:       NUMERIC.yearBuilt,
+    condition:       NUMERIC.condition,
+    locationQuality: NUMERIC.locationQuality,
+    grossPotentialIncome: NUMERIC.grossPotentialIncome,
+    state:           STRING.state,
+    propertyType:    STRING.propertyType,
+    zoning:          STRING.zoning,
+    canopySource:    STRING.canopySource,
+  });
+  if (!v.ok) return validationErrorResponse(v.errors);
+
+  if (body.comparables != null && !Array.isArray(body.comparables)) {
+    return validationErrorResponse(['comparables must be an array']);
+  }
 
   // Track API-layer defaults that the engine's own dataQuality won't catch.
   // The engine flags missing comparables and missing grossPotentialIncome internally.
   // Here we additionally surface defaulted condition/locationQuality/canopyPct.
   const apiAssumptions = [];
-  if (body.condition == null) apiAssumptions.push('condition=3 (median)');
-  if (body.locationQuality == null) apiAssumptions.push('locationQuality=3 (median)');
-  if (body.canopyPct == null) apiAssumptions.push('canopyPct=0 (no canopy data supplied)');
-  if (body.buildingSqFt == null) apiAssumptions.push('buildingSqFt=0 (treated as vacant land)');
+  if (v.values.condition == null)       apiAssumptions.push('condition=3 (median)');
+  if (v.values.locationQuality == null) apiAssumptions.push('locationQuality=3 (median)');
+  if (v.values.canopyPct == null)       apiAssumptions.push('canopyPct=0 (no canopy data supplied)');
+  if (v.values.buildingSqFt == null)    apiAssumptions.push('buildingSqFt=0 (treated as vacant land)');
 
   const parcel = {
-    lotSizeSqFt: Number(body.lotSizeSqFt),
-    assessedValue: Number(body.assessedValue),
-    state: body.state || 'GA',
-    canopyPct: body.canopyPct != null ? Number(body.canopyPct) : 0,
-    buildingSqFt: body.buildingSqFt != null ? Number(body.buildingSqFt) : 0,
-    yearBuilt: body.yearBuilt != null ? Number(body.yearBuilt) : undefined,
-    propertyType: body.propertyType || 'singleFamily',
+    lotSizeSqFt: v.values.lotSizeSqFt,
+    assessedValue: v.values.assessedValue,
+    state: v.values.state || 'GA',
+    canopyPct: v.values.canopyPct != null ? v.values.canopyPct : 0,
+    buildingSqFt: v.values.buildingSqFt != null ? v.values.buildingSqFt : 0,
+    yearBuilt: v.values.yearBuilt,
+    propertyType: v.values.propertyType || 'singleFamily',
     comparables: body.comparables || [],
-    grossPotentialIncome: body.grossPotentialIncome != null ? Number(body.grossPotentialIncome) : undefined,
-    condition: body.condition != null ? Number(body.condition) : 3,
-    locationQuality: body.locationQuality != null ? Number(body.locationQuality) : 3,
-    zoning: body.zoning || 'R-1',
+    grossPotentialIncome: v.values.grossPotentialIncome,
+    condition: v.values.condition != null ? v.values.condition : 3,
+    locationQuality: v.values.locationQuality != null ? v.values.locationQuality : 3,
+    zoning: v.values.zoning || 'R-1',
   };
 
   const result = TerraValueEngine.LandValuation.fullValuation(parcel);
@@ -358,19 +551,39 @@ async function handleLandValuation(body) {
 }
 
 async function handleAnalyze(body) {
-  const err = requireFields(body, ['lotSizeSqFt', 'canopyPct', 'assessedValue']);
-  if (err) return { status: 400, body: { error: true, message: err } };
+  const v = validateBody(body, {
+    lotSizeSqFt:     NUMERIC.lotSizeSqFt,
+    canopyPct:       NUMERIC.canopyPct,
+    assessedValue:   NUMERIC.assessedValue,
+    buildingSqFt:    NUMERIC.buildingSqFt,
+    yearBuilt:       NUMERIC.yearBuilt,
+    condition:       NUMERIC.condition,
+    locationQuality: NUMERIC.locationQuality,
+    grossPotentialIncome: NUMERIC.grossPotentialIncome,
+    state:           STRING.state,
+    propertyType:    STRING.propertyType,
+    zoning:          STRING.zoning,
+    canopySource:    STRING.canopySource,
+  });
+  if (!v.ok) return validationErrorResponse(v.errors);
+
+  if (body.comparables != null && !Array.isArray(body.comparables)) {
+    return validationErrorResponse(['comparables must be an array']);
+  }
+  if (body.certificationData != null && (typeof body.certificationData !== 'object' || Array.isArray(body.certificationData))) {
+    return validationErrorResponse(['certificationData must be an object']);
+  }
 
   const parcelData = {
-    lotSizeSqFt: Number(body.lotSizeSqFt),
-    canopyPct: Number(body.canopyPct),
-    assessedValue: Number(body.assessedValue),
-    state: body.state || 'GA',
-    address: body.address,
-    buildingSqFt: body.buildingSqFt != null ? Number(body.buildingSqFt) : 0,
-    yearBuilt: body.yearBuilt != null ? Number(body.yearBuilt) : undefined,
-    propertyType: body.propertyType || 'singleFamily',
-    zoning: body.zoning || 'R-1',
+    lotSizeSqFt: v.values.lotSizeSqFt,
+    canopyPct: v.values.canopyPct,
+    assessedValue: v.values.assessedValue,
+    state: v.values.state || 'GA',
+    address: typeof body.address === 'string' ? body.address : undefined,
+    buildingSqFt: v.values.buildingSqFt != null ? v.values.buildingSqFt : 0,
+    yearBuilt: v.values.yearBuilt,
+    propertyType: v.values.propertyType || 'singleFamily',
+    zoning: v.values.zoning || 'R-1',
     certificationData: body.certificationData || {},
   };
 
@@ -380,35 +593,34 @@ async function handleAnalyze(body) {
   // Track land-valuation defaults the API layer adds (separate from engine.analyze).
   const landValAssumptions = [];
 
-  // Add land valuation if enough data
-  if (body.lotSizeSqFt && body.assessedValue) {
-    if (body.condition == null) landValAssumptions.push('condition=3 (median)');
-    if (body.locationQuality == null) landValAssumptions.push('locationQuality=3 (median)');
-    if (!body.comparables || body.comparables.length === 0) {
-      landValAssumptions.push('comparables=[] (synthetic comps will be generated)');
-    }
-    if (body.grossPotentialIncome == null) {
-      landValAssumptions.push('grossPotentialIncome estimated as 6.5% of market value');
-    }
-
-    result.landValuation = TerraValueEngine.LandValuation.fullValuation({
-      ...parcelData,
-      comparables: body.comparables || [],
-      grossPotentialIncome: body.grossPotentialIncome != null ? Number(body.grossPotentialIncome) : undefined,
-      condition: body.condition != null ? Number(body.condition) : 3,
-      locationQuality: body.locationQuality != null ? Number(body.locationQuality) : 3,
-    });
+  // Add land valuation. (Required fields lotSizeSqFt + assessedValue are
+  // already validated above, so this branch always runs.)
+  if (v.values.condition == null)       landValAssumptions.push('condition=3 (median)');
+  if (v.values.locationQuality == null) landValAssumptions.push('locationQuality=3 (median)');
+  if (!body.comparables || body.comparables.length === 0) {
+    landValAssumptions.push('comparables=[] (synthetic comps will be generated)');
+  }
+  if (v.values.grossPotentialIncome == null) {
+    landValAssumptions.push('grossPotentialIncome estimated as 6.5% of market value');
   }
 
+  result.landValuation = TerraValueEngine.LandValuation.fullValuation({
+    ...parcelData,
+    comparables: body.comparables || [],
+    grossPotentialIncome: v.values.grossPotentialIncome,
+    condition: v.values.condition != null ? v.values.condition : 3,
+    locationQuality: v.values.locationQuality != null ? v.values.locationQuality : 3,
+  });
+
   // Merge engine-level + API-level assumptions into one dataQuality block.
-  // engine.analyze() now returns a dataQuality with assumptionsApplied[]; we extend it.
+  // engine.analyze() returns a dataQuality with assumptionsApplied[]; we extend it.
   const allAssumptions = [
     ...((result.dataQuality && result.dataQuality.assumptionsApplied) || []),
     ...landValAssumptions,
   ];
   result.dataQuality = buildDataQuality({
     assumptionsApplied: allAssumptions,
-    canopySource: body.canopySource,
+    canopySource: v.values.canopySource,
     baseNote: 'Full analysis: ecosystem + valuation + appreciation + certifications + (optional) land valuation',
   });
 
