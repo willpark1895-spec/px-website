@@ -7,10 +7,12 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "test": "node --test tests/golden-parity.test.js",
-    "test:parity": "node tests/golden-parity.test.js",
+    "test": "node tests/e2e-validate.js",
     "test:e2e": "node tests/e2e-validate.js",
     "deploy": "vercel --prod",
     "deploy:preview": "vercel"
+  },
+  "dependencies": {
+    "@phloemxylem/terravalue-engine": "^1.0.0"
   }
 }

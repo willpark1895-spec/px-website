@@ -14,7 +14,7 @@
  *   GET  /api/health          — Health check
  */
 
-const TerraValueEngine = require('../lib/terravalue-engine');
+const TerraValueEngine = require('@phloemxylem/terravalue-engine');
 
 // ─── API Key Authentication ─────────────────────────────────
 //
@@ -112,103 +112,56 @@ function error(res, statusCode, message, details = null) {
 }
 
 // ─── Input Validation ────────────────────────────────────────
+//
+// As of Phase B of the hub-and-spoke refactor (2026-05-26), validation is owned
+// by `@phloemxylem/terravalue-engine`. This module imports the engine's
+// validator + canonical schemas and exposes thin wrappers that preserve the
+// API's existing { error, validationErrors } 400 response shape.
+//
+// The engine's validateBody THROWS a composite ValidationError on any failure
+// (with .allErrors holding every per-field error). The API needs to collect
+// errors and return a 400 — so the wrapper catches the throw and reshapes it
+// to the existing { ok, errors, values } contract the handlers below rely on.
+//
+// Single source of truth: ranges, coercion rules, and error messages all live
+// in node_modules/@phloemxylem/terravalue-engine/lib/validate.js. The audit
+// (AUDIT-2026-05-20.md, finding F2) is fixed at the engine boundary, which
+// means even a future caller that bypasses the API still cannot inject bad
+// input.
+
+const {
+  ValidationError,
+  validateBody: engineValidateBody,
+  NUMERIC_SCHEMAS: NUMERIC,
+  STRING_SCHEMAS: STRING,
+} = TerraValueEngine;
 
 /**
- * Validate and coerce a single field.
- *
- * Coercion rules (per audit AUDIT-2026-05-20.md, finding F2):
- *   - Accepts numbers and clean numeric strings ("43560" -> 43560).
- *   - Rejects NaN, Infinity, mixed strings ("43560abc"), empty strings, booleans.
- *   - Range-checks against {min, max}; out-of-range returns 400.
- *
- * @param {*} value       — raw value from body
- * @param {Object} spec   — { name, min, max, required, integer, allowedValues }
- * @returns {{ ok: true, value: number|string } | { ok: false, error: string }}
- */
-function validateField(value, spec) {
-  const { name, min, max, required = false, integer = false, allowedValues, type = 'number' } = spec;
-
-  // Missing value handling
-  if (value == null || value === '') {
-    if (required) return { ok: false, error: `${name} is required` };
-    return { ok: true, value: undefined };
-  }
-
-  // String-allowed values (enums like state, propertyType)
-  if (type === 'string') {
-    if (typeof value !== 'string') {
-      return { ok: false, error: `${name} must be a string` };
-    }
-    if (allowedValues && !allowedValues.includes(value)) {
-      return { ok: false, error: `${name} must be one of: ${allowedValues.join(', ')}` };
-    }
-    return { ok: true, value };
-  }
-
-  // Numeric coercion: accept numbers and clean numeric strings only.
-  // Reject booleans (Number(true) === 1, which would silently coerce to a valid number).
-  if (typeof value === 'boolean') {
-    return { ok: false, error: `${name} must be a number (got boolean)` };
-  }
-
-  let n;
-  if (typeof value === 'number') {
-    n = value;
-  } else if (typeof value === 'string') {
-    // Trim whitespace, then require the string to be a complete numeric literal.
-    // Number("43560") === 43560 OK
-    // Number("43560abc") === NaN (caught below)
-    // Number("") === 0 (caught: trim then check length)
-    // Number(" ") === 0 (caught: trim then check length)
-    const trimmed = value.trim();
-    if (trimmed === '') {
-      return { ok: false, error: `${name} must be a number (got empty string)` };
-    }
-    n = Number(trimmed);
-  } else {
-    return { ok: false, error: `${name} must be a number` };
-  }
-
-  if (!Number.isFinite(n)) {
-    return { ok: false, error: `${name} must be a finite number (got ${JSON.stringify(value)})` };
-  }
-
-  if (integer && !Number.isInteger(n)) {
-    return { ok: false, error: `${name} must be an integer (got ${n})` };
-  }
-
-  if (min != null && n < min) {
-    return { ok: false, error: `${name} must be >= ${min} (got ${n})` };
-  }
-  if (max != null && n > max) {
-    return { ok: false, error: `${name} must be <= ${max} (got ${n})` };
-  }
-
-  return { ok: true, value: n };
-}
-
-/**
- * Validate a whole body against a schema. Returns { ok, errors[], values{} }.
- * Collects ALL errors before returning (rather than short-circuiting), so the
- * caller sees every problem in one round-trip.
+ * Validate a whole body against a schema. Wraps the engine's validateBody to
+ * preserve the API handler contract: { ok, errors[], values{} } with all
+ * field errors collected (not short-circuited).
  */
 function validateBody(body, schema) {
-  const errors = [];
-  const values = {};
-  for (const [field, spec] of Object.entries(schema)) {
-    const result = validateField(body[field], { ...spec, name: field });
-    if (!result.ok) {
-      errors.push(result.error);
-    } else if (result.value !== undefined) {
-      values[field] = result.value;
+  try {
+    const values = engineValidateBody(body, schema);
+    return { ok: true, errors: [], values };
+  } catch (e) {
+    if (e instanceof ValidationError) {
+      // Engine packs every per-field error into .allErrors when the composite
+      // is thrown. Fall back to the single-error case (e.message) if the
+      // engine ever throws a non-composite ValidationError.
+      const errors = e.allErrors
+        ? e.allErrors.map((err) => err.message)
+        : [e.message];
+      return { ok: false, errors, values: {} };
     }
+    throw e;
   }
-  return { ok: errors.length === 0, errors, values };
 }
 
 /**
  * Build a validation-error response body. Returns the structure the API uses
- * for 400s.
+ * for 400s. Shape preserved from the pre-Phase-B implementation.
  */
 function validationErrorResponse(errors) {
   return {
@@ -220,57 +173,6 @@ function validationErrorResponse(errors) {
     },
   };
 }
-
-// ─── Field Schemas ───────────────────────────────────────────
-//
-// Centralized so the validation rules are visible in one place. Each handler
-// references its schema below. Ranges are deliberately wide enough to cover
-// realistic inputs and narrow enough to catch obvious errors (negative canopy,
-// out-of-100% canopy, negative lot size, etc.).
-//
-// Ranges sourced from:
-//   - lotSizeSqFt: 1 sqft to 10M sqft (~230 acres). Larger usually means unit error.
-//   - canopyPct: 0-100 inclusive. No such thing as negative or >100% canopy.
-//   - assessedValue: 0 to $1B. Zero is legitimate for vacant land.
-//   - currentScore/projectedScore: 0-100 (Soil Score range).
-//   - timelineYears: 1-100. Longer projections are unreliable.
-//   - canopySource: enum, optional.
-//   - state: 2-letter string, optional (defaults to 'GA' in handlers).
-//   - condition/locationQuality: 1-5 (engine's 1-5 ordinal scale).
-//   - yearBuilt: 1700-current. Older usually means data error.
-
-const NUMERIC = {
-  lotSizeSqFt:     { min: 1, max: 10_000_000, required: true },
-  canopyPct:       { min: 0, max: 100,         required: true },
-  assessedValue:   { min: 0, max: 1_000_000_000, required: true },
-  // Land-valuation optional numerics:
-  buildingSqFt:    { min: 0, max: 1_000_000 },
-  yearBuilt:       { min: 1700, max: new Date().getFullYear() + 5, integer: true },
-  condition:       { min: 1, max: 5, integer: true },
-  locationQuality: { min: 1, max: 5, integer: true },
-  grossPotentialIncome: { min: 0, max: 100_000_000 },
-  // Appreciation:
-  currentScore:    { min: 0, max: 100, required: true },
-  projectedScore:  { min: 0, max: 100, required: true },
-  timelineYears:   { min: 1, max: 100, required: true, integer: true },
-  propertyValue:   { min: 0, max: 1_000_000_000, required: true },
-  currentCanopyPct: { min: 0, max: 100 },
-  baseAppreciationRate: { min: -0.5, max: 0.5 },  // -50% to +50% annual is the realistic envelope
-  // Valuation:
-  taxYear:         { min: 1900, max: new Date().getFullYear() + 5, integer: true },
-  assessmentRatio: { min: 0.01, max: 1.0 },
-  // Certifications:
-  biodiversityNetGainPct: { min: 0, max: 100 },
-  plantWallPct:    { min: 0, max: 100 },
-  pottedPlantPct:  { min: 0, max: 100 },
-};
-
-const STRING = {
-  state:          { type: 'string' },  // not strictly validated; engine handles 'GA' specially
-  propertyType:   { type: 'string', allowedValues: ['singleFamily', 'multifamily', 'retail', 'office', 'industrial', 'mixedUse', 'vacantLand'] },
-  canopySource:   { type: 'string', allowedValues: ['measured', 'estimated'] },
-  zoning:         { type: 'string' },  // free-form; engine's _getZoningUses parses prefix
-};
 
 function parseBody(req) {
   return new Promise((resolve, reject) => {

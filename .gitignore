@@ -1,1 +1,10 @@
 .DS_Store
+
+# Node
+node_modules/
+
+# Phase B baseline captures (local-only, used to compare pre/post deploy)
+.phase-b-baseline/
+
+# Vercel
+.vercel/
