@@ -11,6 +11,7 @@
  *   POST /api/appreciation    — LandAppreciation.project()
  *   POST /api/land-valuation  — LandValuation.fullValuation()
  *   POST /api/analyze         — Full analysis (orchestrator)
+ *   GET  /api/rates           — Engine rate constants (read-only, audit F5 fix)
  *   GET  /api/health          — Health check
  */
 
@@ -538,9 +539,34 @@ function handleHealth() {
       version: TerraValueEngine.EcosystemServices.calculate({
         lotSizeSqFt: 43560, canopyPct: 30, assessedValue: 100000, state: 'GA',
       }).methodology,
-      routes: ['/api/ecosystem', '/api/certifications', '/api/valuation', '/api/appreciation', '/api/land-valuation', '/api/analyze', '/api/health'],
+      routes: ['/api/ecosystem', '/api/certifications', '/api/valuation', '/api/appreciation', '/api/land-valuation', '/api/analyze', '/api/rates', '/api/health'],
       timestamp: new Date().toISOString(),
     },
+  };
+}
+
+/**
+ * GET /api/rates — return the engine's ecosystem service rate constants.
+ *
+ * Phase C audit-F5 fix (2026-05-26): the standalone frontend previously POSTed
+ * a dummy calculation to /api/ecosystem just to extract `ratePerCanopyAcre`
+ * from the response. That wasted engine cycles on every page load and made
+ * the API surface misleading. This endpoint exposes the rate object directly.
+ *
+ * Returns ECOSYSTEM_SERVICE_RATES verbatim — a flat object with
+ * carbon/stormwater/airQuality/energy/habitat/propertyPremium keys, each
+ * carrying ratePerCanopyAcre (or premiumPct for propertyPremium), plus
+ * _version metadata for cache busting. Read-only, no caller input.
+ *
+ * Note: returning the object at the top level (rather than nested under a
+ * wrapper key) lets the standalone do `ECO_RATES = await res.json()` and
+ * read `ECO_RATES.carbon.ratePerCanopyAcre` directly, which is the natural
+ * shape for an endpoint named /api/rates.
+ */
+function handleRates() {
+  return {
+    status: 200,
+    body: TerraValueEngine.ECOSYSTEM_SERVICE_RATES,
   };
 }
 
@@ -553,6 +579,7 @@ const ROUTES = {
   '/api/appreciation':   { handler: handleAppreciation, method: 'POST' },
   '/api/land-valuation': { handler: handleLandValuation, method: 'POST' },
   '/api/analyze':        { handler: handleAnalyze, method: 'POST' },
+  '/api/rates':          { handler: handleRates, method: 'GET' },
   '/api/health':         { handler: handleHealth, method: 'GET' },
 };
 
