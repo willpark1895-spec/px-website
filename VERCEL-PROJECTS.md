@@ -1,6 +1,6 @@
 # Deployment Map — Where Edits Go
 
-**Last updated:** 2026-06-02 (workstream (b) — dormant rollback anchor retired; Phases A–E complete)
+**Last updated:** 2026-06-08 (workstream (b) — dormant rollback anchor retired; Phases A–E complete)
 
 The canonical mapping of local folders → GitHub repos → npm packages → Vercel projects → live URLs. If you're ever unsure where a change will end up, start here.
 
