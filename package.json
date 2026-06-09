@@ -13,6 +13,6 @@
     "deploy:preview": "vercel"
   },
   "dependencies": {
-    "@phloemxylem/terravalue-engine": "^1.0.3"
+    "@phloemxylem/terravalue-engine": "^1.1.0"
   }
 }
