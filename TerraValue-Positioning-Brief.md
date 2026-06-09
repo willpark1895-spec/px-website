@@ -43,7 +43,7 @@ Adjacent: Climate Risk Analytics for Real Estate.
 ---
 
 ## Problem
-Property valuations today are blind to natural assets. A $1M home with mature canopy on healthy soil is valued identically to a stripped-lot equivalent, even though peer-reviewed research (Kovacs 2022, Netusil 2014, Cho 2020) shows a 5–12% market premium and $2,000+/yr in measurable ecosystem services. The blindspot creates:
+Property valuations today are blind to natural assets. A $1M home with mature canopy on healthy soil is valued identically to a stripped-lot equivalent, even though peer-reviewed research (Kovacs 2022, Netusil 2014, Cho 2020) shows a 5–12% one-time market premium and, separately, measurable ecosystem services worth roughly $700/yr for a typical wooded lot — scaling to $2,000+/yr per canopy-acre. The blindspot creates:
 
 - An estimated $200B+ in residential property value invisible to national AVMs
 - Underpricing of canopy preservation in development decisions
