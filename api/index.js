@@ -11,6 +11,7 @@
  *   POST /api/appreciation    — LandAppreciation.project()
  *   POST /api/land-valuation  — LandValuation.fullValuation()
  *   POST /api/analyze         — Full analysis (orchestrator)
+ *   POST /api/score           — SoilScore.calculate() — Soil Score v2 composite
  *   GET  /api/rates           — Engine rate constants (read-only, audit F5 fix)
  *   GET  /api/health          — Health check
  */
@@ -539,7 +540,7 @@ function handleHealth() {
       version: TerraValueEngine.EcosystemServices.calculate({
         lotSizeSqFt: 43560, canopyPct: 30, assessedValue: 100000, state: 'GA',
       }).methodology,
-      routes: ['/api/ecosystem', '/api/certifications', '/api/valuation', '/api/appreciation', '/api/land-valuation', '/api/analyze', '/api/rates', '/api/health'],
+      routes: ['/api/ecosystem', '/api/certifications', '/api/valuation', '/api/appreciation', '/api/land-valuation', '/api/analyze', '/api/score', '/api/rates', '/api/health'],
       timestamp: new Date().toISOString(),
     },
   };
@@ -570,6 +571,68 @@ function handleRates() {
   };
 }
 
+/**
+ * POST /api/score — Soil Score v2 (TerraValueEngine.SoilScore.calculate)
+ *
+ * A 0–100 composite of normalized environmental sub-scores: canopy, air quality
+ * (annual PM2.5), park access, walkability, and impervious surface. Every input
+ * is optional — the engine renormalizes the weights over whichever factors are
+ * supplied and reports `confidence` from input coverage. Raw inputs are echoed
+ * back under `absolute` so cross-city comparison isn't erased by normalization.
+ *
+ * Optional `weights` object overrides the config weights (e.g. pure-stewardship
+ * = { walkability: 0, parkAccess: 0 }). Auto-sourcing these inputs from an
+ * address (EnviroAtlas / NLCD / OpenAQ) is a later phase; for now the caller
+ * supplies the measured values.
+ */
+async function handleScore(body) {
+  const v = validateBody(body, {
+    canopyPct:        { ...NUMERIC.canopyPct, required: false },
+    annualPM25:       { min: 0, max: 500, required: false },
+    parkAccessPct:    { min: 0, max: 100, required: false },
+    walkabilityIndex: { min: 1, max: 20,  required: false },
+    imperviousPct:    { min: 0, max: 100, required: false },
+  });
+  if (!v.ok) return validationErrorResponse(v.errors);
+
+  // Need at least one factor to produce a score.
+  const FACTORS = ['canopyPct', 'annualPM25', 'parkAccessPct', 'walkabilityIndex', 'imperviousPct'];
+  const supplied = FACTORS.filter((k) => v.values[k] != null);
+  if (supplied.length === 0) {
+    return validationErrorResponse([`Provide at least one of: ${FACTORS.join(', ')}`]);
+  }
+
+  // Optional weights override — must be an object of non-negative finite numbers.
+  const opts = {};
+  if (body.weights != null) {
+    if (typeof body.weights !== 'object' || Array.isArray(body.weights)) {
+      return validationErrorResponse(['weights must be an object of factor:number pairs']);
+    }
+    for (const [k, w] of Object.entries(body.weights)) {
+      if (typeof w !== 'number' || !Number.isFinite(w) || w < 0) {
+        return validationErrorResponse([`weights.${k} must be a non-negative number`]);
+      }
+    }
+    opts.weights = body.weights;
+  }
+
+  const result = TerraValueEngine.SoilScore.calculate(v.values, opts);
+  const factorCount = Object.keys(result.subScores).length;
+
+  return { status: 200, body: {
+    ...result,
+    dataQuality: {
+      confidence: result.confidence,
+      coverage: result.coverage,
+      factorsPresent: result.factorsPresent,
+      syntheticDataUsed: false,
+      note: `Soil Score from ${result.factorsPresent.length} of ${factorCount} factors (confidence: ${result.confidence}). Raw inputs retained under "absolute" for cross-city comparison.`,
+    },
+    route: '/api/score',
+  } };
+}
+
+
 // ─── Route Table ─────────────────────────────────────────────
 
 const ROUTES = {
@@ -579,6 +642,7 @@ const ROUTES = {
   '/api/appreciation':   { handler: handleAppreciation, method: 'POST' },
   '/api/land-valuation': { handler: handleLandValuation, method: 'POST' },
   '/api/analyze':        { handler: handleAnalyze, method: 'POST' },
+  '/api/score':          { handler: handleScore, method: 'POST' },
   '/api/rates':          { handler: handleRates, method: 'GET' },
   '/api/health':         { handler: handleHealth, method: 'GET' },
 };
