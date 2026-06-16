@@ -711,6 +711,26 @@
       <p style="color:rgba(255,255,255,0.65);font-size:1rem;line-height:1.7;margin-bottom:2rem;">TerraValue is the first ecosystem-aware AVM &mdash; parcel-level USPAP three-approach reconciliation that prices canopy, soil, and natural assets. Built for AVM data vendors, lenders, GSEs, and real estate platforms. The same methodology informs every P&amp;X consulting engagement.</p>
       <a href="https://terravalue.app" target="_blank" class="btn btn-gold">Visit TerraValue &rarr;</a>
     </div>
+
+    <!-- LIVE SOIL SCORE PULL — same-origin call to /api/score (proves P&X consumes the model) -->
+    <div id="px-soil" style="max-width:560px;margin:2.5rem auto 0;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:1.5rem 1.5rem 1.25rem;text-align:left;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem;">
+        <span style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold-300);">Live engine pull · /api/score</span>
+        <span id="px-soil-status" style="font-size:0.68rem;color:rgba(255,255,255,0.4);">calling…</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:1.25rem;margin-bottom:1rem;">
+        <div style="text-align:center;min-width:84px;">
+          <div id="px-soil-score" style="font-size:2.6rem;font-weight:700;color:var(--gold-300);line-height:1;">—</div>
+          <div style="font-size:0.62rem;color:rgba(255,255,255,0.4);margin-top:0.2rem;">/ 100</div>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:0.9rem;color:var(--white);font-weight:600;margin-bottom:0.15rem;">Atlanta Soil Score</div>
+          <div id="px-soil-conf" style="font-size:0.72rem;color:rgba(255,255,255,0.5);">—</div>
+          <div id="px-soil-bars" style="margin-top:0.6rem;"></div>
+        </div>
+      </div>
+      <p style="font-size:0.64rem;color:rgba(255,255,255,0.3);line-height:1.5;margin:0;">P&amp;X consumes the same public endpoint TerraValue exposes. Atlanta canopy 46.1% (City UTC, 2023) + park access 82% (TPL ParkScore, 2025); other factors omitted at city scale, so confidence reads accordingly.</p>
+    </div>
   </div>
 </section>
 
@@ -978,6 +998,54 @@
     el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
     observer.observe(el);
   });
+
+  // Live Soil Score pull — same-origin POST to /api/score, proving P&X consumes
+  // the same public endpoint TerraValue exposes. Uses real, cited Atlanta data;
+  // omitted factors lower confidence honestly rather than being faked.
+  (function () {
+    var box = document.getElementById('px-soil');
+    if (!box) return;
+    var statusEl = document.getElementById('px-soil-status');
+    var FACTORS = [
+      { key: 'canopy', label: 'Canopy' },
+      { key: 'airQuality', label: 'Air' },
+      { key: 'parkAccess', label: 'Parks' },
+      { key: 'walkability', label: 'Walk' },
+      { key: 'impervious', label: 'Impervious' }
+    ];
+    fetch('/api/score', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ canopyPct: 46.1, parkAccessPct: 82 })
+    })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (d) {
+        document.getElementById('px-soil-score').textContent = d.score;
+        var cov = Math.round((d.coverage || 0) * 100);
+        var n = (d.factorsPresent || []).length;
+        document.getElementById('px-soil-conf').innerHTML =
+          'Confidence <strong>' + d.confidence + '</strong> · coverage ' + cov + '% · ' + n + ' of 5 factors';
+        var bars = '';
+        FACTORS.forEach(function (f) {
+          var s = (d.subScores && d.subScores[f.key]) || {};
+          var inc = s.included;
+          var sc = (s.score === null || s.score === undefined) ? 0 : Math.round(s.score);
+          bars +=
+            '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.3rem;opacity:' + (inc ? '1' : '0.35') + ';">' +
+              '<span style="font-size:0.62rem;color:rgba(255,255,255,0.5);width:64px;">' + f.label + '</span>' +
+              '<span style="flex:1;height:5px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;"><span style="display:block;height:100%;width:' + (inc ? sc : 0) + '%;background:var(--green-400);"></span></span>' +
+              '<span style="font-size:0.62rem;color:rgba(255,255,255,0.45);width:48px;text-align:right;">' + (inc ? sc : '—') + '</span>' +
+            '</div>';
+        });
+        document.getElementById('px-soil-bars').innerHTML = bars;
+        statusEl.textContent = '200 OK';
+        statusEl.style.color = 'var(--green-300)';
+      })
+      .catch(function (e) {
+        statusEl.textContent = 'unavailable';
+        document.getElementById('px-soil-conf').textContent = 'Could not reach /api/score (' + (e.message || 'error') + ').';
+      });
+  })();
 </script>
 
 </body>
