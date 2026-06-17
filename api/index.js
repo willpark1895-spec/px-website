@@ -17,6 +17,7 @@
  */
 
 const TerraValueEngine = require('@phloemxylem/terravalue-engine');
+const { FACTORS_ROUTES } = require('../lib/factors'); // Phase 4: GET /api/factors?city= confidence pull
 
 // ─── API Key Authentication ─────────────────────────────────
 //
@@ -646,6 +647,7 @@ const ROUTES = {
   '/api/rates':          { handler: handleRates, method: 'GET' },
   '/api/health':         { handler: handleHealth, method: 'GET' },
 };
+Object.assign(ROUTES, FACTORS_ROUTES); // Phase 4: merge GET /api/factors
 
 // ─── Main Handler ────────────────────────────────────────────
 
@@ -688,8 +690,8 @@ module.exports = async function handler(req, res) {
       body = await parseBody(req);
     }
 
-    // Execute handler
-    const result = await route.handler(body);
+    // Execute handler (GET handlers may read query params, e.g. /api/factors?city=)
+    const result = await route.handler(body, url.searchParams);
     json(res, result.status, result.body);
   } catch (err) {
     console.error(`[TerraValue API] Error on ${path}:`, err);
