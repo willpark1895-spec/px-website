@@ -18,22 +18,24 @@
  */
 
 const ENDPOINTS = [
+  // Fulton County only. DeKalb was removed 2026-08-25: its Parcels_IASWorld layer
+  // publishes a Tyler IASWorld schema whose CAMA columns (BLDGAREA, RESYRBLT,
+  // LNDVALUE, USECD, CLASSCD) are populated on 0 of 246,055 parcels. The layer
+  // name promises assessment data it does not contain, so it cannot back a live
+  // parcel lookup and it is not counted as coverage.
+  { name: 'Fulton County', tier: 'county', within: null,
+    url: 'https://gismaps.fultoncountyga.gov/arcgispub/rest/services/PublicSafety/CE_Parcels/MapServer', layer: 0 },
   { name: 'Alpharetta',    tier: 'city',   within: 'Fulton',
     url: 'https://alphagis.alpharetta.ga.us/arcgis/rest/services/TaxParcels/MapServer', layer: 0 },
   { name: 'Roswell',       tier: 'city',   within: 'Fulton',
     url: 'https://gisweb.ci.roswell.ga.us/arcgis/rest/services/LGIM_ParcelPublishing/TaxParcels/MapServer', layer: 0 },
   { name: 'Sandy Springs', tier: 'city',   within: 'Fulton',
     url: 'https://gis2.sandyspringsga.gov/arcgis/rest/services/CommDev/ParcelsPlats/MapServer', layer: 2 },
-  { name: 'Fulton County', tier: 'county', within: null,
-    url: 'https://gismaps.fultoncountyga.gov/arcgispub/rest/services/PublicSafety/CE_Parcels/MapServer', layer: 0 },
-  { name: 'DeKalb County', tier: 'county', within: null,
-    url: 'https://dcgis.dekalbcountyga.gov/hosted/rest/services/PropertyAppraisal/Parcels_IASWorld/MapServer', layer: 0 },
   // Unresolved as of 2026-08-25 - host reachable, no public parcel service located.
+  // Not blocking: all three sit inside Fulton County, which is queryable.
   { name: 'Milton',        tier: 'city',   within: 'Fulton', url: null, note: 'parcel service requires a token' },
   { name: 'Johns Creek',   tier: 'city',   within: 'Fulton', url: null, note: 'REST root did not return JSON' },
-  { name: 'Brookhaven',    tier: 'city',   within: 'DeKalb', url: null, note: 'no parcel-like service published' },
   { name: 'Atlanta',       tier: 'city',   within: 'Fulton', url: null, note: 'CadastralLots is annotation, not parcel polygons' },
-  { name: 'Chamblee',      tier: 'city',   within: 'DeKalb', url: null, note: 'TaxParcelZoning returns no queryable layers' },
 ];
 
 // Fulton County's service is large and routinely takes 30-45s cold. A single
@@ -90,7 +92,7 @@ if (process.argv.includes('--json')) {
   const county = results.filter(r => r.tier === 'county' && r.count != null);
   const city   = results.filter(r => r.tier === 'city'   && r.count != null);
   const sum = a => a.reduce((s, r) => s + r.count, 0);
-  console.log(`County-level universe (non-overlapping): ${sum(county).toLocaleString()} across ${county.length}/2 counties`);
+  console.log(`County-level universe (non-overlapping): ${sum(county).toLocaleString()} across ${county.length}/1 counties`);
   console.log(`City-level verified (SUBSET of the above, do not add): ${sum(city).toLocaleString()} across ${city.length} cities`);
   console.log(`Unmapped or failing: ${results.filter(r => r.count == null).length}/${results.length}\n`);
 }
