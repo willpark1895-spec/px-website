@@ -36,24 +36,42 @@ const ENDPOINTS = [
   { name: 'Chamblee',      tier: 'city',   within: 'DeKalb', url: null, note: 'TaxParcelZoning returns no queryable layers' },
 ];
 
-const TIMEOUT_MS = 45000;
+// Fulton County's service is large and routinely takes 30-45s cold. A single
+// short attempt reports it as dead and understates coverage by 373,307 parcels,
+// which is worse than slow. Retry before believing a timeout.
+const TIMEOUT_MS = 60000;
+const RETRIES = 3;
 
-async function probe(ep) {
-  if (!ep.url) return { ...ep, status: 'unmapped', count: null };
-  const q = `${ep.url}/${ep.layer}/query?where=1%3D1&returnCountOnly=true&f=json`;
+async function attempt(q) {
   const ctl = new AbortController();
   const t = setTimeout(() => ctl.abort(), TIMEOUT_MS);
   try {
     const r = await fetch(q, { signal: ctl.signal, headers: { 'User-Agent': 'terravalue-probe/1.0' } });
     const j = await r.json();
-    if (typeof j.count === 'number') return { ...ep, status: 'ok', count: j.count };
-    return { ...ep, status: 'error', count: null, detail: (j.error && j.error.message) || 'no count field' };
+    if (typeof j.count === 'number') return { ok: true, count: j.count };
+    return { ok: false, detail: (j.error && j.error.message) || 'no count field', retry: false };
   } catch (e) {
-    return { ...ep, status: 'error', count: null, detail: e.name === 'AbortError' ? 'timeout' : e.message };
+    const timedOut = e.name === 'AbortError';
+    return { ok: false, detail: timedOut ? 'timeout' : e.message, retry: timedOut };
   } finally { clearTimeout(t); }
 }
 
-const results = await Promise.all(ENDPOINTS.map(probe));
+async function probe(ep) {
+  if (!ep.url) return { ...ep, status: 'unmapped', count: null };
+  const q = `${ep.url}/${ep.layer}/query?where=1%3D1&returnCountOnly=true&f=json`;
+  let last;
+  for (let i = 1; i <= RETRIES; i++) {
+    last = await attempt(q);
+    if (last.ok) return { ...ep, status: 'ok', count: last.count, attempts: i };
+    if (!last.retry) break;
+  }
+  return { ...ep, status: 'error', count: null, detail: `${last.detail} after ${RETRIES} attempts`, attempts: RETRIES };
+}
+
+// Sequential for the mapped endpoints: several of these are small municipal
+// servers and hammering them in parallel is both rude and a source of timeouts.
+const results = [];
+for (const ep of ENDPOINTS) results.push(await probe(ep));
 
 if (process.argv.includes('--json')) {
   console.log(JSON.stringify({ probedAt: new Date().toISOString(), results }, null, 2));

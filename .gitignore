@@ -8,3 +8,9 @@ node_modules/
 
 # Vercel
 .vercel/
+
+# Python bytecode from drafts/ — committed by accident 2026-08-25 via `git add -A`.
+# This repo is PUBLIC; never let build artifacts in.
+__pycache__/
+*.pyc
+*.pyo
