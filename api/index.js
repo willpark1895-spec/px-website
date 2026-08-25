@@ -538,6 +538,11 @@ function handleHealth() {
     body: {
       status: 'ok',
       engine: 'TerraValue',
+      // engineVersion is the npm package version actually resolved at runtime.
+      // This is the signal that detects an unintended engine bump — the older
+      // `version` field below is a methodology string, not a package version,
+      // and was never able to answer "which engine is deployed?" directly.
+      engineVersion: require('@phloemxylem/terravalue-engine/package.json').version,
       version: TerraValueEngine.EcosystemServices.calculate({
         lotSizeSqFt: 43560, canopyPct: 30, assessedValue: 100000, state: 'GA',
       }).methodology,
