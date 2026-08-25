@@ -13,11 +13,13 @@
  *   POST /api/analyze         — Full analysis (orchestrator)
  *   POST /api/score           — SoilScore.calculate() — Soil Score v2 composite
  *   GET  /api/rates           — Engine rate constants (read-only, audit F5 fix)
+ *   GET  /api/parcel          — Fulton County live parcel lookup (M4)
  *   GET  /api/health          — Health check
  */
 
 const TerraValueEngine = require('@phloemxylem/terravalue-engine');
 const { FACTORS_ROUTES } = require('../lib/factors'); // Phase 4: GET /api/factors?city= confidence pull
+const { PARCEL_ROUTES } = require('../lib/parcel');   // M4: GET /api/parcel?address= Fulton live lookup
 
 // ─── API Key Authentication ─────────────────────────────────
 //
@@ -546,7 +548,7 @@ function handleHealth() {
       version: TerraValueEngine.EcosystemServices.calculate({
         lotSizeSqFt: 43560, canopyPct: 30, assessedValue: 100000, state: 'GA',
       }).methodology,
-      routes: ['/api/ecosystem', '/api/certifications', '/api/valuation', '/api/appreciation', '/api/land-valuation', '/api/analyze', '/api/score', '/api/rates', '/api/health'],
+      routes: ['/api/ecosystem', '/api/certifications', '/api/valuation', '/api/appreciation', '/api/land-valuation', '/api/analyze', '/api/score', '/api/rates', '/api/parcel', '/api/health'],
       timestamp: new Date().toISOString(),
     },
   };
@@ -653,6 +655,7 @@ const ROUTES = {
   '/api/health':         { handler: handleHealth, method: 'GET' },
 };
 Object.assign(ROUTES, FACTORS_ROUTES); // Phase 4: merge GET /api/factors
+Object.assign(ROUTES, PARCEL_ROUTES);  // M4: merge GET /api/parcel
 
 // ─── Main Handler ────────────────────────────────────────────
 

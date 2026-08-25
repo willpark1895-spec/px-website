@@ -1,6 +1,6 @@
 # Deployment Map — Where Edits Go
 
-**Last updated:** 2026-06-08 (workstream (b) — dormant rollback anchor retired; Phases A–E complete)
+**Last updated:** 2026-08-25 (close-out session — Jul 15 Instant Rollback incident documented, `terravalue-mvp` project added, exact engine pins recorded, stale paths fixed. Previous: 2026-06-08, workstream (b))
 
 The canonical mapping of local folders → GitHub repos → npm packages → Vercel projects → live URLs. If you're ever unsure where a change will end up, start here.
 
@@ -12,8 +12,9 @@ As of 2026-05-26, TerraValue is split into three repos with one canonical engine
 
 ```
                     ┌────────────────────────────────────────┐
-                    │   @phloemxylem/terravalue-engine 1.0.1 │
-                    │   (npm — sole source of engine math)   │
+                    │   @phloemxylem/terravalue-engine (npm) │
+                    │   sole source of engine math — exact   │
+                    │   pins per consumer, see below         │
                     └─────────────┬──────────────────────────┘
                                   │
                   ┌───────────────┴───────────────┐
@@ -38,19 +39,19 @@ The standalone frontend calls the API cross-origin. The API uses the engine via 
 | Local path | GitHub | Role |
 |---|---|---|
 | `Claude-Work/terravalue-engine/` | `willpark1895-spec/terravalue-engine` | Engine. Published to npm as `@phloemxylem/terravalue-engine`. Sole source of math + validation. |
-| `Claude-Work/P&X/` | `willpark1895-spec/px-website` | API + marketing site (`pxconsulting.io`). Consumes engine via `require('@phloemxylem/terravalue-engine')`. |
+| `Claude-Work/px-website/` | `willpark1895-spec/px-website` | API + marketing site (`pxconsulting.io`). Consumes engine via `require('@phloemxylem/terravalue-engine')` — pinned **`"1.3.0"` exact** (caret dropped 2026-08-24). |
 | `Claude-Work/terravalue/` | `willpark1895-spec/terravalue` | Live TerraValue page (`terravalue.app`). Pulls engine bundle at Vercel build time. |
 | `Claude-Work/terravalue-react-archive/` | `willpark1895-spec/terravalue-react-archive` | Orphaned React app, preserved for history. Disconnected from Vercel. Do not push expecting a deploy. |
 
 ---
 
-## The two live Vercel projects
+## The three live Vercel projects
 
 ### Project 1 — pxconsulting.io + TerraValue API
 
 | Field | Value |
 |---|---|
-| Local source | `~/Desktop/Desktop - a laptop/Claude-Work/P&X/` |
+| Local source | `~/Desktop/Desktop - a laptop/Claude-Work/px-website/` |
 | GitHub repo | `github.com/willpark1895-spec/px-website` |
 | Vercel Root Directory | (repo root) — `outputDirectory: "website"` in root `vercel.json` |
 | Framework Preset | Other |
@@ -60,7 +61,7 @@ The standalone frontend calls the API cross-origin. The API uses the engine via 
 | Engine dependency | `require('@phloemxylem/terravalue-engine')` — npm dep declared in `package.json` |
 | Purpose | P&X marketing site + the TerraValue serverless API |
 
-**API routes:** `/api/ecosystem`, `/api/appreciation`, `/api/land-valuation`, `/api/valuation`, `/api/certifications`, `/api/analyze`, `/api/rates` (added in Phase C — F5 fix), `/api/health`.
+**API routes:** `/api/ecosystem`, `/api/appreciation`, `/api/land-valuation`, `/api/valuation`, `/api/certifications`, `/api/analyze`, `/api/score` (POST-only), `/api/rates` (added in Phase C — F5 fix), `/api/parcel` (GET, added 2026-08-25 — M4 Fulton County live parcel lookup by address; returns provenanced lotSizeSqFt / assessedValue / canopyPct, declares buildingSqFt and yearBuilt unavailable, and returns the APPRAISED value TotAppr, never the 40% assessed figure), `/api/health` (reports `engineVersion` — the resolved npm package version — since 2026-08-24; its `version` field is a methodology string, not a package version).
 
 **Redirects:** `/terravalue` and `/terravalue.html` → `https://www.terravalue.app` (301, via root `vercel.json`).
 
@@ -70,17 +71,31 @@ The standalone frontend calls the API cross-origin. The API uses the engine via 
 |---|---|
 | Local source | `~/Desktop/Desktop - a laptop/Claude-Work/terravalue/` |
 | GitHub repo | `github.com/willpark1895-spec/terravalue` (private, new — created 2026-05-26) |
-| Vercel project name | `terravaluev2` (the plain `terravalue` Vercel name was taken by the rollback project that workstream (b) removed) |
+| Vercel project name | `terravalue_v2` — shown as `terravaluev2` in URLs (the plain `terravalue` Vercel name was taken by the rollback project that workstream (b) removed) |
 | Vercel Root Directory | (repo root) — `outputDirectory: "."` in `vercel.json` |
 | Framework Preset | Other |
 | Production URL | https://terravalue.app (apex 307s to `www.terravalue.app`) |
-| Preview URL | https://terravaluev2.vercel.app |
-| Deploys on | push to `willpark1895-spec/terravalue` main |
+| Production alias | https://terravaluev2.vercel.app (serves production, not previews) |
+| Deploys on | push to `willpark1895-spec/terravalue` main — **verified working 2026-08-25, but see the rollback warning below: a rollback pin silently suppresses promotion while builds keep succeeding** |
 | Stack | Static HTML (`index.html`) + engine browser bundle pulled at build time via `npm install` postinstall hook |
-| Engine dependency | `@phloemxylem/terravalue-engine` in `package.json`. Browser bundle copied from `node_modules/.../dist/terravalue-engine.browser.js` into `./terravalue-engine.js` at build time. Bundle is **never** committed — gitignored. |
+| Engine dependency | `@phloemxylem/terravalue-engine` in `package.json`, pinned **`"1.1.0"` exact** (era-faithful MVP baseline; caret retired 2026-07-15 — see incident below for why caret specs are dangerous here). Browser bundle copied from `node_modules/.../dist/terravalue-engine.browser.js` into `./terravalue-engine.js` at build time. Bundle is **never** committed — gitignored. |
 | Purpose | The TerraValue AVM-voice surface — hero, Inside the Engine, Integration Surface, Sensitivity Analysis, Under the Hood, validation band, founder section |
 
 **API behavior:** the page calls `https://pxconsulting.io/api/*` cross-origin (CORS open via `Access-Control-Allow-Origin: *`). On init it does `GET /api/rates` to load ecosystem service rate constants. For sensitivity-analysis updates it POSTs to `/api/appreciation` and `/api/land-valuation`. The locally-bundled engine is the fallback if any of those calls fail.
+
+**⚠️ THE JUL 15 → AUG 25 INSTANT ROLLBACK INCIDENT (why "deploys on push to main" silently stopped being true for 70 days):** on 2026-07-15 an `mvp`-branch WIP commit (`0e4a93a`) reached production on this project; William used Vercel **Instant Rollback** to restore the 2026-06-16 build (`95bcb78`) and the pin was never lifted. While pinned, every push still **built successfully** (previews and even production-track builds — they showed "Ready" with a staged/clock badge) but **nothing was promoted**, so the domains served June 16 until 2026-08-25, when the pin was found on the project Overview ("Rolled back Jul 15") and the `650e8f0` merge build was promoted, which undid the rollback. **Lesson: if production is frozen while deployments show green, check the project Overview for a rollback banner FIRST — before suspecting the production branch, the hook, or the build.** Related: while the June build was pinned, its bundle was engine **1.0.3** — a stale Vercel dependency-cache resolution of the old `^1.0.3` caret spec — even though 1.1.0 and 1.3.0 were published. Caret + build cache = nondeterministic engine on the wire; that is why both consumers now pin exact.
+
+### Project 3 — terravalue-mvp (MVP staging surface, added ~2026-07-15)
+
+| Field | Value |
+|---|---|
+| GitHub repo | `github.com/willpark1895-spec/terravalue` — **same repo as Project 2** |
+| Production branch | **`mvp`** |
+| Production URL | https://terravalue-mvp.vercel.app |
+| Purpose | Staging/demo surface for the `mvp` branch. This is the host the Maps key runbook originally scoped its in-browser test to, and where the parcel finder was first proven. Auto-deploys on push to `mvp` (verified: picked up `5df1b9f` within minutes on 2026-08-25). |
+| Maps key | The restricted key allowlists this host **and** (since 2026-08-25, verified) `terravalue.app` / `www.terravalue.app`, bare and `/*` forms — six entries total. |
+
+**Two Vercel projects watch one repo.** A push to `mvp` deploys Project 3's production and a preview on Project 2; a push to `main` deploys Project 2's production only. Any session auditing "is the site current?" must hash **both** hosts against **both** branch HEADs — and the page's `terravalue-engine.js` bundle too, not just `index.html`.
 
 ---
 
@@ -95,11 +110,15 @@ API + marketing   →  willpark1895-spec/px-website (GitHub)
                   →  pxconsulting.io
                   ←  consumes engine via require('@phloemxylem/terravalue-engine')
 
-Live frontend     →  willpark1895-spec/terravalue (GitHub)
-                  →  Vercel project: "terravaluev2"
-                  →  terravalue.app (canonical: www.terravalue.app)
-                  ←  consumes engine via build-step copy from node_modules/
+Live frontend     →  willpark1895-spec/terravalue (GitHub), branch main
+                  →  Vercel project: "terravalue_v2"
+                  →  terravalue.app (canonical: www.terravalue.app) + terravaluev2.vercel.app
+                  ←  consumes engine 1.1.0 (exact pin) via build-step copy from node_modules/
                   ←  calls pxconsulting.io/api/* cross-origin
+
+MVP staging       →  willpark1895-spec/terravalue (GitHub), branch mvp   ← SAME repo
+                  →  Vercel project: "terravalue-mvp"
+                  →  terravalue-mvp.vercel.app
 
 Archive           →  willpark1895-spec/terravalue-react-archive (GitHub)
                   →  no Vercel project
@@ -122,7 +141,14 @@ Archive           →  willpark1895-spec/terravalue-react-archive (GitHub)
 
 ## Engine version coordination
 
-Both consumers declare `"@phloemxylem/terravalue-engine": "^1.0.1"` in their `package.json`. With caret semver they'll both pick up any future `1.x.x` (non-breaking) release on their next `npm install`. For a major bump (2.0.0), update both `package.json`s in lockstep — push the engine first, then the consumers, otherwise the API will be a major version ahead/behind the frontend.
+~~Both consumers declare `"@phloemxylem/terravalue-engine": "^1.0.1"`…~~ **Caret specs are retired** (2026-07-15 frontend, 2026-08-24 API) after the build-cache incident above. Current exact pins, verified on the wire 2026-08-25:
+
+| Consumer | Pin | Verified how |
+|---|---|---|
+| `px-website` (API) | `"1.3.0"` | `/api/health` → `engineVersion: "1.3.0"` in production |
+| `terravalue` (page bundle) | `"1.1.0"` | served `terravalue-engine.js` sha256-identical to npm 1.1.0 `dist/` |
+
+The 1.1.0-bundle ↔ 1.3.0-lib pairing is proven output-identical across all four golden fixture groups by `terravalue-engine`'s `npm run parity:deployed`; re-run it after changing either pin, and bump both in lockstep for any major. Note: npm `latest` is 1.4.0 and the engine **repo** is ahead of the npm 1.4.0 artifact (Session A landed without a version bump) — bump the version before the next publish, never republish 1.4.0.
 
 ---
 
@@ -180,11 +206,18 @@ Confirm the engine version that's actually live in production:
 # from your laptop, no install needed
 curl -s https://registry.npmjs.org/@phloemxylem%2fterravalue-engine | python3 -c "import sys, json; d=json.load(sys.stdin); print('latest:', d['dist-tags']['latest'])"
 
-# what version does pxconsulting.io's API report?
-curl -s https://pxconsulting.io/api/health | python3 -c "import sys, json; print('API engine version:', json.load(sys.stdin)['version'])"
+# what version does pxconsulting.io's API report? (engineVersion = npm package version;
+# the 'version' field is a methodology string — do not confuse them)
+curl -s https://pxconsulting.io/api/health | python3 -c "import sys, json; print('API engine version:', json.load(sys.stdin)['engineVersion'])"
 
-# what version is terravalue.app actually serving?
-curl -sL https://terravalue.app/terravalue-engine.js | grep -m1 "Generated:"
+# what version is terravalue.app actually serving? Don't trust strings — hash the bundle
+# and byte-compare against the npm dist (this is how the 1.0.3 cache-ghost was caught):
+curl -sL https://www.terravalue.app/terravalue-engine.js | shasum -a 256
+npm pack @phloemxylem/terravalue-engine@1.1.0 >/dev/null 2>&1 && tar -xzf phloemxylem-terravalue-engine-1.1.0.tgz && shasum -a 256 package/dist/terravalue-engine.browser.js  # must match the line above
+
+# and hash the page itself against the branch HEAD (audit the wire, not the file):
+curl -sL "https://www.terravalue.app/?cb=$(date +%s)" | shasum -a 256
+git -C ~/Desktop/"Desktop - a laptop"/Claude-Work/terravalue show main:index.html | shasum -a 256  # must match
 ```
 
 ---
